@@ -1,6 +1,11 @@
+<script setup lang="ts">
+import { NButton } from 'naive-ui'
+</script>
+
 <template>
   <div class="about">
     <h1>This is an about page</h1>
+    <n-button type="primary">naive-ui</n-button>
   </div>
 </template>
 
