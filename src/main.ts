@@ -13,11 +13,8 @@ async function bootstrap() {
 
   app.use(createPinia())
   app.use(router)
-  
+
   app.mount('#app')
 }
 
 bootstrap()
-
-
-

@@ -13,12 +13,12 @@
     "esModuleInterop": true, // 允许使用 import 引入使用 export = 导出的内容
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve", // 保留原始的 JSX 代码，不进行编译
-    "moduleResolution": "node",  // 使用 Node 的模块解析策略
-    "resolveJsonModule": true,  // 允许引入 JSON 文件
+    "moduleResolution": "node", // 使用 Node 的模块解析策略
+    "resolveJsonModule": true, // 允许引入 JSON 文件
     "noUnusedLocals": true,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,  // 跳过对 .d.ts 文件的类型检查
+    "skipLibCheck": true, // 跳过对 .d.ts 文件的类型检查
     "paths": {
       "@/*": ["./src/*"]
     }
