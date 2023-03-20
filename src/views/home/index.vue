@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useDark, useToggle } from '@vueuse/core'
+import { t } from '@/locales'
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
@@ -23,5 +24,5 @@ const toggleDark = useToggle(isDark)
       </a>
     </div>
   </div>
-  <RouterLink to="/drawing-board">像素画板</RouterLink>
+  <RouterLink to="/drawing-board">{{ t('common.title') }}</RouterLink>
 </template>
