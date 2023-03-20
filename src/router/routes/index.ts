@@ -4,17 +4,17 @@ export const baseRoutes: RouteRecordRaw[] = [
   {
     name: 'root',
     path: '/',
-    redirect: '',
+    component: () => import('@/views/home/index.vue'),
     meta: {
       title: '首页',
     },
   },
   {
-    name: 'About',
-    path: '/about',
-    component: () => import('@/views/AboutView.vue'),
+    name: 'drawing-board',
+    path: '/drawing-board',
+    component: () => import('@/views/drawing-board/index.vue'),
     meta: {
-      title: '登录页',
+      title: '像素画板',
     },
   },
 ]

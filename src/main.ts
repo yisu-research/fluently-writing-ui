@@ -3,10 +3,7 @@ import { createPinia } from 'pinia'
 import { setupAssets } from './plugins'
 
 import App from './App.vue'
-// import router from './router'
 import { setupRouter } from '@/router'
-
-import './assets/main.css'
 
 async function bootstrap() {
   const app = createApp(App)
