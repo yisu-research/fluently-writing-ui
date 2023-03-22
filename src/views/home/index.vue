@@ -1,27 +1,56 @@
 <script setup lang="ts">
-import { useDark, useToggle } from '@vueuse/core'
+import { computed, h } from 'vue'
+import { NDropdown } from 'naive-ui'
 import { SvgIcon } from '@/components/common'
+import { useAppStore } from '@/store'
+import type { Theme } from '@/store/modules/app/helper'
 
-const isDaisyDark = useDark({
-  selector: 'html',
-  attribute: 'data-theme',
-  valueDark: 'dark',
-  valueLight: 'light',
-})
-const toggleDaisyDark = useToggle(isDaisyDark)
+const appStore = useAppStore()
 
-const isTailWindDark = useDark()
-
-const toggleTailWindDark = useToggle(isTailWindDark)
-
-const toggleDark = () => {
-  toggleDaisyDark()
-  toggleTailWindDark()
+const renderIcon = (icon: string) => {
+  return () => {
+    return h(
+      SvgIcon,
+      { icon },
+      {
+        default: () => h(icon),
+      },
+    )
+  }
 }
+
+const themeOptions: any[] = [
+  {
+    label: 'Auto',
+    key: 'auto',
+    icon: renderIcon('uil:swatchbook'),
+    iconText: 'uil:swatchbook',
+  },
+  {
+    label: 'Light',
+    key: 'light',
+    icon: renderIcon('uil:sunset'),
+    iconText: 'uil:sunset',
+  },
+  {
+    label: 'Dark',
+    key: 'dark',
+    icon: renderIcon('uil:moonset'),
+    iconText: 'uil:moonset',
+  },
+]
+
+const handleSelectTheme = (key: Theme) => {
+  appStore.setTheme(key)
+}
+
+const themeIndex = computed(() => {
+  return themeOptions.findIndex((item) => item.key === appStore.theme)
+})
 </script>
 
 <template>
-  <div class="bg-white navbar bg-base-100 backdrop-blur backdrop-filter firefox:bg-opacity-90">
+  <div class="bg-white navbar backdrop-blur backdrop-filter firefox:bg-opacity-90">
     <div class="flex-none lg:hidden">
       <div class="px-2 dropdown">
         <label tabindex="0" class="">
@@ -44,18 +73,16 @@ const toggleDark = () => {
         <li class="mr-4">像素画板</li>
       </ul>
     </div>
-    <div class="flex-none">
-      <div class="px-4 dropdown dropdown-end">
-        <label tabindex="0" class="text-xl"><SvgIcon icon="uil:brightness" /></label>
-        <ul tabindex="0" class="p-2 mt-4 rounded-lg shadow menu dropdown-content bg-base-100 w-28">
-          <li>
-            <div class="flex justify-start"><SvgIcon icon="uil:brightness" /><a>Light</a></div>
-          </li>
-          <li>
-            <div class="flex justify-start"><SvgIcon icon="uil:moonset" /><a>Dark</a></div>
-          </li>
-        </ul>
-      </div>
+    <div class="flex-none text-xl">
+      <NDropdown
+        placement="bottom-start"
+        trigger="click"
+        size="large"
+        :options="themeOptions"
+        @select="handleSelectTheme"
+      >
+        <NButton quaternary class="px-4"><SvgIcon :icon="themeOptions[themeIndex].iconText" /></NButton>
+      </NDropdown>
       <div class="px-4 dropdown dropdown-end">
         <label tabindex="0" class="text-xl"><SvgIcon icon="uil:english-to-chinese" /></label>
         <ul tabindex="0" class="p-2 mt-4 rounded-lg shadow menu dropdown-content bg-base-100 w-28">

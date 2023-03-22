@@ -4,6 +4,7 @@ import { setupI18n } from './locales'
 import { setupAssets } from './plugins'
 import { setupStore } from './store'
 import { setupRouter } from '@/router'
+import { setupTheme } from '@/hooks/useTheme'
 
 async function bootstrap() {
   const app = createApp(App)
@@ -16,6 +17,9 @@ async function bootstrap() {
 
   // setup store
   setupI18n(app)
+
+  // setup theme
+  setupTheme()
 
   // setup router
   await setupRouter(app)
