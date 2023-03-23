@@ -1,0 +1,19 @@
+<template>
+  <main class="relative min-h-screen isolate">
+    <img
+      src="https://images.unsplash.com/photo-1545972154-9bb223aac798?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=3050&q=80&exp=8&con=-15&sat=-75"
+      alt=""
+      class="absolute inset-0 object-cover object-top w-full h-full -z-10"
+    />
+    <div class="px-6 py-32 mx-auto text-center max-w-7xl sm:py-40 lg:px-8">
+      <p class="text-base font-semibold leading-8 text-white">404</p>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">Page not found</h1>
+      <p class="mt-4 text-base text-white/70 sm:mt-6">Sorry, we couldn’t find the page you’re looking for.</p>
+      <div class="flex justify-center mt-10">
+        <RouterLink class="text-sm font-semibold leading-7 text-white" to="/"
+          ><span aria-hidden="true">&larr;</span> Back to home</RouterLink
+        >
+      </div>
+    </div>
+  </main>
+</template>

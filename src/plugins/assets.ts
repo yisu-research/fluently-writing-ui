@@ -1,6 +1,7 @@
 import '@/styles/tailwind.css'
 // 等宽字体
 import 'vfonts/FiraCode.css'
+import '@/styles/global.css'
 
 /** Tailwind's Preflight Style Override */
 function naiveStyleOverride() {

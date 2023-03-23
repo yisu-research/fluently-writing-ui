@@ -50,7 +50,7 @@ const themeIndex = computed(() => {
 </script>
 
 <template>
-  <div class="bg-white navbar backdrop-blur backdrop-filter firefox:bg-opacity-90">
+  <div class="bg-base-100 bg-opacity-90 navbar backdrop-blur backdrop-filter firefox:bg-opacity-90">
     <div class="flex-none lg:hidden">
       <div class="px-2 dropdown">
         <label tabindex="0" class="">
@@ -60,7 +60,7 @@ const themeIndex = computed(() => {
         </label>
         <ul tabindex="0" class="p-2 mt-3 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
           <li><a>主页</a></li>
-          <li><a>像素画板</a></li>
+          <li><RouterLink to="/drawing-board">像素画板</RouterLink></li>
         </ul>
       </div>
     </div>

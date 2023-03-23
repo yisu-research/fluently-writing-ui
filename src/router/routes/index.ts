@@ -6,7 +6,7 @@ export const baseRoutes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('@/views/home/index.vue'),
     meta: {
-      title: '首页',
+      title: 'Pixel Art',
     },
   },
   {
@@ -17,17 +17,16 @@ export const baseRoutes: RouteRecordRaw[] = [
       title: '像素画板',
     },
   },
+
+  {
+    path: '/404',
+    name: '404',
+    component: () => import('@/views/exception/404/index.vue'),
+  },
+
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'notFound',
+    redirect: '/404',
+  },
 ]
-
-export const NOT_FOUND_ROUTE = {
-  name: 'NotFound',
-  path: '/:pathMatch(.*)*',
-  redirect: '/404',
-  isHidden: true,
-}
-
-export const EMPTY_ROUTE = {
-  name: 'Empty',
-  path: '/:pathMatch(.*)*',
-  component: null,
-}

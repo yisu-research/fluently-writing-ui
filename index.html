@@ -2,9 +2,11 @@
 <html lang="en">
 
 <head>
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta charset="UTF-8">
   <link rel="icon" href="/favicon.svg">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Vite App</title>
 </head>
 
@@ -14,3 +16,33 @@
 </body>
 
 </html>
+
+<script>
+  // Disable zooming on iOS devices
+  document.documentElement.addEventListener(
+    'touchstart',
+    function (event) {
+      if (event.touches.length > 1) {
+        event.preventDefault()
+      }
+    },
+    false,
+  )
+
+  let lastTouchEnd = 0
+  document.documentElement.addEventListener(
+    'touchend',
+    function (event) {
+      const now = Date.now()
+      if (now - lastTouchEnd <= 300) {
+        event.preventDefault()
+      }
+      lastTouchEnd = now
+    },
+    false,
+  )
+
+  document.addEventListener('gesturestart', function (event) {
+    event.preventDefault()
+  })
+</script>

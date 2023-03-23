@@ -1,7 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { BoardHeader } from './components'
+</script>
 
 <template>
-  <div>像素画板</div>
+  <div>
+    <BoardHeader />
+  </div>
 </template>
 
 <style scoped></style>
