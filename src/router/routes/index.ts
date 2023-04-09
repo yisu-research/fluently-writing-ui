@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 
 export const baseRoutes: RouteRecordRaw[] = [
   {
-    name: 'root',
+    name: 'home',
     path: '/',
     component: () => import('@/views/home/index.vue'),
     meta: {

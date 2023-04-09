@@ -9,7 +9,11 @@ export const useAuthStore = defineStore('auth-store', {
   state: (): AuthState => ({
     token: getToken(),
   }),
-  getters: {},
+  getters: {
+    isLogin(): boolean {
+      return !!this.token
+    },
+  },
   actions: {
     setToken(token: string) {
       this.token = token
