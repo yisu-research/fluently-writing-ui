@@ -19,6 +19,12 @@ export const useUserStore = defineStore('user-store', {
       balance: undefined,
     },
   }),
-  getters: {},
-  actions: {},
+  getters: {
+    userId(): number | undefined {
+      return this.id
+    },
+  },
+  actions: {
+    async logout() {},
+  },
 })

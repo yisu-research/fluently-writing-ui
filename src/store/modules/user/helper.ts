@@ -6,7 +6,7 @@ const LOCAL_NAME = 'userState'
  * 用户信息
   {
     "id": 2,
-    "username": "dhenry",
+    "username": "一粟科研",
     "email": null,
     "balance": 99844,
     "invite_code": "LDPrdJ",
