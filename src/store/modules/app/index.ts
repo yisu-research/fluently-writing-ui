@@ -5,6 +5,14 @@ import { store } from '@/store'
 
 export const useAppStore = defineStore('app-store', {
   state: (): AppState => getLocalSetting(),
+  getters: {
+    isDarkTheme(): boolean {
+      return this.theme === 'dark'
+    },
+    getLanguage(): Language {
+      return this.language
+    },
+  },
   actions: {
     // 侧边栏折叠状态
     setSideCollapsed(collapsed: boolean) {

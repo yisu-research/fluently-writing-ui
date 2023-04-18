@@ -4,9 +4,8 @@ import { NButton, NDrawer, NDrawerContent } from 'naive-ui'
 import { RouterLink } from 'vue-router'
 import { useWindowSize } from '@vueuse/core'
 // import LogoName from '@/components/common/LogoName/index.vue'
-// import SwitchTheme from '@/components/common/switch-theme/index.vue'
 // import SwitchLanguage from '@/components/common/switch-language/index.vue'
-import { SvgIcon } from '@/components/common'
+import { SvgIcon, SwitchTheme } from '@/components/common'
 import { t } from '@/locales'
 
 // Comment: 移动端菜单是否打开
