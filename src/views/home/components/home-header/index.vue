@@ -3,10 +3,10 @@ import { ref, watchEffect } from 'vue'
 import { NButton, NDrawer, NDrawerContent } from 'naive-ui'
 import { RouterLink } from 'vue-router'
 import { useWindowSize } from '@vueuse/core'
-// import LogoName from '@/components/common/LogoName/index.vue'
+import LogoName from '@/components/common/LogoName/index.vue'
 // import SwitchLanguage from '@/components/common/switch-language/index.vue'
 import { SvgIcon, SwitchTheme } from '@/components/common'
-import { t } from '@/locales'
+import { useBasicLayout } from '@/hooks/useBasicLayout'
 
 // Comment: 移动端菜单是否打开
 const mobileMenuOpen = ref(false)
@@ -23,9 +23,11 @@ const { width } = useWindowSize()
 // 抽屉的宽度
 const drawerWidth = ref(500)
 
+const { isMobile } = useBasicLayout()
+
 // Comment: 监听屏幕宽度，当屏幕宽度小于 768 时，抽屉的宽度为屏幕宽度
 watchEffect(() => {
-  if (width.value < 768) {
+  if (isMobile) {
     drawerWidth.value = (width.value * 5) / 6
   } else {
     drawerWidth.value = 360
@@ -57,13 +59,8 @@ function handleScroll() {
 // Note: 这里的 path 是路由的 path，当点击导航栏时，会跳转到对应的路由
 const barOptions: { title: string; icon: string; path: string }[] = [
   {
-    title: 'home.artworks',
-    icon: 'solar:palette-round-bold-duotone',
-    path: '/',
-  },
-  {
-    title: 'home.aboutUs',
-    icon: 'solar:notification-unread-lines-bold-duotone',
+    title: '登录',
+    icon: 'solar:login-3-line-duotone',
     path: '/',
   },
 ]
@@ -88,14 +85,7 @@ const barOptions: { title: string; icon: string; path: string }[] = [
     ></div>
     <!-- PC 端 -->
     <nav class="flex items-center justify-between p-4 mx-auto max-w-7xl lg:px-8" aria-label="Global">
-      <div class="flex flex-1">
-        <div class="hidden lg:flex lg:gap-x-12">
-          <NButton v-for="item in barOptions" :key="item.title" text size="large" class="leading-6">
-            <SvgIcon :icon="item.icon" class="mr-1" />
-            <RouterLink :to="item.path" class="font-bold">{{ t(item.title) }}</RouterLink>
-          </NButton>
-        </div>
-
+      <div class="flex flex-1 lg:flex-none">
         <div class="flex lg:hidden">
           <NButton
             text
@@ -104,7 +94,7 @@ const barOptions: { title: string; icon: string; path: string }[] = [
             @click="mobileMenuOpen = true"
           >
             <span class="sr-only">Open main menu</span>
-            <SvgIcon icon="solar:login-3-line-duotone" class="text-xl" />
+            <SvgIcon icon="uim:bars" class="text-xl" />
           </NButton>
         </div>
       </div>
@@ -114,18 +104,25 @@ const barOptions: { title: string; icon: string; path: string }[] = [
         <SwitchTheme />
         <!-- 多语言按钮 -->
         <SwitchLanguage />
+
+        <div v-if="!isMobile" class="hidden lg:flex lg:gap-x-12">
+          <NButton v-for="item in barOptions" :key="item.title" text size="large" class="leading-6">
+            <SvgIcon :icon="item.icon" class="mr-1" />
+            <RouterLink :to="item.path" class="font-bold">{{ item.title }}</RouterLink>
+          </NButton>
+        </div>
       </div>
     </nav>
 
     <!-- 移动端抽屉 -->
     <NDrawer v-model:show="mobileMenuOpen" :width="drawerWidth" placement="left" @close="mobileMenuOpen = false">
       <NDrawerContent class="w-full p-0 m-0 bg-slate-50 dark:bg-gray-900">
-        <div class="flex items-center justify-start">
+        <div class="flex items-center justify-between">
+          <LogoName />
           <NButton text size="large" class="-m-2.5 rounded-md p-2.5" @click="mobileMenuOpen = false">
             <span class="sr-only">Close menu</span>
-            <SvgIcon icon="solar:logout-3-line-duotone" class="text-xl" />
+            <SvgIcon icon="uim:multiply" class="text-xl" />
           </NButton>
-          <LogoName class="flex flex-1" />
         </div>
         <div
           class="mt-6 overflow-hidden bg-white rounded-lg shadow-sm dark:bg-slate-700 dark:bg-opacity-80 ring-1 ring-slate-100 dark:ring-teal-800"
@@ -140,7 +137,7 @@ const barOptions: { title: string; icon: string; path: string }[] = [
                     class="flex items-center justify-start gap-2 text-base font-semibold leading-7 dark:text-white text-slate-700"
                   >
                     <SvgIcon :icon="item.icon" class="text-teal-600 dark:text-teal-300" />
-                    <RouterLink :to="item.path">{{ t(item.title) }}</RouterLink>
+                    <RouterLink :to="item.path">{{ item.title }}</RouterLink>
                   </div>
                   <SvgIcon icon="uil:angle-right-b" class="" />
                 </div>

@@ -34,14 +34,7 @@ const railStyle = ({ focused, checked }: { focused: boolean; checked: boolean })
 </script>
 
 <template>
-  <NSwitch
-    v-model:value="activeDark"
-    :default-value="activeDark"
-    size="medium"
-    rubber-band
-    :rail-style="railStyle"
-    class="mr-4"
-  >
+  <NSwitch v-model:value="activeDark" :default-value="activeDark" size="medium" rubber-band :rail-style="railStyle">
     <template #checked-icon>
       <SvgIcon icon="solar:moon-fog-bold-duotone" class="text-teal-500" />
     </template>
