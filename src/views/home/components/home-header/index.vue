@@ -99,11 +99,18 @@ const barOptions: { title: string; icon: string; path: string }[] = [
         </div>
       </div>
       <LogoName />
-      <div class="flex justify-end flex-1">
+      <div class="flex items-center justify-end flex-1">
         <!-- 主题切换按钮 -->
         <SwitchTheme />
         <!-- 多语言按钮 -->
-        <SwitchLanguage />
+        <!-- <SwitchLanguage /> -->
+
+        <!-- 垂直分割线 -->
+        <div class="hidden mx-4 lg:block">
+          <div class="flex items-center h-4 py-2">
+            <div class="w-px h-5 bg-slate-300 dark:bg-gray-700" aria-hidden="true"></div>
+          </div>
+        </div>
 
         <div v-if="!isMobile" class="hidden lg:flex lg:gap-x-12">
           <NButton v-for="item in barOptions" :key="item.title" text size="large" class="leading-6">
