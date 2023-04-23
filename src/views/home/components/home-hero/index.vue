@@ -1,7 +1,15 @@
 <script setup lang="ts">
 import { NButton } from 'naive-ui'
+import { computed } from 'vue'
 import HeroSvg from '@/assets/svg/hero.svg'
 import { SvgIcon } from '@/components/common'
+import { useAppStore } from '@/store'
+
+// app
+const appStore = useAppStore()
+
+// isDark
+const isDark = computed(() => appStore.isDarkTheme)
 
 // title
 const title = '一粟创作助手'
@@ -17,9 +25,10 @@ const footnote = 'Powered by'
 </script>
 
 <template>
-  <div class="relative overflow-hidden bg-white isolate">
+  <div class="relative overflow-hidden bg-white isolate dark:bg-gray-900">
+    <div v-show="isDark" class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-gray-900"></div>
     <svg
-      class="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
+      class="absolute inset-0 -z-10 h-full w-full stroke-gray-200 dark:stroke-white/10 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
       aria-hidden="true"
     >
       <defs>
@@ -34,7 +43,7 @@ const footnote = 'Powered by'
           <path d="M100 200V.5M.5 .5H200" fill="none" />
         </pattern>
       </defs>
-      <svg x="50%" y="-1" class="overflow-visible fill-gray-50">
+      <svg x="50%" y="-1" class="overflow-visible fill-gray-50 dark:fill-slate-800/20">
         <path
           d="M-100.5 0h201v201h-201Z M699.5 0h201v201h-201Z M499.5 400h201v201h-201Z M-300.5 600h201v201h-201Z"
           stroke-width="0"
@@ -62,8 +71,8 @@ const footnote = 'Powered by'
             y2="474.645"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#2DD4BF" />
-            <stop offset="1" stop-color="#F9F871" />
+            <stop :stop-color="isDark ? '#05EF99' : '#2DD4BF'" />
+            <stop offset="1" :stop-color="isDark ? '#993FF8' : '#CDF973'" />
           </linearGradient>
         </defs>
       </svg>
@@ -77,16 +86,19 @@ const footnote = 'Powered by'
           {{ title }}
         </h1>
 
-        <p class="mt-6 text-2xl leading-8 text-slate-600">{{ slogan }}</p>
-        <p class="text-lg text-gray-600 leading-2">
-          {{ footnote }}
-          <a href="https://chat.openai.com" class="text-teal-500 hover:text-teal-400">ChatGPT</a>
-        </p>
+        <div>
+          <p class="mt-6 text-2xl leading-8 text-slate-600 dark:text-slate-300">{{ slogan }}</p>
+          <p class="text-lg text-gray-600 leading-2 dark:text-gray-400">
+            {{ footnote }}
+            <a href="https://chat.openai.com" class="text-teal-500 hover:text-teal-400">ChatGPT</a>
+          </p>
+        </div>
+
         <div class="flex items-center mt-10 gap-x-6">
           <router-link to="/chat">
-            <NButton type="primary" size="large">
-              <SvgIcon icon="solar:ufo-3-line-duotone" class="mr-2 text-lg" />
-              {{ start }}
+            <NButton type="primary" size="large" class="hover:ring-2 hover:ring-green-200">
+              <SvgIcon icon="solar:ufo-3-line-duotone" class="mr-2 text-lg text-teal-50" />
+              <span class="font-bold text-teal-50">{{ start }}</span>
             </NButton>
           </router-link>
         </div>

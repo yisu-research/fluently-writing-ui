@@ -48,7 +48,7 @@ watchEffect(() => {
 // q: 解释一下这个 handleScroll 函数
 // a: 这里是监听滚动事件，当滚动距离大于 10 时，将 scrolled 的值设置为 true，否则设置为 false
 function handleScroll() {
-  if (window.scrollY > 10) {
+  if (window.scrollY > 0) {
     scrolled.value = true
   } else {
     scrolled.value = false
@@ -67,19 +67,11 @@ const barOptions: { title: string; icon: string; path: string }[] = [
 </script>
 
 <template>
-  <header
-    :class="{ 'backdrop-filter': scrolled, 'backdrop-blur-lg': scrolled }"
-    class="fixed top-0 left-0 right-0 z-50"
-  >
+  <header class="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-2xl">
     <div
       ref="header"
       :class="{
-        'bg-slate-50': scrolled,
-        'dark:bg-slate-800': scrolled,
-        'opacity-30': scrolled,
-        'border-b': scrolled,
-        'border-slate-200': scrolled,
-        'dark:border-gray-700': scrolled,
+        ' dark:bg-slate-600 opacity-60  border-b bg-white  dark:border-zinc-700 border-slate-200': scrolled,
       }"
       class="absolute top-0 bottom-0 left-0 right-0"
     ></div>
