@@ -6,18 +6,17 @@ export const baseRoutes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('@/views/home/index.vue'),
     meta: {
-      title: 'Pixel Art',
+      title: '一粟写作助手',
     },
   },
   {
-    name: 'drawing-board',
-    path: '/drawing-board',
-    component: () => import('@/views/drawing-board/index.vue'),
+    name: 'login',
+    path: '/login',
+    component: () => import('@/views/system/login/index.vue'),
     meta: {
-      title: '像素画板',
+      title: '登录',
     },
   },
-
   {
     path: '/404',
     name: '404',

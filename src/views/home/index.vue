@@ -149,12 +149,14 @@ const features = [
 </script>
 
 <template>
-  <HomeHeader />
-  <HomeHero />
-  <template v-for="(content, index) in features" :key="content.title">
-    <SectionImageRight :content="content" :position="index % 2 === 0 ? 'right' : 'left'" />
-  </template>
-  <SectionTemplate />
-  <ContactUs />
-  <HomeFooter />
+  <div class="dark:bg-gray-900">
+    <HomeHeader />
+    <HomeHero />
+    <template v-for="(content, index) in features" :key="content.title">
+      <SectionImageRight :content="content" :position="index % 2 === 0 ? 'right' : 'left'" />
+    </template>
+    <SectionTemplate />
+    <ContactUs />
+    <HomeFooter />
+  </div>
 </template>

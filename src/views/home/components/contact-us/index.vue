@@ -5,9 +5,9 @@ import { SvgIcon } from '@/components/common'
 </script>
 
 <template>
-  <div class="mx-auto bg-white sm:py-16 max-w-7xl sm:px-6 lg:px-8 dark:bg-gray-900">
+  <div class="pb-8 mx-auto bg-white sm:py-16 max-w-7xl sm:px-6 lg:px-8 dark:bg-gray-900">
     <div
-      class="relative mx-auto overflow-hidden sm:py-4 max-w-7xl md:px-6 lg:px-8 bg-indigo-50 sm:rounded-3xl sm:dark:ring-2 sm:dark:ring-teal-400"
+      class="relative mx-4 overflow-hidden dark:ring-2 ring-teal-500 sm:mx-auto sm:py-4 max-w-7xl md:px-6 lg:px-8 bg-indigo-50 sm:rounded-2xl sm:dark:ring-2 sm:dark:ring-teal-400 rounded-3xl"
     >
       <img
         alt=""
@@ -21,14 +21,16 @@ import { SvgIcon } from '@/components/common'
         :src="bgImage"
       />
       <div
-        class="absolute top-0 left-0 z-40 w-full h-full dark:bg-gray-900 dark:bg-opacity-90 -backdrop-hue-rotate-60"
+        class="absolute top-0 left-0 z-40 w-full h-full dark:bg-slate-900 dark:bg-opacity-20 -backdrop-hue-rotate-60 rounded-3xl"
       ></div>
-      <div class="relative z-40 flex flex-col mx-auto sm:flex-row sm:items-center sm:justify-between max-w-7xl">
+      <div
+        class="relative z-40 flex flex-col mx-auto text-teal-500 sm:flex-row sm:items-center sm:justify-between max-w-7xl dark:text-teal-600"
+      >
         <div class="relative px-6 pt-24 pb-20 sm:pt-32 lg:static lg:py-24 lg:px-8">
           <div class="max-w-xl mx-auto lg:mx-0 lg:max-w-lg">
-            <h2 class="text-3xl font-bold tracking-tight text-teal-700">联系我们</h2>
-            <p class="mt-6 text-lg font-bold leading-8 text-teal-700">走进智能创作新时代，与我们一同完善一粟创作助手</p>
-            <dl class="mt-10 space-y-4 text-base font-bold leading-7 text-teal-700">
+            <h2 class="text-3xl font-bold tracking-tight">联系我们</h2>
+            <p class="mt-6 text-lg font-bold leading-8">走进智能创作新时代，与我们一同完善一粟创作助手</p>
+            <dl class="mt-10 space-y-4 text-base font-bold leading-7">
               <div class="flex items-center gap-x-4">
                 <dt class="flex-none">
                   <SvgIcon

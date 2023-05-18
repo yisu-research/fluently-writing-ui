@@ -61,7 +61,7 @@ const barOptions: { title: string; icon: string; path: string }[] = [
   {
     title: '登录',
     icon: 'solar:login-3-line-duotone',
-    path: '/',
+    path: '/login',
   },
 ]
 </script>
@@ -129,17 +129,19 @@ const barOptions: { title: string; icon: string; path: string }[] = [
           <div class="px-2 sm:px-2">
             <div class="space-y-2">
               <span v-for="(item, index) in barOptions" :key="item.title" text size="large" class="w-full mx-auto">
-                <div
-                  class="flex items-center justify-between w-full px-2 py-2 my-2 rounded-lg hover:bg-gray-50 hover:dark:bg-slate-600"
-                >
+                <RouterLink :to="item.path">
                   <div
-                    class="flex items-center justify-start gap-2 text-base font-semibold leading-7 dark:text-white text-slate-700"
+                    class="flex items-center justify-between w-full px-2 py-2 my-2 rounded-lg hover:bg-gray-50 hover:dark:bg-slate-600"
                   >
-                    <SvgIcon :icon="item.icon" class="text-teal-600 dark:text-teal-300" />
-                    <RouterLink :to="item.path">{{ item.title }}</RouterLink>
-                  </div>
-                  <SvgIcon icon="uil:angle-right-b" class="" />
-                </div>
+                    <div
+                      class="flex items-center justify-start gap-2 text-base font-semibold leading-7 dark:text-white text-slate-700"
+                    >
+                      <SvgIcon :icon="item.icon" class="text-teal-600 dark:text-teal-300" />
+                      {{ item.title }}
+                    </div>
+                    <SvgIcon icon="uil:angle-right-b" class="" /></div
+                ></RouterLink>
+
                 <!-- 分割线 -->
                 <span
                   v-if="index !== barOptions.length - 1"
