@@ -24,17 +24,17 @@ const { content, position } = toRefs(props)
 
 const appStore = useAppStore()
 
-const isLight = computed(() => props.position === 'left' && !appStore.isDarkTheme)
+const isLight = computed(() => !appStore.isDarkTheme)
 </script>
 
 <template>
   <div
-    :class="{ 'bg-white': isLight, 'bg-gray-900': !isLight }"
+    :class="{ 'bg-white': isLight, 'bg-gray-900': !isLight, 'bg-emerald-400/[0.15]': position === 'right' && isLight }"
     class="relative py-16 overflow-hidden isolate sm:py-32"
   >
     <div class="mx-auto max-w-7xl md:px-6 lg:px-8">
-      <div class="grid grid-cols-1 gap-y-16 gap-x-8 sm:gap-y-20 lg:grid-cols-7 lg:items-start">
-        <div class="col-span-3 px-6 lg:px-0 lg:pr-4">
+      <div class="grid grid-cols-1 gap-y-16 gap-x-8 sm:gap-y-20 lg:grid-cols-7 lg:items-center">
+        <div class="col-span-3 px-6 lg:px-0 lg:pr-4" :class="{ 'justify-end flex': position === 'left' }">
           <div class="max-w-2xl mx-auto lg:mx-0 lg:max-w-lg">
             <p
               :class="{

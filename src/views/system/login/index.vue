@@ -88,29 +88,29 @@ const rulesForEmail = {
   },
 }
 
-const onSignupForUser = async () => {
-  formUserRef.value!.validate(async (err) => {
-    if (!err) {
-      loadLogin.value = true
-      try {
-        const res: any = await api.loginApi(formUser.value)
-        authStore.setToken(res.token)
-        router.push('/chat')
-        message.success('登录成功')
-      } catch (_err: any) {
-        console.error(_err)
-        message.error(`登录失败，${_err.error.message}`)
-      } finally {
-        setTimeout(() => {
-          loadLogin.value = false
-        }, 1000)
-      }
-    } else {
-      console.error(err)
-      message.error('请按要求填写账号信息')
-    }
-  })
-}
+// const onSignupForUser = async () => {
+//   formUserRef.value!.validate(async (err) => {
+//     if (!err) {
+//       loadLogin.value = true
+//       try {
+//         const res: any = await api.loginApi(formUser.value)
+//         authStore.setToken(res.token)
+//         router.push('/chat')
+//         message.success('登录成功')
+//       } catch (_err: any) {
+//         console.error(_err)
+//         message.error(`登录失败，${_err.error.message}`)
+//       } finally {
+//         setTimeout(() => {
+//           loadLogin.value = false
+//         }, 1000)
+//       }
+//     } else {
+//       console.error(err)
+//       message.error('请按要求填写账号信息')
+//     }
+//   })
+// }
 
 const onSignupForEmail = async () => {
   formEmailRef.value?.validate(async (err) => {
@@ -182,7 +182,7 @@ const switchToEmail = () => {
   <div class="bg-slate-100 w-full overflow-hidden h-[100dvh]">
     <div class="flex flex-col items-center justify-center h-full px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
       <div
-        class="flex flex-col justify-between w-full h-full my-4 overflow-hidden bg-white rounded-lg shadow-sm sm:h-auto ring-slate-200 ring-1"
+        class="flex flex-col justify-between w-full h-full my-4 overflow-hidden bg-white shadow-sm rounded-2xl sm:h-auto ring-slate-200 ring-1"
       >
         <div class="px-4 sm:p-6 sm:flex sm:justify-center">
           <!-- 插画 -->
@@ -194,37 +194,23 @@ const switchToEmail = () => {
 
           <!-- 登录表单 -->
           <div class="flex flex-col items-center justify-between sm:px-6 sm:w-96 flex-2">
-            <RouterLink to="/" class="mt-8 font-semibold leading-6 text-gray-900 scale-150">
+            <RouterLink to="/" class="mt-12 font-semibold leading-6 text-gray-900 scale-150">
               <LogoName />
             </RouterLink>
             <div class="w-full mt-8">
               <NTabs v-model:value="tabName" size="large" justify-content="center" animated>
                 <NTabPane name="signin-username" tab="密码登录">
-                  <NForm ref="formUserRef" :model="formUser" :rules="rulesForUser">
+                  <NForm ref="formUserRef" :model="formUser" :rules="rulesForUser" size="large">
                     <NFormItemRow label="用户名" path="username">
                       <NInput v-model:value="formUser.username" placeholder="请输入用户名或邮箱" />
                     </NFormItemRow>
                     <NFormItemRow label="密码" path="password">
                       <NInput v-model:value="formUser.password" placeholder="请输入密码" type="password" />
                     </NFormItemRow>
-                    <div class="flex flex-row-reverse mb-8">
-                      <NButton text @click="handleForgotPassword">忘记密码？</NButton>
-                    </div>
                   </NForm>
-                  <NButton
-                    class="mt-8"
-                    type="primary"
-                    :loading="loadLogin"
-                    block
-                    secondary
-                    strong
-                    @click.prevent="onSignupForUser"
-                  >
-                    登录
-                  </NButton>
                 </NTabPane>
                 <NTabPane name="signin-email" tab="验证码登录">
-                  <NForm ref="formEmailRef" :model="formEmail" :rules="rulesForEmail">
+                  <NForm ref="formEmailRef" :model="formEmail" :rules="rulesForEmail" size="large">
                     <NFormItemRow label="邮箱" path="email">
                       <NInput v-model:value="formEmail.email" placeholder="请输入邮箱地址" />
                     </NFormItemRow>
@@ -243,21 +229,22 @@ const switchToEmail = () => {
                       </NButton>
                     </NFormItemRow>
                   </NForm>
-
-                  <NButton
-                    type="primary"
-                    block
-                    secondary
-                    strong
-                    class="mt-8"
-                    :loading="loadLogin"
-                    @click.prevent="onSignupForEmail"
-                  >
-                    登录
-                  </NButton>
                 </NTabPane>
               </NTabs>
-              <div class="flex items-center justify-end my-2 sm:mb-0">
+              <NButton
+                type="primary"
+                block
+                secondary
+                strong
+                class="mt-8"
+                :loading="loadLogin"
+                size="large"
+                @click.prevent="onSignupForEmail"
+              >
+                登录
+              </NButton>
+              <div class="flex items-center justify-between my-2 sm:mb-0">
+                <NButton text @click="handleForgotPassword">忘记密码？</NButton>
                 <router-link to="/signup"><NButton text class="">没有账号？去注册 </NButton></router-link>
               </div>
             </div>
@@ -318,8 +305,8 @@ const switchToEmail = () => {
         <!-- 封底 -->
         <div class="px-4 sm:px-6">
           <div class="py-4 border-t border-slate-900/5">
-            <div class="flex flex-wrap items-center justify-center">
-              <img :src="YisuImg" width="36" class="mr-2" />
+            <div class="flex flex-wrap items-center justify-center text-lg text-gray-800">
+              <img :src="YisuImg" width="28" class="mr-2" />
               <p class="font-bold">一粟科研</p>
             </div>
             <p class="mt-5 text-sm leading-6 text-center text-slate-500">© 2023 一粟科研 Inc. All rights reserved.</p>

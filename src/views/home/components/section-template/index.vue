@@ -66,22 +66,18 @@ const content = {
         </div>
         <div class="px-6 lg:px-0">
           <div
-            class="relative px-6 pt-8 overflow-hidden bg-teal-500 sm:mx-auto sm:max-w-2xl rounded-xl sm:rounded-3xl sm:pt-16 sm:pl-16 sm:pr-0 lg:mx-0 lg:max-w-none ring-8 ring-teal-100/[0.4]"
+            class="relative px-6 pt-8 overflow-hidden border-0 border-teal-400 bg-teal-400/50 sm:mx-auto sm:max-w-2xl rounded-xl sm:rounded-3xl sm:pt-16 sm:pl-16 sm:pr-0 lg:mx-0 lg:max-w-none ring-8 ring-teal-200/20"
           >
-            <div
-              class="absolute -inset-y-px -left-3 -z-10 w-full origin-bottom-left skew-x-[-30deg] bg-indigo-100 opacity-20 ring-2 ring-inset ring-white"
-              aria-hidden="true"
-            />
             <div class="max-w-2xl mx-auto sm:mx-0 sm:max-w-none">
               <img
                 :src="TemplateImg"
                 alt="Product screenshot"
                 width="2432"
                 height="1442"
-                class="px-4 pt-4 bg-slate-100 dark:bg-slate-600 rounded-tl-xl ring-2 ring-white/10"
+                class="px-4 pt-4 bg-white dark:bg-slate-600 rounded-tl-xl ring-2 ring-white/10"
               />
             </div>
-            <div class="absolute inset-0 pointer-events-none ring-1 ring-inset sm:rounded-3xl" aria-hidden="true" />
+            <div class="absolute pointer-events-none ring-1 sm:rounded-3xl" aria-hidden="true" />
           </div>
         </div>
       </div>

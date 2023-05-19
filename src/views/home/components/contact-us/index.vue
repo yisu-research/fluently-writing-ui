@@ -7,7 +7,7 @@ import { SvgIcon } from '@/components/common'
 <template>
   <div class="pb-8 mx-auto bg-white sm:py-16 max-w-7xl sm:px-6 lg:px-8 dark:bg-gray-900">
     <div
-      class="relative mx-4 overflow-hidden dark:ring-2 ring-teal-500 sm:mx-auto sm:py-4 max-w-7xl md:px-6 lg:px-8 bg-indigo-50 sm:rounded-2xl sm:dark:ring-2 sm:dark:ring-teal-400 rounded-3xl"
+      class="relative mx-4 overflow-hidden dark:ring-2 ring-teal-500 sm:mx-auto sm:py-4 max-w-7xl md:px-6 lg:px-8 bg-indigo-50 sm:rounded-3xl sm:dark:ring-2 sm:dark:ring-teal-400 rounded-3xl"
     >
       <img
         alt=""
@@ -21,7 +21,7 @@ import { SvgIcon } from '@/components/common'
         :src="bgImage"
       />
       <div
-        class="absolute top-0 left-0 z-40 w-full h-full dark:bg-slate-900 dark:bg-opacity-20 -backdrop-hue-rotate-60 rounded-3xl"
+        class="absolute top-0 left-0 z-40 w-full h-full dark:bg-slate-400 dark:bg-opacity-20 -backdrop-hue-rotate-60 rounded-3xl"
       ></div>
       <div
         class="relative z-40 flex flex-col mx-auto text-teal-500 sm:flex-row sm:items-center sm:justify-between max-w-7xl dark:text-teal-600"

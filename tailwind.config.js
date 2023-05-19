@@ -35,26 +35,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/typography'), require('daisyui')],
-
-  // daisyUI config (optional)
-  daisyui: {
-    styled: true,
-    themes: [
-      {
-        light: {
-          ...require('daisyui/src/colors/themes')['[data-theme=light]'],
-          primary: '#2dd4bf',
-          'primary-focus': '#14b8a6',
-        },
-      },
-      'dark',
-    ],
-    base: true,
-    utils: true,
-    logs: true,
-    rtl: false,
-    prefix: '',
-    darkTheme: 'dark',
-  },
+  plugins: [require('@tailwindcss/typography')],
 }
