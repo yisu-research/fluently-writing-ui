@@ -15,7 +15,6 @@ module.exports = {
     requireConfigFile: false,
   },
   rules: {
-    'prettier/prettier': 'error',
     'vue/valid-template-root': 'off',
     'vue/no-multiple-template-root': 'off',
     '@typescript-eslint/prefer-optional-chain': 'off',

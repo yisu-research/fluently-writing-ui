@@ -27,11 +27,7 @@ const { isMobile } = useBasicLayout()
 
 // Comment: 监听屏幕宽度，当屏幕宽度小于 768 时，抽屉的宽度为屏幕宽度
 watchEffect(() => {
-  if (isMobile) {
-    drawerWidth.value = (width.value * 5) / 6
-  } else {
-    drawerWidth.value = 360
-  }
+  newFunc()
 })
 
 // q: 解释一下 watchEffect 函数
@@ -44,6 +40,14 @@ watchEffect(() => {
     window.removeEventListener('scroll', handleScroll)
   }
 })
+
+function newFunc() {
+  if (isMobile) {
+    drawerWidth.value = (width.value * 5) / 6
+  } else {
+    drawerWidth.value = 360
+  }
+}
 
 // q: 解释一下这个 handleScroll 函数
 // a: 这里是监听滚动事件，当滚动距离大于 10 时，将 scrolled 的值设置为 true，否则设置为 false
@@ -90,7 +94,7 @@ const barOptions: { title: string; icon: string; path: string }[] = [
           </NButton>
         </div>
       </div>
-      <LogoName />
+      <LogoName name="一粟科研" />
       <div class="flex items-center justify-end flex-1">
         <!-- 主题切换按钮 -->
         <SwitchTheme />

@@ -1,8 +1,10 @@
 {
-  "recommendations": ["Vue.volar",
-  "Vue.vscode-typescript-vue-plugin",
-  "antfu.iconify",
-  "mikestead.dotenv",
-  "sdras.vue-vscode-snippets",
-  "cipchk.cssrem"]
+  "recommendations": [
+    "Vue.volar",
+    "Vue.vscode-typescript-vue-plugin",
+    "antfu.iconify",
+    "mikestead.dotenv",
+    "sdras.vue-vscode-snippets",
+    "cipchk.cssrem"
+  ]
 }

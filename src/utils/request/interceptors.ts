@@ -1,16 +1,17 @@
-/* eslint-disable prefer-promise-reject-errors */
 import { resolveResError } from './helper'
+import type { RequestError } from './types'
 import { useAuthStore } from '@/store'
 
 export function reqResolve(config: any) {
-  // 处理不需要token的请求
   if (config.noNeedToken) {
     return config
   }
 
   const token = useAuthStore().token
   if (!token) {
-    return Promise.reject({ code: 401, message: '登录已过期，请重新登录！' })
+    const error: RequestError = new Error('登录已过期，请重新登录！')
+    error.code = 401
+    return Promise.reject(error)
   }
 
   /**
@@ -37,7 +38,9 @@ export function resResolve(response: any) {
 
     /** 需要错误提醒 */
     !config.noNeedTip && window.$message?.error(message)
-    return Promise.reject({ status, message, error: data || response })
+    const error: RequestError = new Error(message)
+    error.code = code
+    return Promise.reject(error)
   }
   return Promise.resolve(data)
 }
@@ -48,12 +51,16 @@ export function resReject(error: any) {
     /** 根据code处理对应的操作，并返回处理后的message */
     const message = resolveResError(code, error.message)
     window.$message?.error(message)
-    return Promise.reject({ code, message, error })
+    const customError: RequestError = new Error(message)
+    customError.code = code
+    return Promise.reject(customError)
   }
   const { data, status, config } = error.response
   const code = data?.code ?? status
   const message = resolveResError(code, data?.message ?? error.message)
   /** 需要错误提醒 */
   !config?.noNeedTip && window.$message?.error(message)
-  return Promise.reject({ code, message, error: error.response?.data || error.response })
+  const customError: RequestError = new Error(message)
+  customError.code = code
+  return Promise.reject(customError)
 }

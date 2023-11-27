@@ -18,6 +18,14 @@ export const baseRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    name: 'register',
+    path: '/register',
+    component: () => import('@/views/system/register/index.vue'),
+    meta: {
+      title: '注册',
+    },
+  },
+  {
     path: '/404',
     name: '404',
     component: () => import('@/views/exception/404/index.vue'),

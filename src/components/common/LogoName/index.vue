@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { NButton } from 'naive-ui'
+import { toRefs } from 'vue'
 import { IconLogo } from '@/components/icons'
 
-const name = '一粟科研'
+// const name = '一粟科研'
+const props = defineProps<{
+  name: string
+}>()
+
+const { name } = toRefs(props)
 </script>
 
 <template>
