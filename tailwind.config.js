@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}', 'node_modules/preline/dist/*.js'],
   darkMode: 'class',
   theme: {
     fontSize: {
@@ -33,7 +33,10 @@ module.exports = {
         7.5: '0.075',
         15: '0.15',
       },
+      scale: {
+        175: '1.75',
+      },
     },
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [require('@tailwindcss/typography'), require('preline/plugin')],
 }

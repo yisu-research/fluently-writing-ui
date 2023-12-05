@@ -5,6 +5,7 @@ import { setupAssets } from './plugins'
 import { setupStore } from './store'
 import { setupRouter } from '@/router'
 import { setupTheme } from '@/hooks/useTheme'
+import 'preline/preline'
 
 async function bootstrap() {
   const app = createApp(App)

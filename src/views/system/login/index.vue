@@ -1,17 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { FormInst } from 'naive-ui'
-import { NButton, NForm, NFormItemRow, NInput, NModal, NTabPane, NTabs, useMessage } from 'naive-ui'
+import { NButton, NForm, NFormItemRow, NInput, NTabPane, NTabs, useMessage } from 'naive-ui'
 import api from '@/api'
 import { isEmail, isPassword } from '@/utils/is'
 import YisuImg from '@/assets/svg/yisu.svg'
-import { LogoName, SvgIcon } from '@/components/common'
-import NatureSvg from '@/assets/svg/nature.svg'
-import { useAuthStore } from '@/store'
-import QrCodeImg from '@/assets/images/qrcode.jpg'
+import { LogoName } from '@/components/common'
+import NatureSvg from '@/assets/svg/rocket-launch-flatline-5b370.svg'
+import { useAppStore, useAuthStore } from '@/store'
+import ForgetPassword from '@/views/system/forget-password/index.vue'
 
 const router = useRouter()
+
+// app
+const appStore = useAppStore()
 
 const authStore = useAuthStore()
 
@@ -28,6 +31,9 @@ const isContact = ref(false)
 const formPasswordRef = ref<FormInst | null>(null)
 
 const formCodeRef = ref<FormInst | null>(null)
+
+// isDark
+const isDark = computed(() => appStore.isDarkTheme)
 
 const formPassword = ref({
   username: '',
@@ -169,6 +175,10 @@ const switchToEmail = () => {
   tabName.value = 'loginByCode'
 }
 
+const closeModal = () => {
+  showForgetModal.value = false
+}
+
 const handleLogin = () => {
   if (tabName.value === 'loginByPassword') {
     onLoginWithPassword()
@@ -179,18 +189,68 @@ const handleLogin = () => {
 </script>
 
 <template>
-  <div></div>
-  <div class="bg-slate-100 w-full overflow-hidden h-[100dvh]">
-    <div class="flex flex-col items-center justify-center h-full max-w-md px-4 mx-auto lg:max-w-5xl sm:px-6 lg:px-8">
+  <div class="relative bg-slate-100 w-full overflow-hidden h-[100dvh] isolate dark:bg-slate-900">
+    <svg
+      class="absolute inset-0 -z-10 h-full w-full stroke-gray-200 dark:stroke-white/10 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
+      aria-hidden="true"
+    >
+      <defs>
+        <pattern
+          id="83fd4e5a-9d52-42fc-97b6-718e5d7ee527"
+          width="200"
+          height="200"
+          x="50%"
+          y="-1"
+          patternUnits="userSpaceOnUse"
+        >
+          <path d="M100 200V.5M.5 .5H200" fill="none" />
+        </pattern>
+      </defs>
+      <svg x="50%" y="-1" class="overflow-visible fill-gray-50 dark:fill-slate-800/20">
+        <path
+          d="M-100.5 0h201v201h-201Z M699.5 0h201v201h-201Z M499.5 400h201v201h-201Z M-300.5 600h201v201h-201Z"
+          stroke-width="0"
+        />
+      </svg>
+      <rect width="100%" height="100%" stroke-width="0" fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)" />
+    </svg>
+    <div class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-2xl sm:top-[-20rem]">
+      <svg
+        class="relative left-[calc(50%-11rem)] -z-10 h-[21.1875rem] max-w-none -translate-x-1/3 rotate-[20deg] sm:left-[calc(50%-20rem)] sm:h-[62.375rem]"
+        viewBox="0 0 1155 678"
+      >
+        <path
+          fill="url(#45de2b6b-92d5-4d68-a6a0-9b9b2abad533)"
+          fill-opacity=".3"
+          d="M317.219 518.975L203.852 678 0 438.341l317.219 80.634 204.172-286.402c1.307 132.337 45.083 346.658 209.733 145.248C936.936 126.058 882.053-94.234 1031.02 41.331c119.18 108.451 130.68 295.337 121.53 375.223L855 299l21.173 362.054-558.954-142.079z"
+        />
+        <defs>
+          <linearGradient
+            id="45de2b6b-92d5-4d68-a6a0-9b9b2abad533"
+            x1="1155.49"
+            x2="-78.208"
+            y1=".177"
+            y2="474.645"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop :stop-color="isDark ? '#05EF99' : '#2DD4BF'" />
+            <stop offset="1" :stop-color="isDark ? '#993FF8' : '#CDF973'" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div
+      class="flex flex-col items-center justify-center h-full max-w-md px-4 mx-auto lg:max-w-5xl sm:px-6 lg:px-8 backdrop-filter backdrop-blur"
+    >
       <div
-        class="flex flex-col justify-between w-full h-full my-4 overflow-hidden bg-white shadow-sm rounded-2xl sm:h-auto ring-slate-200 ring-1"
+        class="flex flex-col justify-between w-full h-full my-4 overflow-hidden shadow-md bg-white/60 rounded-2xl sm:h-auto dark:bg-white/10"
       >
         <div class="px-4 sm:p-6 sm:flex sm:justify-center">
           <!-- 插画 -->
           <div
-            class="hidden w-full py-8 sm:rounded-xl ring-13 ring-white/10 bg-teal-50/60 lg:flex lg:flex-1 lg:justify-center"
+            class="hidden w-full py-8 bg-teal-400/10 dark:bg-transparent sm:rounded-xl ring-13 ring-white/10 lg:flex lg:flex-1 lg:justify-center"
           >
-            <img :src="NatureSvg" alt="Product screenshot" class="mx-10 w-60" />
+            <img :src="NatureSvg" alt="Product screenshot" class="w-96" />
           </div>
 
           <!-- 登录表单 -->
@@ -256,69 +316,18 @@ const handleLogin = () => {
         </div>
 
         <!-- 忘记密码 -->
-        <NModal v-model:show="showForgetModal">
-          <div class="max-w-3xl min-w-full mx-4 sm:min-w-0 sm:w-96 sm:mx-0">
-            <!-- 忘记密码-引导提示 -->
-            <div v-if="!isContact" class="p-4 mx-4 rounded-xl bg-teal-50 sm:mx-0">
-              <div class="flex items-start">
-                <div class="flex-shrink-0 mr-2">
-                  <SvgIcon icon="solar:shield-warning-broken" class="w-5 h-5 text-teal-400" />
-                </div>
-                <div class="flex flex-col items-start text-sm text-teal-700 item md:flex md:justify-between">
-                  <p>若账号已绑定邮箱，请通过邮箱验证码登录。</p>
-                  <p>登录成功后，请及时更改密码。</p>
-                  <NButton text @click="switchToEmail">
-                    <p class="mt-3 text-sm font-medium text-teal-700 whitespace-nowrap hover:text-teal-600">
-                      邮箱验证码登录
-                      <span aria-hidden="true"> &rarr;</span>
-                    </p>
-                  </NButton>
-                  <NButton text @click="isContact = true">
-                    <p class="mt-3 text-sm font-medium text-teal-700 whitespace-nowrap hover:text-teal-600">
-                      <span>没有绑定邮箱？去联系客服</span>
-                      <span aria-hidden="true"> &rarr;</span>
-                    </p>
-                  </NButton>
-                </div>
-              </div>
-            </div>
-
-            <div v-else class="p-4 mx-4 rounded-xl bg-teal-50 sm:mx-0">
-              <div class="flex flex-col justify-center text-sm text-teal-700 md:flex md:justify-between">
-                <div class="flex items-center justify-start gap-2 text-lg font-medium">
-                  <SvgIcon icon="solar:call-chat-broken" />
-                  <p>请您联系客服找回密码</p>
-                </div>
-                <div class="flex flex-col items-center justify-center">
-                  <img
-                    :src="QrCodeImg"
-                    alt="Product screenshot"
-                    class="p-1 my-8 rounded-xl ring-8 ring-teal-500/50"
-                    width="200"
-                    height="200"
-                  />
-                </div>
-                <div class="flex justify-end">
-                  <NButton text @click="switchToEmail">
-                    <p class="mt-3 text-sm font-medium text-teal-700 whitespace-nowrap hover:text-teal-600">
-                      <span>已绑定邮箱？去登录</span>
-                      <span aria-hidden="true"> &rarr;</span>
-                    </p>
-                  </NButton>
-                </div>
-              </div>
-            </div>
-          </div>
-        </NModal>
+        <ForgetPassword :show="showForgetModal" @switch-to-email="switchToEmail" @close-modal="closeModal" />
 
         <!-- 封底 -->
         <div class="px-4 sm:px-6">
-          <div class="py-4 border-t border-slate-900/5 lg:flex lg:justify-between lg:items-center">
-            <div class="flex flex-wrap items-center justify-center text-lg text-gray-800">
+          <div
+            class="pt-4 pb-6 border-t dark:border-teal-600/50 border-slate-900/5 lg:flex lg:justify-between lg:items-center"
+          >
+            <div class="flex flex-wrap items-center justify-center text-lg text-gray-800 dark:text-slate-200">
               <img :src="YisuImg" width="28" class="mr-2" />
               <p class="font-bold">一粟科研</p>
             </div>
-            <p class="mt-4 text-sm leading-6 text-center lg:mt-0 text-slate-500">
+            <p class="mt-4 text-sm leading-6 text-center lg:mt-0 text-slate-500 dark:text-slate-400">
               © 2023 一粟科研 Inc. All rights reserved.
             </p>
           </div>
