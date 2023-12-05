@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import type { FormInst } from 'naive-ui'
 import { NButton, NForm, NFormItemRow, NInput, useMessage } from 'naive-ui'
 import api from '@/api'
-import { isEmail, isPassword } from '@/utils/is'
+import { isPassword } from '@/utils/is'
 import YisuImg from '@/assets/svg/yisu.svg'
 import { LogoName } from '@/components/common'
 import NatureSvg from '@/assets/svg/rocket-boy-flatline.svg'
@@ -19,28 +19,21 @@ const message = useMessage()
 
 const loadLogin = ref(false)
 
-const formUserRef = ref<FormInst | null>(null)
-const formEmailRef = ref<FormInst | null>(null)
+const formSignupRef = ref<FormInst | null>(null)
 
 // isDark
 const isDark = computed(() => appStore.isDarkTheme)
 
-const formUser = ref({
+const formSignup = ref({
   username: '',
   password: '',
-  login_type: 'username',
+  invite_code: null,
 })
 
-const formEmail = ref({
-  email: '',
-  code: '',
-  login_type: 'email_code',
-})
-
-const rulesForUser = {
+const rules = {
   username: {
     required: true,
-    message: '请输入用户名或邮箱',
+    message: '请输入用户名',
     trigger: 'blur',
   },
   password: {
@@ -57,38 +50,18 @@ const rulesForUser = {
   },
 }
 
-const rulesForEmail = {
-  email: {
-    required: true,
-    validator(rule: any, value: string) {
-      if (!value) {
-        return new Error('请填写邮箱')
-      } else if (!isEmail(value)) {
-        return new Error('请填写正确的邮箱地址')
-      }
-      return true
-    },
-    trigger: 'blur',
-  },
-  code: {
-    required: true,
-    message: '请输入验证码',
-    trigger: 'blur',
-  },
-}
-
-const onSignupForEmail = async () => {
-  formEmailRef.value?.validate(async (err) => {
+const onSignup = async () => {
+  formSignupRef.value?.validate(async (err) => {
     if (!err) {
       loadLogin.value = true
       try {
-        const res: any = await api.loginApi(formEmail.value)
+        const res: any = await api.signupApi(formSignup.value)
         authStore.setToken(res.token)
         router.push('/chat')
-        message.success('登录成功')
+        message.success('注册成功')
       } catch (_err: any) {
         console.error(_err)
-        message.error(`登录失败，${_err.error.message}`)
+        message.error(`注册失败，${_err.error.message}`)
       } finally {
         setTimeout(() => {
           loadLogin.value = false
@@ -96,7 +69,7 @@ const onSignupForEmail = async () => {
       }
     } else {
       console.error(err)
-      message.error('请按要求填写账号信息')
+      message.error('请按要求填写注册信息')
     }
   })
 }
@@ -175,15 +148,15 @@ const onSignupForEmail = async () => {
 
             <p class="my-8 text-lg font-medium text-teal-500">注册账号</p>
             <div class="w-full">
-              <NForm ref="formUserRef" :model="formUser" :rules="rulesForUser" size="large">
+              <NForm ref="formSignupRef" :model="formSignup" :rules="rules" size="large">
                 <NFormItemRow label="用户名" path="username">
-                  <NInput v-model:value="formUser.username" placeholder="请输入用户名或邮箱" />
+                  <NInput v-model:value="formSignup.username" placeholder="请输入用户" />
                 </NFormItemRow>
                 <NFormItemRow label="密码" path="password">
-                  <NInput v-model:value="formUser.password" placeholder="请输入密码" type="password" />
+                  <NInput v-model:value="formSignup.password" placeholder="请输入密码" type="password" />
                 </NFormItemRow>
                 <NFormItemRow label="邀请码 (选填)" path="invitationCode">
-                  <NInput v-model:value="formUser.password" placeholder="请输入邀请码（可选）" />
+                  <NInput v-model:value="formSignup.invite_code" placeholder="请输入邀请码（可选）" />
                 </NFormItemRow>
               </NForm>
               <NButton
@@ -194,7 +167,7 @@ const onSignupForEmail = async () => {
                 class="mt-8"
                 :loading="loadLogin"
                 size="large"
-                @click.prevent="onSignupForEmail"
+                @click.prevent="onSignup"
               >
                 注册
               </NButton>
@@ -207,7 +180,9 @@ const onSignupForEmail = async () => {
 
         <!-- 封底 -->
         <div class="px-4 sm:px-6">
-          <div class="py-4 border-t border-slate-900/5 lg:flex lg:justify-between lg:items-center">
+          <div
+            class="py-4 border-t dark:border-slate-400/20 border-slate-900/5 lg:flex lg:justify-between lg:items-center"
+          >
             <div class="flex flex-wrap items-center justify-center text-lg text-gray-800 dark:text-slate-200">
               <img :src="YisuImg" width="28" class="mr-2" />
               <p class="font-bold">一粟科研</p>
