@@ -96,9 +96,9 @@ const onLoginWithPassword = async () => {
         authStore.setToken(res.token)
         router.push('/chat')
         message.success('登录成功')
-      } catch (_err: any) {
-        console.error(_err)
-        message.error(`登录失败，${_err.error.message}`)
+      } catch (err: any) {
+        console.error(err)
+        message.error(`登录失败，${err.message}`)
       } finally {
         setTimeout(() => {
           loadLogin.value = false
@@ -122,7 +122,7 @@ const onLoginWithCode = async () => {
         message.success('登录成功')
       } catch (_err: any) {
         console.error(_err)
-        message.error(`登录失败，${_err.error.message}`)
+        message.error(`登录失败，${_err.message}`)
       } finally {
         setTimeout(() => {
           loadLogin.value = false
@@ -159,7 +159,7 @@ const handleSendEmailCode = async (email: string) => {
     }, 1000)
   } catch (err: any) {
     console.error(err)
-    message.error(`验证码发送失败，${err.error.message}`)
+    message.error(`验证码发送失败，${err.message}`)
   } finally {
     loadEmailCode.value = false
   }

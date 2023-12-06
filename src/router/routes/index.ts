@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
+import Layout from '@/layout/index.vue'
 
 export const baseRoutes: RouteRecordRaw[] = [
   {
@@ -26,11 +27,26 @@ export const baseRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    name: 'chat',
+    path: '/chat',
+    component: Layout,
+    redirect: '/chat/index',
+    children: [
+      {
+        name: 'chatIndex',
+        path: 'index',
+        component: () => import('@/views/chat/index.vue'),
+        meta: {
+          title: '聊天',
+        },
+      },
+    ],
+  },
+  {
     path: '/404',
     name: '404',
     component: () => import('@/views/exception/404/index.vue'),
   },
-
   {
     path: '/:pathMatch(.*)*',
     name: 'notFound',

@@ -61,7 +61,7 @@ const onSignup = async () => {
         message.success('注册成功')
       } catch (_err: any) {
         console.error(_err)
-        message.error(`注册失败，${_err.error.message}`)
+        message.error(`注册失败，${_err.message}`)
       } finally {
         setTimeout(() => {
           loadLogin.value = false
