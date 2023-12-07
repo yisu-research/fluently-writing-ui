@@ -1,16 +1,11 @@
 <script setup lang="ts">
-import {
-  CalendarIcon,
-  ChartPieIcon,
-  Cog6ToothIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
-  HomeIcon,
-  UsersIcon,
-  XMarkIcon,
-} from '@heroicons/vue/24/outline'
-
+import { nextTick, onMounted, ref } from 'vue'
+import { CalendarIcon, Cog6ToothIcon, HomeIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import ButtonPersonalCenter from '@/layout/button-personal-center/index.vue'
+import ButtonNewChat from '@/layout/button-new-chat/index.vue'
+import { IconLogo } from '@/components/icons'
+import { SvgIcon } from '@/components/common'
 
 defineProps({
   sidebarOpen: Boolean,
@@ -18,18 +13,61 @@ defineProps({
 
 const emit = defineEmits(['update:sidebarOpen'])
 
+const navigation = ref([
+  { name: 'Dashboard-1', href: '#', icon: HomeIcon, current: true },
+  { name: 'Dashboard-2', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-3', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-4', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-5', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-6', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-7', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-8', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-9', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-10', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-11', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-12', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-13', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-14', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-15', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-16', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-17', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-18', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-19', href: '#', icon: HomeIcon, current: false },
+  { name: 'Dashboard-20', href: '#', icon: HomeIcon, current: false },
+])
+
+const loadBox = ref<HTMLElement>()
+
 function toggleSidebar() {
   emit('update:sidebarOpen', false)
 }
 
-const navigation = [
-  { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-  { name: 'Team', href: '#', icon: UsersIcon, current: false },
-  { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-  { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-  { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
-  { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
-]
+const page = ref(1)
+
+onMounted(() => {
+  // api.getChatListApi({ state: 'active', page: 1, limit: 3 }).then((res) => {
+  //   console.log(res)
+  // })
+  init()
+})
+
+async function init() {
+  if (loadBox.value) {
+    await nextTick(() => {
+      const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+        const ratio = entries[0].intersectionRatio
+        if (ratio > 0) {
+          page.value++
+          setTimeout(() => {
+            navigation.value.push({ name: `Calendar-${page.value}`, href: '#', icon: CalendarIcon, current: false })
+          }, 2000)
+        }
+      })
+      observer.observe(loadBox.value)
+    })
+  }
+}
+
 const teams = [
   { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
   { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
@@ -81,12 +119,13 @@ const teams = [
             </TransitionChild>
             <!-- Sidebar component, swap this element with another sidebar if you like -->
             <div class="flex flex-col px-6 pb-4 overflow-y-auto bg-white grow gap-y-5">
-              <div class="flex items-center h-16 shrink-0">
-                <img
-                  class="w-auto h-8"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                  alt="Your Company"
-                />
+              <div class="flex items-center h-16 gap-2 shrink-0">
+                <IconLogo class="w-auto h-8 text-teal-400 sm:h-8 sm:w-8" />
+                <p
+                  class="text-lg font-black text-transparent sm:text-xl bg-gradient-to-r from-teal-500 to-emerald-300 bg-clip-text"
+                >
+                  一粟创作助手
+                </p>
               </div>
               <nav class="flex flex-col flex-1">
                 <ul role="list" class="flex flex-col flex-1 gap-y-7">
@@ -98,16 +137,16 @@ const teams = [
                           class="flex p-2 text-sm font-semibold leading-6 rounded-md group gap-x-3"
                           :class="[
                             item.current
-                              ? 'bg-gray-50 text-indigo-600'
-                              : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
+                              ? 'bg-gray-50 text-teal-600'
+                              : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50',
                           ]"
                         >
-                          <component
+                          <!-- <component
                             :is="item.icon"
-                            class="w-6 h-6 shrink-0"
-                            :class="[item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600']"
+                            class="w-4 h-4 shrink-0"
+                            :class="[item.current ? 'text-teal-600' : 'text-gray-400 group-hover:text-teal-600']"
                             aria-hidden="true"
-                          />
+                          /> -->
                           {{ item.name }}
                         </a>
                       </li>
@@ -122,16 +161,16 @@ const teams = [
                           class="flex p-2 text-sm font-semibold leading-6 rounded-md group gap-x-3"
                           :class="[
                             team.current
-                              ? 'bg-gray-50 text-indigo-600'
-                              : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
+                              ? 'bg-gray-50 text-teal-600'
+                              : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50',
                           ]"
                         >
                           <span
                             class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white"
                             :class="[
                               team.current
-                                ? 'text-indigo-600 border-indigo-600'
-                                : 'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
+                                ? 'text-teal-600 border-teal-600'
+                                : 'text-gray-400 border-gray-200 group-hover:border-teal-600 group-hover:text-teal-600',
                             ]"
                             >{{ team.initial }}</span
                           >
@@ -143,10 +182,10 @@ const teams = [
                   <li class="mt-auto">
                     <a
                       href="#"
-                      class="flex p-2 -mx-2 text-sm font-semibold leading-6 text-gray-700 rounded-md group gap-x-3 hover:bg-gray-50 hover:text-indigo-600"
+                      class="flex p-2 -mx-2 text-sm font-semibold leading-6 text-gray-700 rounded-md group gap-x-3 hover:bg-gray-50 hover:text-teal-600"
                     >
                       <Cog6ToothIcon
-                        class="w-6 h-6 text-gray-400 shrink-0 group-hover:text-indigo-600"
+                        class="w-6 h-6 text-gray-400 shrink-0 group-hover:text-teal-600"
                         aria-hidden="true"
                       />
                       Settings
@@ -164,74 +203,45 @@ const teams = [
   <!-- Static sidebar for desktop -->
   <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
     <!-- Sidebar component, swap this element with another sidebar if you like -->
-    <div class="flex flex-col px-6 pb-4 overflow-y-auto bg-white border-r border-gray-200 grow gap-y-5">
-      <div class="flex items-center h-16 shrink-0">
-        <img
-          class="w-auto h-8"
-          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-          alt="Your Company"
-        />
+    <div class="flex flex-col px-6 pb-4 bg-white border-r border-gray-200 grow gap-y-2">
+      <div class="flex items-center h-16 gap-2 -mx-1 shrink-0">
+        <IconLogo class="w-auto h-8 text-teal-600 sm:h-8 sm:w-8" />
+        <p
+          class="text-lg font-black text-transparent sm:text-xl bg-gradient-to-r from-teal-600 to-emerald-400 bg-clip-text"
+        >
+          一粟写作助手
+        </p>
       </div>
       <nav class="flex flex-col flex-1">
-        <ul role="list" class="flex flex-col flex-1 gap-y-7">
-          <li>
-            <ul role="list" class="-mx-2 space-y-1">
+        <ButtonNewChat />
+
+        <ul role="list" class="flex flex-col flex-1 mt-4 -mx-2">
+          <li class="overflow-y-auto h-[calc(100vh-15.5rem)]">
+            <ul role="list" class="space-y-1">
               <li v-for="item in navigation" :key="item.name">
                 <a
                   :href="item.href"
                   class="flex p-2 text-sm font-semibold leading-6 rounded-md group gap-x-3"
                   :class="[
-                    item.current
-                      ? 'bg-gray-50 text-indigo-600'
-                      : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
+                    item.current ? 'bg-gray-50 text-teal-600' : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50',
                   ]"
                 >
                   <component
                     :is="item.icon"
-                    class="w-6 h-6 shrink-0"
-                    :class="[item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600']"
+                    class="w-5 h-5 shrink-0"
+                    :class="[item.current ? 'text-teal-600' : 'text-gray-400 group-hover:text-teal-600']"
                     aria-hidden="true"
                   />
                   {{ item.name }}
                 </a>
               </li>
-            </ul>
-          </li>
-          <li>
-            <div class="text-xs font-semibold leading-6 text-gray-400">Your teams</div>
-            <ul role="list" class="mt-2 -mx-2 space-y-1">
-              <li v-for="team in teams" :key="team.name">
-                <a
-                  :href="team.href"
-                  class="flex p-2 text-sm font-semibold leading-6 rounded-md group gap-x-3"
-                  :class="[
-                    team.current
-                      ? 'bg-gray-50 text-indigo-600'
-                      : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
-                  ]"
-                >
-                  <span
-                    class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white"
-                    :class="[
-                      team.current
-                        ? 'text-indigo-600 border-indigo-600'
-                        : 'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
-                    ]"
-                    >{{ team.initial }}</span
-                  >
-                  <span class="truncate">{{ team.name }}</span>
-                </a>
+              <li ref="loadBox" class="flex items-center justify-center w-full">
+                <SvgIcon icon="svg-spinners:bars-scale-fade" class="w-5 h-5 text-teal-500 shrink-0" />
               </li>
             </ul>
           </li>
-          <li class="mt-auto">
-            <a
-              href="#"
-              class="flex p-2 -mx-2 text-sm font-semibold leading-6 text-gray-700 rounded-md group gap-x-3 hover:bg-gray-50 hover:text-indigo-600"
-            >
-              <Cog6ToothIcon class="w-6 h-6 text-gray-400 shrink-0 group-hover:text-indigo-600" aria-hidden="true" />
-              Settings
-            </a>
+          <li class="flex items-center mt-auto">
+            <ButtonPersonalCenter />
           </li>
         </ul>
       </nav>
