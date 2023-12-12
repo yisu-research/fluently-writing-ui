@@ -8,7 +8,7 @@ import { SvgIcon } from '@/components/common'
     <Menu as="div" class="relative inline-block w-full text-left">
       <div class="flex">
         <MenuButton
-          class="inline-flex items-center flex-1 w-full gap-2 p-4 text-sm font-medium text-teal-600 rounded-lg shadow-sm bg-slate-50 ring-1 ring-slate-200 hover:bg-slate-50/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+          class="inline-flex items-center flex-1 w-full gap-2 p-4 text-sm font-medium text-teal-600 rounded-lg shadow-sm dark:shadow-slate-500 bg-slate-50 dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-600 hover:bg-slate-50/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
         >
           <img
             class="flex-shrink-0 inline-block w-12 h-12 rounded-full"
@@ -31,17 +31,17 @@ import { SvgIcon } from '@/components/common'
         leave-to-class="transform scale-95 opacity-0"
       >
         <MenuItems
-          class="absolute right-0 w-64 origin-top-right -translate-y-full bg-white border divide-y divide-gray-100 rounded-lg shadow-sm -top-2 focus:outline-none"
+          class="absolute right-0 origin-top-right -translate-y-full border divide-y divide-gray-100 rounded-lg shadow-sm dark:divide-gray-600 dark:border-slate-800 bg-white/10 dark:bg-slate-200/10 backdrop-blur-md w-72 lg:w-64 -top-2 focus:outline-none"
         >
           <div class="px-1 py-1">
             <MenuItem v-slot="{ active }">
               <button
                 class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
-                :class="[active ? 'bg-slate-100 text-teal-600' : 'text-gray-900']"
+                :class="[active ? 'bg-slate-600 text-teal-600' : 'text-gray-900 dark:text-white']"
               >
                 <SvgIcon
                   icon="ph:user-circle"
-                  :class="[active ? ' text-teal-600' : 'text-slate-500']"
+                  :class="[active ? ' text-teal-600' : 'text-slate-500 dark:text-white']"
                   class="w-5 h-5 mr-2"
                   aria-hidden="true"
                 />
@@ -51,11 +51,11 @@ import { SvgIcon } from '@/components/common'
             <MenuItem v-slot="{ active }">
               <button
                 class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
-                :class="[active ? 'bg-slate-100 text-teal-600' : 'text-gray-900']"
+                :class="[active ? 'bg-slate-600 text-teal-600' : 'text-gray-900 dark:text-white']"
               >
                 <SvgIcon
                   icon="ph:storefront"
-                  :class="[active ? ' text-teal-600' : 'text-slate-500']"
+                  :class="[active ? ' text-teal-600' : 'text-slate-500 dark:text-white']"
                   class="w-5 h-5 mr-2"
                   aria-hidden="true"
                 />
@@ -67,11 +67,11 @@ import { SvgIcon } from '@/components/common'
             <MenuItem v-slot="{ active }">
               <button
                 class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
-                :class="[active ? 'bg-slate-100 text-teal-600' : 'text-gray-900']"
+                :class="[active ? 'bg-slate-600 text-teal-600' : 'text-gray-900 dark:text-white']"
               >
                 <SvgIcon
                   icon="ph:stack"
-                  :class="[active ? ' text-teal-600' : 'text-slate-500']"
+                  :class="[active ? ' text-teal-600' : 'text-slate-500 dark:text-white']"
                   class="w-5 h-5 mr-2"
                   aria-hidden="true"
                 />
@@ -81,11 +81,11 @@ import { SvgIcon } from '@/components/common'
             <MenuItem v-slot="{ active }">
               <button
                 class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
-                :class="[active ? 'bg-slate-100 text-teal-600' : 'text-gray-900']"
+                :class="[active ? 'bg-slate-600 text-teal-600' : 'text-gray-900 dark:text-white']"
               >
                 <SvgIcon
                   icon="ph:handshake"
-                  :class="[active ? ' text-teal-600' : 'text-slate-500']"
+                  :class="[active ? ' text-teal-600' : 'text-slate-500 dark:text-white']"
                   class="w-5 h-5 mr-2"
                   aria-hidden="true"
                 />
@@ -98,11 +98,11 @@ import { SvgIcon } from '@/components/common'
             <MenuItem v-slot="{ active }">
               <button
                 class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
-                :class="[active ? 'bg-slate-100 text-teal-600' : 'text-gray-900']"
+                :class="[active ? 'bg-slate-600 text-teal-600' : 'text-gray-900 dark:text-white']"
               >
                 <SvgIcon
                   icon="ph:sign-out"
-                  :class="[active ? ' text-teal-600' : 'text-slate-500']"
+                  :class="[active ? ' text-teal-600' : 'text-slate-500 dark:text-white']"
                   class="w-5 h-5 mr-2"
                   aria-hidden="true"
                 />

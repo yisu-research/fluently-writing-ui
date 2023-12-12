@@ -8,12 +8,9 @@ import { SvgIcon } from '@/components/common'
     <Menu as="div" class="relative inline-block w-full text-left">
       <div class="flex">
         <MenuButton
-          class="inline-flex items-center flex-1 w-full gap-2 p-2 -mx-2 text-sm font-medium rounded-lg shadow-sm hover:text-teal-600 group text-slate-800 bg-slate-50 hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+          class="inline-flex items-center justify-center flex-1 w-full gap-2 p-2 -mx-2 font-bold text-teal-600 rounded-lg shadow-sm bg-teal-600/20 dark:bg-teal-500/20 text-[1rem] hover:text-teal-600 dark:hover:text-teal-600 group hover:bg-teal-600/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
         >
-          <SvgIcon
-            icon="solar:sticker-smile-square-linear"
-            class="w-6 h-6 text-gray-400 shrink-0 group-hover:text-teal-600"
-          />
+          <SvgIcon icon="solar:sticker-smile-square-linear" class="w-6 h-6 text-teal-600 shrink-0" />
           <span>创建新对话</span>
         </MenuButton>
       </div>
@@ -27,17 +24,17 @@ import { SvgIcon } from '@/components/common'
         leave-to-class="transform scale-95 opacity-0"
       >
         <MenuItems
-          class="absolute right-0 w-64 mt-2 -mx-2 origin-top-right divide-y divide-gray-100 rounded-lg shadow-md bg-slate-400/10 backdrop-blur-md focus:outline-none"
+          class="absolute right-0 mt-2 -mx-2 origin-top-right border divide-y divide-gray-100 rounded-lg shadow-lg border-teal-700/10 shadow-teal-800/10 dark:shadow-teal-100/10 lg:w-64 w-72 bg-teal-100/10 dark:bg-teal-100/10 backdrop-blur-lg focus:outline-none"
         >
           <div class="px-1 py-1">
             <MenuItem v-slot="{ active }">
               <button
                 class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
-                :class="[active ? 'bg-white/60 text-teal-600' : 'text-gray-900']"
+                :class="[active ? 'text-teal-600' : 'text-gray-900 dark:text-slate-50']"
               >
                 <SvgIcon
                   icon="solar:chat-line-outline"
-                  :class="[active ? ' text-teal-600' : 'text-slate-500']"
+                  :class="[active ? ' text-teal-600' : 'text-slate-500 dark:text-slate-50']"
                   class="w-5 h-5 mr-2"
                   aria-hidden="true"
                 />
@@ -47,11 +44,11 @@ import { SvgIcon } from '@/components/common'
             <MenuItem v-slot="{ active }">
               <button
                 class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
-                :class="[active ? 'bg-white/60 text-teal-600' : 'text-gray-900']"
+                :class="[active ? 'bg-white/60 text-teal-600' : 'text-gray-900 dark:text-slate-50']"
               >
                 <SvgIcon
                   icon="solar:chat-round-call-outline"
-                  :class="[active ? ' text-teal-600' : 'text-slate-500']"
+                  :class="[active ? ' text-teal-600' : 'text-slate-500 dark:text-slate-50']"
                   class="w-5 h-5 mr-2"
                   aria-hidden="true"
                 />
@@ -61,11 +58,11 @@ import { SvgIcon } from '@/components/common'
             <MenuItem v-slot="{ active }">
               <button
                 class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
-                :class="[active ? 'bg-white/60 text-teal-600' : 'text-gray-900']"
+                :class="[active ? 'bg-white/60 text-teal-600' : 'text-gray-900 dark:text-slate-50']"
               >
                 <SvgIcon
-                  icon="solar:gallery-outline"
-                  :class="[active ? ' text-teal-600' : 'text-slate-500']"
+                  icon="solar:eye-scan-linear"
+                  :class="[active ? ' text-teal-600' : 'text-slate-500 dark:text-slate-50']"
                   class="w-5 h-5 mr-2"
                   aria-hidden="true"
                 />

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import type { UserState } from './helper'
+import api from '@/api'
 
 export const useUserStore = defineStore('user-store', {
   state: (): UserState => ({
@@ -19,12 +20,17 @@ export const useUserStore = defineStore('user-store', {
       balance: undefined,
     },
   }),
-  getters: {
-    userId(): number | undefined {
-      return this.id
-    },
-  },
+  getters: {},
   actions: {
-    async logout() {},
+    async fetchProfile() {
+      try {
+        const res = await api.getProfileApi();
+        console.log(res);
+
+        return Promise.resolve(res.data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
   },
 })

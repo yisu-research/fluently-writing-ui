@@ -10,7 +10,7 @@ interface ProxyConfig {
 const proxyConfigMappings: Record<string, ProxyConfig> = {
   dev: {
     prefix: '/api',
-    target: 'https://ai.yisukeyan.com',
+    target: 'http://8.142.167.132:3001',
   },
   test: {
     prefix: '/api',

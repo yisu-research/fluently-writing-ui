@@ -1,17 +1,35 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue'
-import { CalendarIcon, Cog6ToothIcon, HomeIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { computed, nextTick, onMounted, ref, toRefs } from 'vue'
+import { CalendarIcon, HomeIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { useWindowSize, watchDebounced } from '@vueuse/core'
 import ButtonPersonalCenter from '@/layout/button-personal-center/index.vue'
 import ButtonNewChat from '@/layout/button-new-chat/index.vue'
 import { IconLogo } from '@/components/icons'
 import { SvgIcon } from '@/components/common'
-
-defineProps({
+const props = defineProps({
   sidebarOpen: Boolean,
 })
 
 const emit = defineEmits(['update:sidebarOpen'])
+
+const { height } = useWindowSize()
+
+const heightClass = computed(() => {
+  if (height.value > 800) {
+    return 'h-[36rem]'
+  } else if (height.value > 720) {
+    return 'h-[30rem]'
+  } else if (height.value > 640) {
+    return 'h-[24rem]'
+  } else if (height.value > 560) {
+    return 'h-[20rem]'
+  } else {
+    return 'h-[18rem]'
+  }
+})
+
+const { sidebarOpen } = toRefs(props)
 
 const navigation = ref([
   { name: 'Dashboard-1', href: '#', icon: HomeIcon, current: true },
@@ -38,6 +56,8 @@ const navigation = ref([
 
 const loadBox = ref<HTMLElement>()
 
+const loadBoxMobile = ref<HTMLElement>()
+
 function toggleSidebar() {
   emit('update:sidebarOpen', false)
 }
@@ -63,16 +83,31 @@ async function init() {
           }, 2000)
         }
       })
-      observer.observe(loadBox.value)
+      observer.observe(loadBox.value!)
     })
   }
 }
 
-const teams = [
-  { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
-  { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
-  { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
-]
+watchDebounced(
+  () => sidebarOpen.value,
+  async (val) => {
+    if (loadBoxMobile.value && val) {
+      await nextTick(() => {
+        const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+          const ratio = entries[0].intersectionRatio
+          if (ratio > 0) {
+            page.value++
+            setTimeout(() => {
+              navigation.value.push({ name: `Calendar-${page.value}`, href: '#', icon: CalendarIcon, current: false })
+            }, 2000)
+          }
+        })
+        observer.observe(loadBoxMobile.value!)
+      })
+    }
+  },
+  { debounce: 300, maxWait: 1000 },
+)
 </script>
 
 <template>
@@ -87,7 +122,7 @@ const teams = [
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-gray-900/80" />
+        <div class="fixed inset-0 bg-slate-900/80" />
       </TransitionChild>
 
       <div class="fixed inset-0 flex">
@@ -118,78 +153,53 @@ const teams = [
               </div>
             </TransitionChild>
             <!-- Sidebar component, swap this element with another sidebar if you like -->
-            <div class="flex flex-col px-6 pb-4 overflow-y-auto bg-white grow gap-y-5">
-              <div class="flex items-center h-16 gap-2 shrink-0">
-                <IconLogo class="w-auto h-8 text-teal-400 sm:h-8 sm:w-8" />
+            <div
+              class="flex flex-col px-6 pb-4 bg-white border-r border-gray-200 dark:border-gray-600 dark:bg-gray-900 grow gap-y-2"
+            >
+              <div class="flex items-center h-16 gap-2 -mx-1 shrink-0">
+                <IconLogo class="w-auto h-8 text-teal-600 sm:h-8 sm:w-8" />
                 <p
-                  class="text-lg font-black text-transparent sm:text-xl bg-gradient-to-r from-teal-500 to-emerald-300 bg-clip-text"
+                  class="text-lg font-black text-transparent sm:text-xl bg-gradient-to-r from-teal-600 to-emerald-400 bg-clip-text"
                 >
                   一粟创作助手
                 </p>
+                <div class="text-black dark:text-white">
+                  {{ height }}
+                  {{ heightClass }}
+                </div>
               </div>
               <nav class="flex flex-col flex-1">
-                <ul role="list" class="flex flex-col flex-1 gap-y-7">
-                  <li>
-                    <ul role="list" class="-mx-2 space-y-1">
+                <ButtonNewChat />
+
+                <ul role="list" class="flex flex-col flex-1 mt-4 -mx-2">
+                  <li :class="heightClass" class="overflow-y-auto">
+                    <ul role="list" class="space-y-1">
                       <li v-for="item in navigation" :key="item.name">
                         <a
                           :href="item.href"
                           class="flex p-2 text-sm font-semibold leading-6 rounded-md group gap-x-3"
                           :class="[
                             item.current
-                              ? 'bg-gray-50 text-teal-600'
-                              : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50',
+                              ? 'bg-slate-50 dark:bg-slate-800 text-teal-600'
+                              : 'text-gray-700 dark:text-slate-50',
                           ]"
                         >
-                          <!-- <component
+                          <component
                             :is="item.icon"
-                            class="w-4 h-4 shrink-0"
-                            :class="[item.current ? 'text-teal-600' : 'text-gray-400 group-hover:text-teal-600']"
+                            class="w-5 h-5 shrink-0"
+                            :class="[item.current ? 'text-teal-600' : 'text-gray-400 dark:text-slate-50']"
                             aria-hidden="true"
-                          /> -->
+                          />
                           {{ item.name }}
                         </a>
                       </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <div class="text-xs font-semibold leading-6 text-gray-400">Your teams</div>
-                    <ul role="list" class="mt-2 -mx-2 space-y-1">
-                      <li v-for="team in teams" :key="team.name">
-                        <a
-                          :href="team.href"
-                          class="flex p-2 text-sm font-semibold leading-6 rounded-md group gap-x-3"
-                          :class="[
-                            team.current
-                              ? 'bg-gray-50 text-teal-600'
-                              : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50',
-                          ]"
-                        >
-                          <span
-                            class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white"
-                            :class="[
-                              team.current
-                                ? 'text-teal-600 border-teal-600'
-                                : 'text-gray-400 border-gray-200 group-hover:border-teal-600 group-hover:text-teal-600',
-                            ]"
-                            >{{ team.initial }}</span
-                          >
-                          <span class="truncate">{{ team.name }}</span>
-                        </a>
+                      <li ref="loadBoxMobile" class="flex items-center justify-center w-full">
+                        <SvgIcon icon="svg-spinners:bars-scale-fade" class="w-5 h-5 text-teal-500 shrink-0" />
                       </li>
                     </ul>
                   </li>
-                  <li class="mt-auto">
-                    <a
-                      href="#"
-                      class="flex p-2 -mx-2 text-sm font-semibold leading-6 text-gray-700 rounded-md group gap-x-3 hover:bg-gray-50 hover:text-teal-600"
-                    >
-                      <Cog6ToothIcon
-                        class="w-6 h-6 text-gray-400 shrink-0 group-hover:text-teal-600"
-                        aria-hidden="true"
-                      />
-                      Settings
-                    </a>
+                  <li class="flex items-center mt-auto">
+                    <ButtonPersonalCenter />
                   </li>
                 </ul>
               </nav>
@@ -203,33 +213,37 @@ const teams = [
   <!-- Static sidebar for desktop -->
   <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
     <!-- Sidebar component, swap this element with another sidebar if you like -->
-    <div class="flex flex-col px-6 pb-4 bg-white border-r border-gray-200 grow gap-y-2">
+    <div class="flex flex-col px-6 pb-4 bg-white border-r border-gray-200 grow gap-y-2 dark:bg-slate-900/90">
       <div class="flex items-center h-16 gap-2 -mx-1 shrink-0">
         <IconLogo class="w-auto h-8 text-teal-600 sm:h-8 sm:w-8" />
         <p
           class="text-lg font-black text-transparent sm:text-xl bg-gradient-to-r from-teal-600 to-emerald-400 bg-clip-text"
         >
-          一粟写作助手
+          一粟创作助手
         </p>
       </div>
       <nav class="flex flex-col flex-1">
         <ButtonNewChat />
 
         <ul role="list" class="flex flex-col flex-1 mt-4 -mx-2">
-          <li class="overflow-y-auto h-[calc(100vh-15.5rem)]">
+          <li class="overflow-y-auto h-[calc(100vh-17rem)]">
             <ul role="list" class="space-y-1">
               <li v-for="item in navigation" :key="item.name">
                 <a
                   :href="item.href"
                   class="flex p-2 text-sm font-semibold leading-6 rounded-md group gap-x-3"
                   :class="[
-                    item.current ? 'bg-gray-50 text-teal-600' : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50',
+                    item.current
+                      ? 'bg-gray-50 dark:bg-gray-700 text-teal-600'
+                      : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-white dark:hover:text-teal-600',
                   ]"
                 >
                   <component
                     :is="item.icon"
                     class="w-5 h-5 shrink-0"
-                    :class="[item.current ? 'text-teal-600' : 'text-gray-400 group-hover:text-teal-600']"
+                    :class="[
+                      item.current ? 'text-teal-600' : 'text-gray-400 dark:text-gray-100 group-hover:text-teal-600',
+                    ]"
                     aria-hidden="true"
                   />
                   {{ item.name }}

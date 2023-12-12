@@ -38,8 +38,7 @@ export default {
     request.get('/api/messages', { noNeedTip: true, params: data, data } as AxiosRequestConfig),
 
   // 用户详情
-  getUserInfoApi: () =>
-    request.get('/api/users/current', { noNeedTip: true, noNeedToken: false } as AxiosRequestConfig),
+  getProfileApi: () => request.get('/api/users/current', { noNeedTip: true, noNeedToken: false } as AxiosRequestConfig),
 
   // 绑定邮箱
   bindEmailApi: (data: any) => request.post('/api/users/email', data, { noNeedTip: true } as AxiosRequestConfig),
