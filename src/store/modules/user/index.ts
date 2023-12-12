@@ -1,36 +1,65 @@
 import { defineStore } from 'pinia'
 import type { UserState } from './helper'
+import { getLocalSetting, setLocalSetting } from './helper'
+import { store } from '@/store'
 import api from '@/api'
 
 export const useUserStore = defineStore('user-store', {
-  state: (): UserState => ({
-    id: undefined,
-    username: undefined,
-    email: undefined,
-    balance: undefined,
-    invite_code: undefined,
-    first_purchase: undefined,
-    created_at: undefined,
-    updated_at: undefined,
-    invitation_count: {
-      invitee_count: undefined,
-      total_income: undefined,
-      call_count: undefined,
-      withdraw: undefined,
-      balance: undefined,
-    },
-  }),
-  getters: {},
+  state: (): UserState => getLocalSetting(),
+  getters: {
+    getId: (state) => state.id,
+    getUsername: (state) => state.username,
+    getEmail: (state) => state.email,
+    getBalance: (state) => state.balance,
+    getInviteCode: (state) => state.invite_code,
+    getFirstPurchase: (state) => state.first_purchase,
+    getCreatedAt: (state) => state.created_at,
+    getUpdatedAt: (state) => state.updated_at,
+    getInvitationCount: (state) => state.invitation_count,
+  },
   actions: {
     async fetchProfile() {
       try {
-        const res = await api.getProfileApi();
-        console.log(res);
-
-        return Promise.resolve(res.data);
+        const res: any = await api.getProfileApi()
+        this.setProfile(res)
       } catch (error) {
-        return Promise.reject(error);
+        console.error(error)
       }
-    }
+    },
+
+    //
+    setProfile(profile: UserState) {
+      this.id = profile.id
+      this.username = profile.username
+      this.email = profile.email
+      this.balance = profile.balance
+      this.invite_code = profile.invite_code
+      this.first_purchase = profile.first_purchase
+      this.created_at = profile.created_at
+      this.updated_at = profile.updated_at
+      this.invitation_count = profile.invitation_count
+
+      this.recordState()
+    },
+
+    // 记录状态
+    recordState() {
+      setLocalSetting(this.$state)
+    },
   },
+  // setProfile(profile: UserState) {
+  //   this.id = profile.id
+  //   this.username = profile.username
+  //   this.email = profile.email
+  //   this.balance = profile.balance
+  //   this.invite_code = profile.invite_code
+  //   this.first_purchase = profile.first_purchase
+  //   this.created_at = profile.created_at
+  //   this.updated_at = profile.updated_at
+  //   this.invitation_count = profile.invitation_count
+  // },
 })
+
+export function useUserStoreWithOut() {
+  return useUserStore(store)
+}

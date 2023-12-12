@@ -1,6 +1,6 @@
 import { eStorage } from '@/utils/storage'
 
-const LOCAL_NAME = 'userState'
+const LOCAL_NAME = 'userSetting'
 
 /**
  * 用户信息
@@ -40,12 +40,34 @@ export interface UserState {
   }
 }
 
-// 获取用户信息
-export function getUserInfo() {
-  return eStorage.get(LOCAL_NAME)
+// 用户的默认设置
+export function defaultSetting(): UserState {
+  return {
+    id: undefined,
+    username: undefined,
+    email: undefined,
+    balance: undefined,
+    invite_code: undefined,
+    first_purchase: undefined,
+    created_at: undefined,
+    updated_at: undefined,
+    invitation_count: {
+      invitee_count: undefined,
+      total_income: undefined,
+      call_count: undefined,
+      withdraw: undefined,
+      balance: undefined,
+    },
+  }
 }
 
-// 设置用户信息
-export function setUserInfo(userInfo: UserState) {
-  eStorage.set(LOCAL_NAME, userInfo)
+// 从本地存储中获取应用设置
+export function getLocalSetting(): UserState {
+  const localSetting: UserState | undefined = eStorage.get(LOCAL_NAME)
+  return { ...defaultSetting(), ...localSetting }
+}
+
+// 将应用设置保存到本地存储
+export function setLocalSetting(setting: UserState): void {
+  eStorage.set(LOCAL_NAME, setting)
 }

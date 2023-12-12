@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, toRefs } from 'vue'
-import { CalendarIcon, HomeIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { computed, onMounted, ref, toRefs } from 'vue'
+import { HomeIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { useWindowSize, watchDebounced } from '@vueuse/core'
+import { useInfiniteScroll, useWindowSize } from '@vueuse/core'
 import ButtonPersonalCenter from '@/layout/button-personal-center/index.vue'
 import ButtonNewChat from '@/layout/button-new-chat/index.vue'
 import { IconLogo } from '@/components/icons'
 import { SvgIcon } from '@/components/common'
+
 const props = defineProps({
   sidebarOpen: Boolean,
 })
@@ -15,6 +16,7 @@ const emit = defineEmits(['update:sidebarOpen'])
 
 const { height } = useWindowSize()
 
+// 移动端侧边栏对话列表高度
 const heightClass = computed(() => {
   if (height.value > 800) {
     return 'h-[36rem]'
@@ -28,6 +30,10 @@ const heightClass = computed(() => {
     return 'h-[18rem]'
   }
 })
+
+const mobileList = ref<HTMLElement | null>(null)
+
+const desktopList = ref<HTMLElement | null>(null)
 
 const { sidebarOpen } = toRefs(props)
 
@@ -64,50 +70,47 @@ function toggleSidebar() {
 
 const page = ref(1)
 
+const loading = ref(false)
+
 onMounted(() => {
   // api.getChatListApi({ state: 'active', page: 1, limit: 3 }).then((res) => {
   //   console.log(res)
   // })
-  init()
+  // init()
+
+  useInfiniteScroll(
+    desktopList,
+    () => {
+      if (loading.value) {
+        return
+      }
+      page.value++
+      // load more
+      loading.value = true
+      setTimeout(() => {
+        navigation.value.push({ name: `Dashboard-${page.value}`, href: '#', icon: HomeIcon, current: false })
+        loading.value = false
+      }, 1000)
+    },
+    { distance: 10 },
+  )
+  useInfiniteScroll(
+    mobileList,
+    () => {
+      if (loading.value) {
+        return
+      }
+      page.value++
+      // load more
+      loading.value = true
+      setTimeout(() => {
+        navigation.value.push({ name: `Dashboard-${page.value}`, href: '#', icon: HomeIcon, current: false })
+        loading.value = false
+      }, 1000)
+    },
+    { distance: 1 },
+  )
 })
-
-async function init() {
-  if (loadBox.value) {
-    await nextTick(() => {
-      const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
-        const ratio = entries[0].intersectionRatio
-        if (ratio > 0) {
-          page.value++
-          setTimeout(() => {
-            navigation.value.push({ name: `Calendar-${page.value}`, href: '#', icon: CalendarIcon, current: false })
-          }, 2000)
-        }
-      })
-      observer.observe(loadBox.value!)
-    })
-  }
-}
-
-watchDebounced(
-  () => sidebarOpen.value,
-  async (val) => {
-    if (loadBoxMobile.value && val) {
-      await nextTick(() => {
-        const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
-          const ratio = entries[0].intersectionRatio
-          if (ratio > 0) {
-            page.value++
-            setTimeout(() => {
-              navigation.value.push({ name: `Calendar-${page.value}`, href: '#', icon: CalendarIcon, current: false })
-            }, 2000)
-          }
-        })
-        observer.observe(loadBoxMobile.value!)
-      })
-    }
-  },
-  { debounce: 300, maxWait: 1000 },
-)
 </script>
 
 <template>
@@ -171,10 +174,10 @@ watchDebounced(
               <nav class="flex flex-col flex-1">
                 <ButtonNewChat />
 
-                <ul role="list" class="flex flex-col flex-1 mt-4 -mx-2">
-                  <li :class="heightClass" class="overflow-y-auto">
-                    <ul role="list" class="space-y-1">
-                      <li v-for="item in navigation" :key="item.name">
+                <ul class="flex flex-col flex-1 mt-4 -mx-2">
+                  <li>
+                    <ul ref="mobileList" :class="heightClass" role="list" class="space-y-1 overflow-y-scroll">
+                      <li v-for="item in navigation" :key="item.name" class="h-12">
                         <a
                           :href="item.href"
                           class="flex p-2 text-sm font-semibold leading-6 rounded-md group gap-x-3"
@@ -193,7 +196,7 @@ watchDebounced(
                           {{ item.name }}
                         </a>
                       </li>
-                      <li ref="loadBoxMobile" class="flex items-center justify-center w-full">
+                      <li v-if="loading" ref="loadBoxMobile" class="flex items-center justify-center w-full">
                         <SvgIcon icon="svg-spinners:bars-scale-fade" class="w-5 h-5 text-teal-500 shrink-0" />
                       </li>
                     </ul>
@@ -226,8 +229,8 @@ watchDebounced(
         <ButtonNewChat />
 
         <ul role="list" class="flex flex-col flex-1 mt-4 -mx-2">
-          <li class="overflow-y-auto h-[calc(100vh-17rem)]">
-            <ul role="list" class="space-y-1">
+          <li class="">
+            <ul ref="desktopList" role="list" class="space-y-1 overflow-y-auto h-[calc(100vh-17rem)]">
               <li v-for="item in navigation" :key="item.name">
                 <a
                   :href="item.href"
@@ -249,7 +252,7 @@ watchDebounced(
                   {{ item.name }}
                 </a>
               </li>
-              <li ref="loadBox" class="flex items-center justify-center w-full">
+              <li v-show="loading" ref="loadBox" class="flex items-center justify-center w-full">
                 <SvgIcon icon="svg-spinners:bars-scale-fade" class="w-5 h-5 text-teal-500 shrink-0" />
               </li>
             </ul>

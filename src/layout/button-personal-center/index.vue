@@ -1,6 +1,25 @@
-<script setup>
+<script setup lang="ts">
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import { computed } from 'vue'
+import { Gender } from '../../store/modules/app/helper'
+import { useAppStoreWithOut, useUserStoreWithOut } from '@/store/modules'
 import { SvgIcon } from '@/components/common'
+import manImage from '@/assets/images/man.png'
+import womanImage from '@/assets/images/woman.png'
+
+const appStore = useAppStoreWithOut()
+
+const userStore = useUserStoreWithOut()
+
+const avatar = computed(() => (appStore.getGender === Gender.Man ? manImage : womanImage))
+
+const userName = computed(() => {
+  return userStore.getUsername || '未登录'
+})
+
+const email = computed(() => {
+  return userStore.getEmail || '未设置邮箱'
+})
 </script>
 
 <template>
@@ -11,13 +30,13 @@ import { SvgIcon } from '@/components/common'
           class="inline-flex items-center flex-1 w-full gap-2 p-4 text-sm font-medium text-teal-600 rounded-lg shadow-sm dark:shadow-slate-500 bg-slate-50 dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-600 hover:bg-slate-50/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
         >
           <img
-            class="flex-shrink-0 inline-block w-12 h-12 rounded-full"
-            src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
+            class="flex-shrink-0 inline-block w-12 h-12 rounded-full shadow-md dark:shadow-teal-700"
+            :src="avatar"
             alt="Image Description"
           />
           <div class="flex flex-col items-start justify-start">
-            <h3 class="font-semibold text-gray-800 dark:text-white">Mark Wanner</h3>
-            <p class="text-sm font-medium text-gray-400">mark@gmail.com</p>
+            <h3 class="font-semibold text-gray-800 text-md dark:text-white">{{ userName }}</h3>
+            <p class="text-sm font-medium text-gray-400">{{ email }}</p>
           </div>
         </MenuButton>
       </div>
