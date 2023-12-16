@@ -14,8 +14,8 @@ onMounted(() => {
 })
 
 async function initData() {
+  // 用户数据
   await userStore.fetchProfile()
-  console.log(userStore.getUsername)
 }
 </script>
 

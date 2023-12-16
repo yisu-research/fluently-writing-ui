@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, toRefs } from 'vue'
-import { HomeIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { useInfiniteScroll, useWindowSize } from '@vueuse/core'
+import { modelType } from '../../store/modules/chat/helper'
 import ButtonPersonalCenter from '@/layout/button-personal-center/index.vue'
 import ButtonNewChat from '@/layout/button-new-chat/index.vue'
 import { IconLogo } from '@/components/icons'
 import { SvgIcon } from '@/components/common'
+import { useChatStoreWithOut } from '@/store'
+import EditConversion from '@/layout/edit-conversion/index.vue'
 
 const props = defineProps({
   sidebarOpen: Boolean,
@@ -15,6 +18,8 @@ const props = defineProps({
 const emit = defineEmits(['update:sidebarOpen'])
 
 const { height } = useWindowSize()
+
+const chatStore = useChatStoreWithOut()
 
 // 移动端侧边栏对话列表高度
 const heightClass = computed(() => {
@@ -37,80 +42,48 @@ const desktopList = ref<HTMLElement | null>(null)
 
 const { sidebarOpen } = toRefs(props)
 
-const navigation = ref([
-  { name: 'Dashboard-1', href: '#', icon: HomeIcon, current: true },
-  { name: 'Dashboard-2', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-3', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-4', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-5', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-6', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-7', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-8', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-9', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-10', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-11', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-12', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-13', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-14', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-15', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-16', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-17', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-18', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-19', href: '#', icon: HomeIcon, current: false },
-  { name: 'Dashboard-20', href: '#', icon: HomeIcon, current: false },
-])
-
-const loadBox = ref<HTMLElement>()
-
-const loadBoxMobile = ref<HTMLElement>()
+const navigation = computed(() => chatStore.conversations)
 
 function toggleSidebar() {
   emit('update:sidebarOpen', false)
 }
 
-const page = ref(1)
-
 const loading = ref(false)
 
 onMounted(() => {
-  // api.getChatListApi({ state: 'active', page: 1, limit: 3 }).then((res) => {
-  //   console.log(res)
-  // })
-  // init()
-
-  useInfiniteScroll(
-    desktopList,
-    () => {
-      if (loading.value) {
-        return
-      }
-      page.value++
-      // load more
-      loading.value = true
-      setTimeout(() => {
-        navigation.value.push({ name: `Dashboard-${page.value}`, href: '#', icon: HomeIcon, current: false })
-        loading.value = false
-      }, 1000)
-    },
-    { distance: 10 },
-  )
-  useInfiniteScroll(
-    mobileList,
-    () => {
-      if (loading.value) {
-        return
-      }
-      page.value++
-      // load more
-      loading.value = true
-      setTimeout(() => {
-        navigation.value.push({ name: `Dashboard-${page.value}`, href: '#', icon: HomeIcon, current: false })
-        loading.value = false
-      }, 1000)
-    },
-    { distance: 1 },
-  )
+  initData()
+  setSideInfiniteScroll()
 })
+
+const conversationLoading = async () => {
+  if (loading.value) {
+    return
+  }
+  // load more
+  loading.value = true
+  await chatStore.fetchConversation()
+  loading.value = false
+}
+
+function setSideInfiniteScroll() {
+  useInfiniteScroll(desktopList, conversationLoading, { distance: 10 })
+  useInfiniteScroll(mobileList, conversationLoading, { distance: 10 })
+}
+
+function modelIconStr(model: modelType) {
+  const iconMap = {
+    [modelType.GPT3_5]: 'solar:chat-line-linear',
+    [modelType.GPT4]: 'solar:chat-round-line-linear',
+    [modelType.GPT4_VISION]: 'solar:eye-scan-linear',
+  }
+
+  return iconMap[model]
+}
+
+async function initData() {
+  // 对话列表
+  await chatStore.fetchConversation()
+}
 </script>
 
 <template>
@@ -166,10 +139,6 @@ onMounted(() => {
                 >
                   一粟创作助手
                 </p>
-                <div class="text-black dark:text-white">
-                  {{ height }}
-                  {{ heightClass }}
-                </div>
               </div>
               <nav class="flex flex-col flex-1">
                 <ButtonNewChat />
@@ -177,27 +146,33 @@ onMounted(() => {
                 <ul class="flex flex-col flex-1 mt-4 -mx-2">
                   <li>
                     <ul ref="mobileList" :class="heightClass" role="list" class="space-y-1 overflow-y-scroll">
-                      <li v-for="item in navigation" :key="item.name" class="h-12">
+                      <li v-for="item in navigation" :key="item.name">
                         <a
-                          :href="item.href"
-                          class="flex p-2 text-sm font-semibold leading-6 rounded-md group gap-x-3"
+                          href=""
+                          class="flex items-center justify-between p-2 text-sm font-semibold leading-6 rounded-md group gap-x-3"
                           :class="[
-                            item.current
-                              ? 'bg-slate-50 dark:bg-slate-800 text-teal-600'
-                              : 'text-gray-700 dark:text-slate-50',
+                            item.id === chatStore.getActive
+                              ? 'bg-slate-300/30 dark:bg-gray-700 text-teal-600'
+                              : 'text-gray-700  dark:text-white',
                           ]"
                         >
-                          <component
-                            :is="item.icon"
-                            class="w-5 h-5 shrink-0"
-                            :class="[item.current ? 'text-teal-600' : 'text-gray-400 dark:text-slate-50']"
-                            aria-hidden="true"
-                          />
-                          {{ item.name }}
+                          <div class="flex items-center gap-2">
+                            <SvgIcon :icon="modelIconStr(item.model)" class="w-5 h-5 shrink-0" />
+                            <p>{{ item.name }}</p>
+                          </div>
+                          <EditConversion :id="item.id" />
                         </a>
                       </li>
-                      <li v-if="loading" ref="loadBoxMobile" class="flex items-center justify-center w-full">
+                      <li v-show="loading" ref="loadBox" class="flex items-center justify-center w-full">
                         <SvgIcon icon="svg-spinners:bars-scale-fade" class="w-5 h-5 text-teal-500 shrink-0" />
+                      </li>
+                      <!-- no more -->
+                      <li
+                        v-if="!chatStore.hasMoreConversation"
+                        class="flex items-center justify-center w-full gap-2 py-2"
+                      >
+                        <SvgIcon icon="solar:donut-line-duotone" class="w-4 h-4 text-gray-300 shrink-0" />
+                        <p class="text-sm font-medium text-gray-300 dark:text-slate-50">没有更多了!</p>
                       </li>
                     </ul>
                   </li>
@@ -228,32 +203,35 @@ onMounted(() => {
       <nav class="flex flex-col flex-1">
         <ButtonNewChat />
 
-        <ul role="list" class="flex flex-col flex-1 mt-4 -mx-2">
-          <li class="">
-            <ul ref="desktopList" role="list" class="space-y-1 overflow-y-auto h-[calc(100vh-17rem)]">
-              <li v-for="item in navigation" :key="item.name">
+        <ul role="list" class="relative flex flex-col flex-1 mt-4 -mx-2 border rounded-lg">
+          <li class="absolute top-0 w-full h-10 p-2 font-medium text-teal-900 border-b bg-slate-100">会话列表</li>
+
+          <li class="mt-10">
+            <ul ref="desktopList" role="list" class="overflow-y-auto h-[calc(100vh-17rem)] divide-y divide-slate-100">
+              <li v-for="item in navigation" :key="item.name" class="">
                 <a
-                  :href="item.href"
-                  class="flex p-2 text-sm font-semibold leading-6 rounded-md group gap-x-3"
+                  href=""
+                  class="flex items-center justify-between p-2 text-sm font-semibold gap-x-3"
                   :class="[
-                    item.current
-                      ? 'bg-gray-50 dark:bg-gray-700 text-teal-600'
+                    item.id === chatStore.getActive
+                      ? 'bg-teal-600/10 dark:bg-gray-700 text-teal-600'
                       : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-white dark:hover:text-teal-600',
                   ]"
                 >
-                  <component
-                    :is="item.icon"
-                    class="w-5 h-5 shrink-0"
-                    :class="[
-                      item.current ? 'text-teal-600' : 'text-gray-400 dark:text-gray-100 group-hover:text-teal-600',
-                    ]"
-                    aria-hidden="true"
-                  />
-                  {{ item.name }}
+                  <div class="flex items-center gap-2">
+                    <SvgIcon :icon="modelIconStr(item.model)" class="w-5 h-5 shrink-0" />
+                    <p>{{ item.name }}</p>
+                  </div>
+                  <EditConversion :id="item.id" />
                 </a>
               </li>
               <li v-show="loading" ref="loadBox" class="flex items-center justify-center w-full">
                 <SvgIcon icon="svg-spinners:bars-scale-fade" class="w-5 h-5 text-teal-500 shrink-0" />
+              </li>
+              <!-- no more -->
+              <li v-if="!chatStore.hasMoreConversation" class="flex items-center justify-center w-full gap-2 py-2">
+                <SvgIcon icon="solar:donut-line-duotone" class="w-5 h-5 text-gray-300 shrink-0" />
+                <p class="text-sm font-light text-gray-300 dark:text-slate-50">没有更多了!</p>
               </li>
             </ul>
           </li>
