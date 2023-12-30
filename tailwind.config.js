@@ -38,5 +38,10 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/typography'), require('preline/plugin'), require('@tailwindcss/forms')],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('preline/plugin'),
+    require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/forms'),
+  ],
 }

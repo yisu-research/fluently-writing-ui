@@ -38,6 +38,7 @@ export interface UserState {
     withdraw: number | undefined
     balance: number | undefined
   }
+  avatar?: string
 }
 
 // 用户的默认设置
@@ -58,6 +59,7 @@ export function defaultSetting(): UserState {
       withdraw: undefined,
       balance: undefined,
     },
+    avatar: undefined,
   }
 }
 

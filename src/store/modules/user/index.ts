@@ -16,6 +16,7 @@ export const useUserStore = defineStore('user-store', {
     getCreatedAt: (state) => state.created_at,
     getUpdatedAt: (state) => state.updated_at,
     getInvitationCount: (state) => state.invitation_count,
+    getAvatar: (state) => state.avatar,
   },
   actions: {
     async fetchProfile() {
@@ -25,6 +26,12 @@ export const useUserStore = defineStore('user-store', {
       } catch (error) {
         console.error(error)
       }
+    },
+
+    // 设置头像
+    setAvatar(avatar: string) {
+      this.avatar = avatar
+      this.recordState()
     },
 
     //

@@ -10,6 +10,8 @@ import { IconLogo } from '@/components/icons'
 import { SvgIcon } from '@/components/common'
 import { useChatStoreWithOut } from '@/store'
 import EditConversion from '@/layout/edit-conversion/index.vue'
+import { router } from '@/router'
+import christmasImg from '@/assets/svg/christmas.svg'
 
 const props = defineProps({
   sidebarOpen: Boolean,
@@ -78,6 +80,10 @@ function modelIconStr(model: modelType) {
   }
 
   return iconMap[model]
+}
+
+function handleClickConversion(id: number, model: string, pattern: string) {
+  router.push({ path: `/chat/${id}`, query: { model, pattern } })
 }
 
 async function initData() {
@@ -151,7 +157,7 @@ async function initData() {
                           href=""
                           class="flex items-center justify-between p-2 text-sm font-semibold leading-6 rounded-md group gap-x-3"
                           :class="[
-                            item.id === chatStore.getActive
+                            item.id === chatStore.getCurrent
                               ? 'bg-slate-300/30 dark:bg-gray-700 text-teal-600'
                               : 'text-gray-700  dark:text-white',
                           ]"
@@ -190,9 +196,10 @@ async function initData() {
 
   <!-- Static sidebar for desktop -->
   <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-    <!-- Sidebar component, swap this element with another sidebar if you like -->
-    <div class="flex flex-col px-6 pb-4 bg-white border-r border-gray-200 grow gap-y-2 dark:bg-slate-900/90">
-      <div class="flex items-center h-16 gap-2 -mx-1 shrink-0">
+    <div
+      class="flex items-center justify-between h-16 gap-2 px-4 border-r bg-teal-400/5 shrink-0 backdrop-filter backdrop-blur-2x"
+    >
+      <div class="flex items-center">
         <IconLogo class="w-auto h-8 text-teal-600 sm:h-8 sm:w-8" />
         <p
           class="text-lg font-black text-transparent sm:text-xl bg-gradient-to-r from-teal-600 to-emerald-400 bg-clip-text"
@@ -200,30 +207,39 @@ async function initData() {
           一粟创作助手
         </p>
       </div>
-      <nav class="flex flex-col flex-1">
-        <ButtonNewChat />
+      <img :src="christmasImg" alt="christmas" class="w-auto h-16 -mr-4" />
+    </div>
 
-        <ul role="list" class="relative flex flex-col flex-1 mt-4 -mx-2 border rounded-lg">
+    <!-- Sidebar component, swap this element with another sidebar if you like -->
+    <div class="flex flex-col px-6 pb-4 bg-white border-r border-gray-200 grow gap-y-2 dark:bg-slate-900/90">
+      <nav class="flex flex-col flex-1">
+        <ButtonNewChat class="my-4" />
+
+        <ul role="list" class="relative flex flex-col flex-1 -mx-2 border rounded-lg">
           <li class="absolute top-0 w-full h-10 p-2 font-medium text-teal-900 border-b bg-slate-100">会话列表</li>
 
           <li class="mt-10">
-            <ul ref="desktopList" role="list" class="overflow-y-auto h-[calc(100vh-17rem)] divide-y divide-slate-100">
+            <ul
+              ref="desktopList"
+              role="list"
+              class="overflow-y-auto h-[calc(100vh-17rem)] divide-y divide-slate-100 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-teal-600/10 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-teal-600/20 dark:[&::-webkit-scrollbar-track]:bg-slate-700 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500"
+            >
               <li v-for="item in navigation" :key="item.name" class="">
-                <a
-                  href=""
-                  class="flex items-center justify-between p-2 text-sm font-semibold gap-x-3"
+                <button
+                  class="flex items-center justify-between w-full p-2 text-sm font-semibold gap-x-3"
                   :class="[
-                    item.id === chatStore.getActive
+                    item.id === chatStore.getCurrent
                       ? 'bg-teal-600/10 dark:bg-gray-700 text-teal-600'
                       : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-white dark:hover:text-teal-600',
                   ]"
+                  @click="handleClickConversion(item.id, item.model, item.pattern)"
                 >
                   <div class="flex items-center gap-2">
                     <SvgIcon :icon="modelIconStr(item.model)" class="w-5 h-5 shrink-0" />
                     <p>{{ item.name }}</p>
                   </div>
                   <EditConversion :id="item.id" />
-                </a>
+                </button>
               </li>
               <li v-show="loading" ref="loadBox" class="flex items-center justify-center w-full">
                 <SvgIcon icon="svg-spinners:bars-scale-fade" class="w-5 h-5 text-teal-500 shrink-0" />

@@ -28,18 +28,58 @@ export const baseRoutes: RouteRecordRaw[] = [
   },
   {
     name: 'chat',
-    path: '/chat',
+    path: '/',
     component: Layout,
-    redirect: '/chat/index',
+    redirect: '/chat',
     children: [
       {
-        name: 'chatIndex',
-        path: 'index',
-        component: () => import('@/views/chat/index.vue'),
+        name: 'chat',
+        path: 'chat',
+        component: () => import('@/views/chat/welcome-chat.vue'),
         meta: {
-          title: '聊天',
+          title: '欢迎页',
         },
       },
+      {
+        name: 'chat-id',
+        path: 'chat/:id',
+        component: () => import('@/views/chat/index.vue'),
+        meta: {
+          title: '聊天详情',
+        },
+      },
+      {
+        name: 'user-center',
+        path: 'user-center',
+        component: () => import('@/views/user-center/index.vue'),
+        meta: {
+          title: '个人中心',
+        },
+      },
+      {
+        name: 'cost-center',
+        path: 'cost-center',
+        component: () => import('@/views/cost-center/index.vue'),
+        meta: {
+          title: '消费中心',
+        },
+      }, 
+      {
+        name: 'example-center',
+        path: 'example-center',
+        component: () => import('@/views/example-center/index.vue'),
+        meta: {
+          title: '示例中心',
+        },
+      },
+      {
+        name: 'invite-user',
+        path: 'invite-user',
+        component: () => import('@/views/invite-user/index.vue'),
+        meta: {
+          title: '邀请用户',
+        },
+      }
     ],
   },
   {

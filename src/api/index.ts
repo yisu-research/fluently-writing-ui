@@ -71,4 +71,7 @@ export default {
 
   // 邀请奖励
   getInviteIncomeApi: (data: any) => request.get('/api/incomes', data),
+
+  // 上传文件
+  uploadFileApi: (data: any, config: AxiosRequestConfig) => request.post('/api/attachments', data, config),
 }

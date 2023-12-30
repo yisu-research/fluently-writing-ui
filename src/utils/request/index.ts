@@ -22,3 +22,10 @@ export function createAxios(options: CreateAxiosDefaults<any> | undefined) {
 export const request = createAxios({
   baseURL: import.meta.env.VITE_BASE_API,
 })
+
+export const uploadFileRequest = createAxios({
+  baseURL: import.meta.env.VITE_BASE_API,
+  headers: {
+    'Content-Type': 'multipart/form-data',
+  },
+})

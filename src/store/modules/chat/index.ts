@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { type ChatState, conversationState, type conversationType } from './helper'
+import { type ChatState, type MessageType, type chatType, conversationState, type conversationType } from './helper'
 import { defaultState } from './helper'
 import { store } from '@/store'
 import api from '@/api'
@@ -7,14 +7,23 @@ import api from '@/api'
 export const useChatStore = defineStore('chat-store', {
   state: (): ChatState => defaultState(),
   getters: {
-    getActive(): number | null {
-      return this.active
+    getCurrent(): number | null {
+      return this.current
     },
     getConversation(): conversationType[] {
       return this.conversations
     },
-    getChat(): any[] {
-      return this.chat
+    // 当前聊天内容
+    getCurrentMessages(): MessageType[] {
+      return this.chats.find((item) => item.id === this.current)?.messages || []
+    },
+    // 当前聊天内容的同步状态
+    getCurrentSync(): boolean {
+      return this.chats.find((item) => item.id === this.current)?.sync || false
+    },
+    // 目前已有的聊天内容
+    getAllChats(): chatType[] {
+      return this.chats
     },
     // 是否还有更多会话
     hasMoreConversation(): boolean {
@@ -22,12 +31,12 @@ export const useChatStore = defineStore('chat-store', {
     },
   },
   actions: {
-    setActive(active: number) {
-      this.active = active
+    setCurrent(active: number | null) {
+      this.current = active
     },
-    setChat(chat: any[]) {
-      this.chat = chat
-    },
+    // setChat(chat: any[]) {
+    //   this.chats = chat
+    // },
     // 设置会话总数
     setTotal(total: number) {
       this.total = total
@@ -69,17 +78,25 @@ export const useChatStore = defineStore('chat-store', {
 
         const conversations = this.serializeConversation(res.conversations)
         // 初始化active
-        if (this.active === null) {
-          this.setActive(conversations[0].id)
-        }
+        // if (this.active === null) {
+        //   this.setActive(conversations[0].id)
+        // }
         this.pageIncrement()
         this.setTotal(res.total_count)
         this.updateConversation(conversations)
+        // 为每个会话初始化聊天内容
+        conversations.forEach((item) => {
+          this.chats.push({
+            id: item.id,
+            sync: false,
+            messages: [],
+          })
+        })
       } catch (error) {
         console.error(error)
       }
     },
-    // 更新会话通过id
+    // 编辑会话通过id
     async updateConversationById(id: number, data: any) {
       try {
         // 与服务端同步
@@ -102,9 +119,51 @@ export const useChatStore = defineStore('chat-store', {
         // 与本地同步
         const index = this.conversations.findIndex((item) => item.id === id)
         this.conversations.splice(index, 1)
-        // 判断当前对话是否 active
-        if (this.active === id && this.conversations.length) {
-          this.setActive(this.conversations[0].id)
+        // 判断是否当前对话
+        if (this.current === id && this.conversations.length) {
+          this.setCurrent(this.conversations[0].id)
+        }
+        return true
+      } catch (error) {
+        console.error(error)
+        return false
+      }
+    },
+
+    findChatById(id: number) {
+      const chat = this.chats.find((item) => item.id === id)
+      if (!chat) {
+        this.chats.push({
+          id,
+          sync: false,
+          messages: [],
+        })
+        return this.chats[this.chats.length - 1]
+      }
+      return chat
+    },
+
+    // 初始化对话通过id
+    async initConversationById(id: number) {
+      try {
+        // 与服务端同步
+        const res: any = await api.getMessageListApi({ conversation_id: id })
+        const chat = this.findChatById(id)
+        chat.sync = true
+        if (res.length) {
+          res.forEach((item: any) => {
+            chat?.messages.push({
+              id: item.id,
+              conversationId: item.conversation_id,
+              model: item.model,
+              pattern: item.pattern,
+              role: item.role,
+              content: item.content,
+              dateTime: item.created_at,
+              error: false,
+              loading: false,
+            })
+          })
         }
         return true
       } catch (error) {

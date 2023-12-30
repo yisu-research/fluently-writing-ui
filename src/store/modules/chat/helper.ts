@@ -1,10 +1,58 @@
 export interface ChatState {
-  active: number | null
+  current: number | null
   total: number
   page: number
   limit: number | null
   conversations: conversationType[]
-  chat: any[]
+  chats: chatType[]
+}
+
+// {
+//   "model": "gpt-4-vision-preview",
+//   "id": 330247,
+//   "conversation_id": 30076,
+//   "user_content": null,
+//   "assistant_content": null,
+//   "completion_content": null,
+//   "role": "user",
+//   "content": [
+//     {
+//       "type": "image_url",
+//       "image_url": {
+//         "url": "https://ai.yisukeyan.com/api/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MzIsInB1ciI6ImJsb2JfaWQifX0=--fb97d20cf2a0ee41cb0c0a8708b0a1499e0bec2c/1703127039.jpg"
+//       }
+//     },
+//     {
+//       "text": "描述这张图片",
+//       "type": "text"
+//     }
+//   ],
+//   "spend_count": 0,
+//   "pattern": "multi",
+//   "created_at": "2023-12-21T10:50:53.205+08:00",
+//   "updated_at": "2023-12-21T10:50:53.205+08:00"
+// }
+export interface chatType {
+  id: number
+  sync: boolean
+  messages: MessageType[]
+}
+
+export interface MessageType {
+  id: number
+  conversationId: number
+  model: modelType
+  pattern: string
+  role: chatRole
+  content: any[]
+  dateTime: string
+  error: boolean
+  loading: boolean
+}
+
+export enum chatRole {
+  user = 'user',
+  assistant = 'assistant',
 }
 
 export enum conversationState {
@@ -30,11 +78,11 @@ export interface conversationType {
 
 export function defaultState(): ChatState {
   return {
-    active: null,
+    current: null,
     total: 0,
     page: 1,
     limit: 20,
     conversations: [],
-    chat: [],
+    chats: [],
   }
 }
