@@ -211,10 +211,9 @@ async function initData() {
     </div>
 
     <!-- Sidebar component, swap this element with another sidebar if you like -->
-    <div class="flex flex-col px-6 pb-4 bg-white border-r border-gray-200 grow gap-y-2 dark:bg-slate-900/90">
-      <nav class="flex flex-col flex-1">
-        <ButtonNewChat class="my-4" />
-
+    <div class="flex flex-col pb-4 bg-white border-r border-gray-200 grow gap-y-2 dark:bg-slate-900/90">
+      <ButtonNewChat class="px-4 my-4" />
+      <nav class="flex flex-col flex-1 px-6">
         <ul role="list" class="relative flex flex-col flex-1 -mx-2 border rounded-lg">
           <li class="absolute top-0 w-full h-10 p-2 font-medium text-teal-900 border-b bg-slate-100">会话列表</li>
 

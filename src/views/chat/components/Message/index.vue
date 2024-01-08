@@ -66,8 +66,6 @@ const text = computed(() => {
 
   let str = ''
 
-  console.log(value)
-
   for (const item of value) {
     if (item.type === 'text') {
       str += item.text

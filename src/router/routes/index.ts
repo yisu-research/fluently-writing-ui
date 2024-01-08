@@ -63,7 +63,7 @@ export const baseRoutes: RouteRecordRaw[] = [
         meta: {
           title: '消费中心',
         },
-      }, 
+      },
       {
         name: 'example-center',
         path: 'example-center',
@@ -79,7 +79,7 @@ export const baseRoutes: RouteRecordRaw[] = [
         meta: {
           title: '邀请用户',
         },
-      }
+      },
     ],
   },
   {

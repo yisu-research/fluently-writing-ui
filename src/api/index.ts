@@ -15,7 +15,7 @@ export default {
     request.post('/api/login', data, { noNeedTip: true, noNeedToken: true } as AxiosRequestConfig),
 
   // 创建对话
-  postChatApi: (data: any) => request.post('/api/conversations', data, { noNeedTip: true } as AxiosRequestConfig),
+  createChatApi: (data: any) => request.post('/api/conversations', data, { noNeedTip: true } as AxiosRequestConfig),
 
   // 获取对话列表
   getChatListApi: (data: any) =>

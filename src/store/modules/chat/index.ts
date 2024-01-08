@@ -64,6 +64,10 @@ export const useChatStore = defineStore('chat-store', {
       // 将 conversations 中的数据添加到 this.conversations 中
       this.conversations = [...this.conversations, ...conversations]
     },
+    // 在会话列表插入新的会话
+    insertConversation(conversation: conversationType) {
+      this.conversations.unshift(conversation)
+    },
     // 获取会话列表
     async fetchConversation() {
       if (this.total && this.conversations.length >= this.total) {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, onUpdated, ref, watch } from 'vue'
-import { NUpload, NUploadTrigger } from 'naive-ui'
+import { NButton, NUpload, NUploadTrigger } from 'naive-ui'
 import { useRoute } from 'vue-router'
 import { useImageUpload } from './hooks/useImageUpload'
 import { useChatView } from './hooks/useChatView'
@@ -25,24 +25,28 @@ const model = computed(() => route.query.model)
 // 获取页面路由参数
 const chatId = computed(() => route.params.id)
 
-const modelMap = {
+// modelMap 的类型定义
+interface modelMapType {
+  [key: string]: string
+}
+const modelMap: modelMapType = {
   'gpt-3.5-turbo': 'GPT3.5',
   'gpt-4-1106-preview': 'GPT4',
   'gpt-4-vision-preview': 'GPT4 Vision',
 }
 
-const modelText = computed(() => modelMap[model.value ?? ''])
+const modelText = computed(() => modelMap[model.value as string])
 
 const x = useChatView()
 
 onMounted(() => {
-  console.log(chatId.value)
-  console.log('chat mounted')
+  // console.log(chatId.value)
+  // console.log('chat mounted')
 })
 
 onUpdated(() => {
-  console.log(chatId.value)
-  console.log('chat updated')
+  // console.log(chatId.value)
+  // console.log('chat updated')
 })
 
 const messages = computed(() => chatStore.getCurrentMessages)
@@ -133,7 +137,7 @@ function handleInputFocus() {
       <!-- Input -->
       <div class="mb-2">
         <span
-          class="inline-flex items-center gap-x-1.5 rounded-full bg-teal-600/10 px-3 py-1 text-sm font-medium text-teal-500"
+          class="inline-flex items-center gap-x-1.5 rounded-full bg-teal-600/10 px-3 py-1 text-sm font-medium text-teal-400/90 backdrop-blur-sm"
         >
           <svg class="h-1.5 w-1.5 fill-teal-400" viewBox="0 0 6 6" aria-hidden="true">
             <circle cx="3" cy="3" r="3" />
