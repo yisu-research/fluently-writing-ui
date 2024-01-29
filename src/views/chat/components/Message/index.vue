@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useMessage } from 'naive-ui'
+import dayjs from 'dayjs'
 import { chatRole } from '../../../../store/modules/chat/helper'
 import AvatarComponent from './avatar-chat.vue'
 import TextComponent from './text-chat.vue'
 import ImageComponent from './image-chat.vue'
-import { useIconRender } from '@/hooks/useIconRender'
-import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { copyToClip } from '@/utils/copy'
 import { SvgIcon } from '@/components/common'
 
@@ -26,10 +25,6 @@ interface Emit {
 const props = defineProps<Props>()
 
 const emit = defineEmits<Emit>()
-
-const { isMobile } = useBasicLayout()
-
-const { iconRender } = useIconRender()
 
 const message = useMessage()
 
@@ -110,6 +105,13 @@ async function handleCopy() {
     message.error('复制失败')
   }
 }
+
+// 日期时间
+const dateTime = computed(() => {
+  const value = props.dateTime ?? ''
+
+  return dayjs(value).format('YYYY-MM-DD HH:mm:ss')
+})
 </script>
 
 <template>

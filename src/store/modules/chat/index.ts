@@ -81,10 +81,6 @@ export const useChatStore = defineStore('chat-store', {
         })
 
         const conversations = this.serializeConversation(res.conversations)
-        // 初始化active
-        // if (this.active === null) {
-        //   this.setActive(conversations[0].id)
-        // }
         this.pageIncrement()
         this.setTotal(res.total_count)
         this.updateConversation(conversations)
@@ -173,6 +169,25 @@ export const useChatStore = defineStore('chat-store', {
       } catch (error) {
         console.error(error)
         return false
+      }
+    },
+    // 添加聊天
+    addChatByConversationId(id: number, message: MessageType) {
+      const index = this.chats.findIndex((item) => item.id === id)
+
+      if (index !== -1) {
+        this.chats[index].messages.push(message)
+      }
+    },
+    // 更新聊天
+    updateChatByConversationId(id: number, message: MessageType) {
+      const index = this.chats.findIndex((item) => item.id === id)
+
+      if (index !== -1) {
+        const messageIndex = this.chats[index].messages.findIndex((item) => item.id === message.id)
+        if (messageIndex !== -1) {
+          this.chats[index].messages[messageIndex] = message
+        }
       }
     },
   },

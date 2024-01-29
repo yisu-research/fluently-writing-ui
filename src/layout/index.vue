@@ -23,7 +23,7 @@ async function initData() {
   <div class="">
     <LayoutSidebar v-model:sidebar-open="sidebarOpen" />
     <div
-      class="lg:pl-72 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-teal-500/10 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-teal-600/80 dark:[&::-webkit-scrollbar-track]:bg-slate-700 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500"
+      class="lg:pl-72 "
     >
       <LayoutHeader v-model:sidebar-open="sidebarOpen" />
       <LayoutMain />

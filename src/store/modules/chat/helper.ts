@@ -1,3 +1,5 @@
+// import {  } from 'uuid';
+
 export interface ChatState {
   current: number | null
   total: number
@@ -38,13 +40,22 @@ export interface chatType {
   messages: MessageType[]
 }
 
+export interface ContentType {
+  type: 'text' | 'image_url'
+  text?: string
+  image_url?: {
+    url: string
+  }
+}
+
+export type IdType = number | string
 export interface MessageType {
-  id: number
+  id: IdType
   conversationId: number
   model: modelType
   pattern: string
   role: chatRole
-  content: any[]
+  content: ContentType[]
   dateTime: string
   error: boolean
   loading: boolean
