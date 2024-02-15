@@ -15,5 +15,3 @@ document.execCommand('copy')
     }
   })
 }
-
-

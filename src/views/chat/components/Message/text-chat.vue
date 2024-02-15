@@ -41,12 +41,13 @@ mdi.use(mdKatex, { blockClass: 'katexmath-block rounded-md p-[1rem] bg-sky-200 t
 const wrapClass = computed(() => {
   return [
     'text-wrap',
-    'min-w-[20px]',
-    'rounded-lg border border-slate-200 shadow-sm shadow-slate-100/40',
+    'min-w-[20px] w-fit',
+    'rounded-lg',
     isMobile.value ? 'p-2' : 'px-3 py-2',
-    props.inversion ? 'bg-teal-600/90 text-white' : 'bg-white text-slate-800',
+    props.inversion ? 'bg-teal-600/90 text-white' : 'bg-slate-400/5 text-slate-800',
     props.inversion ? 'dark:bg-[##0d9488]' : 'dark:bg-[#1e1e20]',
     props.inversion ? 'message-request' : 'message-reply',
+    props.inversion ? 'border' : 'border-2 border-slate-300/10',
     { 'text-red-500': props.error },
   ]
 })

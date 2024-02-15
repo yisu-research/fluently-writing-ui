@@ -55,13 +55,14 @@ const modelText = computed(() => modelMap[model.value as string])
 const { addMessage, updateMessage } = useChatView()
 
 onMounted(() => {
-
-  setTimeout(() => {
-    scrollToBottom()
-  }, 200)
+  // setTimeout(() => {
+  //   scrollToBottom()
+  // }, 500)
 })
 
-onUpdated(() => {})
+onUpdated(() => {
+  scrollToBottom()
+})
 
 const messages = computed(() => chatStore.getCurrentMessages)
 
@@ -96,18 +97,19 @@ function updateChat() {
 }
 
 const {
-  token,
   fileList,
   onFileListChange,
   customRequest,
   fileName,
   fileSize,
   imageSrc,
+  imageUrl,
   imgLoadingPercent,
   loadingState,
   remoteImage,
   loadingColors,
   progressBarStyle,
+  beforeUpload,
 } = useImageUpload()
 
 const isFocus = ref(false)
@@ -130,6 +132,17 @@ const onSend = useDebounceFn(() => {
       text: prompt.value,
     },
   ]
+
+  // 如果是 vision 模式，则需要判断是否有图片
+  if (model.value === 'gpt-4-vision-preview' && fileList.value.length > 0) {
+    contents.push({
+      type: 'image_url',
+      image_url: {
+        url: imageUrl.value,
+      },
+    })
+  }
+
   addMessage(
     uuidUser,
     chatStore.getCurrent!,
@@ -372,10 +385,11 @@ function onInput() {}
                   abstract
                   action="/api/attachments"
                   :headers="{
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${getToken()}`,
                   }"
                   :custom-request="customRequest"
                   @update:file-list="onFileListChange"
+                  @before-upload="beforeUpload"
                 >
                   <NUploadTrigger #="{ handleClick }" abstract>
                     <button
@@ -398,10 +412,12 @@ function onInput() {}
                 <button
                   type="button"
                   :class="[
-                    loading ? 'text-teal-600/40 bg-teal-500/10' : 'text-teal-600 bg-teal-600/20 hover:bg-teal-500/20',
+                    loading || prompt === ''
+                      ? 'text-teal-600/40 bg-teal-500/10'
+                      : 'text-teal-600 bg-teal-600/20 hover:bg-teal-500/20',
                   ]"
                   class="inline-flex items-center justify-center flex-shrink-0 h-8 gap-2 px-2 rounded-md shadow-sm"
-                  @click="loading ? '' : onSend()"
+                  @click="loading || prompt === '' ? '' : onSend()"
                 >
                   <SvgIcon icon="solar:plain-3-outline" class="w-4 h-4" />
                   <span>发送</span>
