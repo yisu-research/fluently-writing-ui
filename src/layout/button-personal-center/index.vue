@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { computed } from 'vue'
-import { Gender } from '../../store/modules/app/helper'
-import { useAppStoreWithOut, useUserStoreWithOut } from '@/store/modules'
+import { Gender } from '../../store/modules/user/helper'
+import { useUserStoreWithOut } from '@/store/modules'
 import { SvgIcon } from '@/components/common'
 import manImage from '@/assets/images/man.png'
 import womanImage from '@/assets/images/woman.png'
 import { router } from '@/router'
 
-const appStore = useAppStoreWithOut()
-
 const userStore = useUserStoreWithOut()
 
-const avatar = computed(() => (appStore.getGender === Gender.Man ? manImage : womanImage))
+const avatar = computed(() => (userStore.getGender === Gender.Man ? manImage : womanImage))
 
 const userName = computed(() => {
   return userStore.getUsername || '未登录'

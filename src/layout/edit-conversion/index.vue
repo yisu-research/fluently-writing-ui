@@ -75,7 +75,7 @@ async function deleteConversation() {
     <SvgIcon
       icon="solar:pen-new-square-linear"
       class="w-6 h-6 p-1 rounded-md hover:text-teal-600 dark:text-slate-3 00 hover:bg-teal-600/10 text-slate-600 shrink-0"
-      @click.prevent="openModal"
+      @click.stop="openModal"
     />
   </div>
   <TransitionRoot appear :show="isOpen" as="template">

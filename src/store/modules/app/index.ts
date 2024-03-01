@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { AppState, Gender, Language, Theme } from './helper'
+import type { AppState, Language, Theme } from './helper'
 import { getLocalSetting, setLocalSetting } from './helper'
 import { store } from '@/store'
 
@@ -11,9 +11,6 @@ export const useAppStore = defineStore('app-store', {
     },
     getLanguage(): Language {
       return this.language
-    },
-    getGender(): Gender {
-      return this.gender
     },
   },
   actions: {
@@ -35,12 +32,6 @@ export const useAppStore = defineStore('app-store', {
         this.language = language
         this.recordState()
       }
-    },
-
-    // 性别
-    setGender(gender: Gender) {
-      this.gender = gender
-      this.recordState()
     },
 
     // 记录状态

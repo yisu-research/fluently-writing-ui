@@ -70,7 +70,8 @@ export default {
   getOrderDetailApi: (id: number) => request.get(`/api/orders/${id}`, { noNeedTip: true } as AxiosRequestConfig),
 
   // 邀请奖励
-  getInviteIncomeApi: (data: any) => request.get('/api/incomes', data),
+  getInviteIncomeApi: (data: any) =>
+    request.get('/api/incomes', { noNeedTip: true, params: data } as AxiosRequestConfig),
 
   // 上传文件
   uploadFileApi: (data: any, config: AxiosRequestConfig) => request.post('/api/attachments', data, config),

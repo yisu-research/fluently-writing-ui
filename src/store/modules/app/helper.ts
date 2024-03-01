@@ -6,21 +6,17 @@ export type Theme = 'light' | 'dark'
 
 export type Language = 'zh-CN' | 'en-US'
 
-export enum Gender {
-  Man,
-  WoMan,
-}
+
 
 export interface AppState {
   sideCollapsed: boolean
   theme: Theme
   language: Language
-  gender: Gender
 }
 
 // 应用的默认设置
 export function defaultSetting(): AppState {
-  return { sideCollapsed: false, theme: 'light', language: 'zh-CN', gender: Gender.Man }
+  return { sideCollapsed: false, theme: 'light', language: 'zh-CN' }
 }
 
 // 从本地存储中获取应用设置

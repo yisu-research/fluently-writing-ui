@@ -19,6 +19,7 @@ module.exports = {
       '8xl': ['6rem', { lineHeight: '1' }],
       '9xl': ['8rem', { lineHeight: '1' }],
     },
+
     extend: {
       maxWidth: {
         lg: '33rem',
@@ -35,6 +36,10 @@ module.exports = {
       },
       scale: {
         175: '1.75',
+      },
+      backgroundImage: {
+        'world-map': "url('/src/assets/svg/world-map.svg')",
+        dot: "url('/src/assets/svg/dot.svg')",
       },
     },
   },

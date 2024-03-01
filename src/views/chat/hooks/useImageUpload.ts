@@ -72,7 +72,7 @@ export function useImageUpload() {
         },
       })
       .then((res: any) => {
-        imageUrl.value = res.url
+        imageUrl.value = res.url.replace('https', 'http').replace('.com', '.com:3001')
         loadingState.value = 'success'
         message.success('上传成功')
       })

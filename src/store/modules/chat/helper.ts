@@ -92,7 +92,7 @@ export function defaultState(): ChatState {
     current: null,
     total: 0,
     page: 1,
-    limit: 20,
+    limit: 30,
     conversations: [],
     chats: [],
   }

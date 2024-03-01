@@ -2,6 +2,11 @@ import { eStorage } from '@/utils/storage'
 
 const LOCAL_NAME = 'userSetting'
 
+export enum Gender {
+  Man,
+  WoMan,
+}
+
 /**
  * 用户信息
   {
@@ -27,6 +32,7 @@ export interface UserState {
   username: string | undefined
   email: string | null | undefined
   balance: number | undefined
+  credit: 'string' | undefined
   invite_code: string | null | undefined
   first_purchase: boolean | undefined
   created_at: string | undefined
@@ -37,8 +43,10 @@ export interface UserState {
     call_count: number | undefined
     withdraw: number | undefined
     balance: number | undefined
+    credit: number | undefined
   }
   avatar?: string
+  gender: Gender
 }
 
 // 用户的默认设置
@@ -48,6 +56,7 @@ export function defaultSetting(): UserState {
     username: undefined,
     email: undefined,
     balance: undefined,
+    credit: undefined,
     invite_code: undefined,
     first_purchase: undefined,
     created_at: undefined,
@@ -58,8 +67,10 @@ export function defaultSetting(): UserState {
       call_count: undefined,
       withdraw: undefined,
       balance: undefined,
+      credit: undefined,
     },
     avatar: undefined,
+    gender: Gender.Man,
   }
 }
 

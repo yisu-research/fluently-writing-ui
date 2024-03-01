@@ -11,6 +11,7 @@ const proxyConfigMappings: Record<string, ProxyConfig> = {
   dev: {
     prefix: '/api',
     target: 'http://8.142.167.132:3001',
+    // target: 'https://ai.yisukeyan.com',
   },
   test: {
     prefix: '/api',
