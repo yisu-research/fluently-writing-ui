@@ -1,12 +1,4 @@
-import { useUserStoreWithOut } from '@/store'
 
-const userStore = useUserStoreWithOut()
-
-export function addBaseParams(params: any) {
-  if (!params.userId) {
-    params.userId = userStore.getId
-  }
-}
 
 export function resolveResError(code: number, message: string) {
   switch (code) {
