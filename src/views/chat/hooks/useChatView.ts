@@ -25,6 +25,13 @@ export function useChatView() {
       dateTime: new Date().toISOString(),
       error: false,
       loading: false,
+      spendCount: 0,
+      credit: '',
+      questionTokens: 0,
+      promptTokens: 0,
+      completionTokens: 0,
+      totalTokens: 0,
+      contextMessagesCount: 0,
     }
     chatStore.addChatByConversationId(conversationId, message)
   }
@@ -51,6 +58,13 @@ export function useChatView() {
       dateTime: new Date().toISOString(),
       error: false,
       loading: true,
+      spendCount: 0,
+      credit: '',
+      questionTokens: 0,
+      promptTokens: 0,
+      completionTokens: 0,
+      totalTokens: 0,
+      contextMessagesCount: 0,
     }
     chatStore.updateChatByConversationId(conversationId, message)
   }

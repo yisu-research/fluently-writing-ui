@@ -1,8 +1,10 @@
-import { useUserStore } from '@/store'
+import { useUserStoreWithOut } from '@/store'
+
+const userStore = useUserStoreWithOut()
 
 export function addBaseParams(params: any) {
   if (!params.userId) {
-    params.userId = useUserStore().userId
+    params.userId = userStore.getId
   }
 }
 
@@ -13,7 +15,7 @@ export function resolveResError(code: number, message: string) {
       break
     case 401:
       message = message ?? '登录已过期'
-      useUserStore().logout()
+      // user.logout()
       break
     case 403:
       message = message ?? '没有权限'

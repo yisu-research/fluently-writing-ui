@@ -121,7 +121,7 @@ const barOptions: { title: string; icon: string; path: string }[] = [
     <NDrawer v-model:show="mobileMenuOpen" :width="drawerWidth" placement="left" @close="mobileMenuOpen = false">
       <NDrawerContent class="w-full p-0 m-0 bg-slate-50 dark:bg-gray-900">
         <div class="flex items-center justify-between">
-          <LogoName />
+          <LogoName name="一粟科研" />
           <NButton text size="large" class="-m-2.5 rounded-md p-2.5" @click="mobileMenuOpen = false">
             <span class="sr-only">Close menu</span>
             <SvgIcon icon="uim:multiply" class="text-xl" />

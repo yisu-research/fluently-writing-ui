@@ -46,6 +46,7 @@ async function createChat(model: string) {
       spendCount: res.spend_count,
       state: res.state,
       userId: res.user_id,
+      startMessageId: res.start_message_id,
     }
 
     chatStore.insertConversation(conversation)

@@ -5,7 +5,6 @@ import { useRoute } from 'vue-router'
 import { NButton, NModal, NPopconfirm, NQrCode, NScrollbar, NSpin, NTag, useMessage } from 'naive-ui'
 import api from '@/api'
 import { formatDateTime } from '@/utils/format'
-import { useUserStoreWithOut } from '@/store'
 import { SvgIcon } from '@/components/common'
 
 const state = reactive<any>({
@@ -45,8 +44,6 @@ const state = reactive<any>({
 })
 
 let pollingST: any = null
-
-const userStore = useUserStoreWithOut()
 
 const destroyed = () => {
   clearTimeout(pollingST)
