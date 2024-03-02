@@ -6,8 +6,6 @@ export type Theme = 'light' | 'dark'
 
 export type Language = 'zh-CN' | 'en-US'
 
-
-
 export interface AppState {
   sideCollapsed: boolean
   theme: Theme

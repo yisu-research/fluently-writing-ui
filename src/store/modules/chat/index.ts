@@ -13,6 +13,9 @@ export const useChatStore = defineStore('chat-store', {
     getConversation(): conversationType[] {
       return this.conversations
     },
+    getCleaned(): boolean {
+      return this.cleaned
+    },
     // 当前聊天内容
     getCurrentMessages(): MessageType[] {
       return this.chats.find((item) => item.id === this.current)?.messages || []
@@ -34,9 +37,9 @@ export const useChatStore = defineStore('chat-store', {
     setCurrent(active: number | null) {
       this.current = active
     },
-    // setChat(chat: any[]) {
-    //   this.chats = chat
-    // },
+    setCleaned(cleaned: boolean) {
+      this.cleaned = cleaned
+    },
     // 设置会话总数
     setTotal(total: number) {
       this.total = total

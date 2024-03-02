@@ -7,6 +7,7 @@ export interface ChatState {
   limit: number | null
   conversations: conversationType[]
   chats: chatType[]
+  cleaned: boolean
 }
 
 // {
@@ -95,5 +96,6 @@ export function defaultState(): ChatState {
     limit: 30,
     conversations: [],
     chats: [],
+    cleaned: false,
   }
 }

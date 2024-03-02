@@ -4,7 +4,6 @@ import { NUpload, NUploadTrigger, useMessage } from 'naive-ui'
 import { useRoute } from 'vue-router'
 import { v4 as uuidv4 } from 'uuid'
 import { EventStreamContentType, fetchEventSource } from '@fortaine/fetch-event-source'
-// import { useScroll } from '@vueuse/core'
 import { useDebounceFn } from '@vueuse/core'
 import { useImageUpload } from './hooks/useImageUpload'
 import { useChatView } from './hooks/useChatView'
@@ -15,6 +14,7 @@ import { useChatStoreWithOut } from '@/store/modules'
 import { type ContentType, chatRole, type modelType } from '@/store/modules/chat/helper'
 import { getToken } from '@/store/modules/auth/helper'
 import { prettyObject } from '@/utils/format'
+import api from '@/api'
 
 const chatStore = useChatStoreWithOut()
 
@@ -117,6 +117,27 @@ const isFocus = ref(false)
 function handleInputFocus() {
   isFocus.value = true
 }
+
+const cleanLoading = ref(false)
+
+const onClean = useDebounceFn(async () => {
+  if (chatStore.getCleaned) {
+    message.warning('上下文清理过了')
+    return
+  }
+  // todo: 添加二次确认提示
+  cleanLoading.value = true
+  try {
+    await api.cleanChatApi(chatStore.getCurrent!)
+    chatStore.setCleaned(true)
+    message.success('上下文清理成功')
+  } catch (err) {
+    console.error(err)
+    message.error('上下文清理失败')
+  } finally {
+    cleanLoading.value = false
+  }
+}, 300)
 
 const onSend = useDebounceFn(() => {
   if (prompt.value === '') {
@@ -274,6 +295,7 @@ const onSend = useDebounceFn(() => {
       },
       onmessage: (msg: any) => {
         if (msg.data === '[DONE]' || finished) {
+          chatStore.setCleaned(false)
           return finish()
         }
 
@@ -407,7 +429,22 @@ function onInput() {}
               <!-- End Button Group -->
 
               <!-- Button Group -->
-              <div class="flex items-center gap-x-1">
+              <div class="flex items-center gap-x-4">
+                <!-- Clear History Start -->
+                <button
+                  type="button"
+                  :class="[
+                    cleanLoading
+                      ? 'text-teal-500/30 bg-teal-500/5'
+                      : 'text-teal-500 border-teal-500/20 border hover:bg-teal-400/5',
+                  ]"
+                  class="inline-flex items-center justify-center flex-shrink-0 h-8 gap-2 px-2 rounded-md shadow-sm"
+                  @click="cleanLoading ? '' : onClean()"
+                >
+                  <SvgIcon icon="carbon:clean" class="w-4 h-4" />
+                  <span>清除历史</span>
+                </button>
+                <!-- End Clear History -->
                 <!-- Send Button -->
                 <button
                   type="button"

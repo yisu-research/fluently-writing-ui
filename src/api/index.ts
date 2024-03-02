@@ -29,6 +29,9 @@ export default {
   updateChatApi: (id: number, data: any) =>
     request.put(`/api/conversations/${id}`, data, { noNeedTip: true } as AxiosRequestConfig),
 
+  // 清除上下文
+  cleanChatApi: (id: number) => request.put(`/api/conversations/${id}/clear`, { noNeedTip: true } as AxiosRequestConfig),
+
   // 消息流
   getMessageStreamApi: (data: any) =>
     request.get('/api/messages/stream', { noNeedTip: true, data, params: data } as AxiosRequestConfig),
