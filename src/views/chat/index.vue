@@ -60,6 +60,16 @@ onMounted(() => {
   // }, 500)
 })
 
+// 将 currentConversation 设置为可赋值的 computed
+const currentConversation = computed({
+  get() {
+    return chatStore.getCurrentConversation?.startMessageId
+  },
+  set(val) {
+    chatStore.updateStartMessageId(val!)
+  },
+})
+
 onUpdated(() => {
   scrollToBottom()
 })
@@ -131,6 +141,7 @@ const onClean = useDebounceFn(async () => {
     await api.cleanChatApi(chatStore.getCurrent!)
     chatStore.setCleaned(true)
     message.success('上下文清理成功')
+    currentConversation.value = chatStore.getLastMessage?.id as number
   } catch (err) {
     console.error(err)
     message.error('上下文清理失败')
@@ -296,6 +307,8 @@ const onSend = useDebounceFn(() => {
       onmessage: (msg: any) => {
         if (msg.data === '[DONE]' || finished) {
           chatStore.setCleaned(false)
+          // 更新聊天记录
+          chatStore.updateMessagesById(Number(chatId.value))
           return finish()
         }
 
@@ -365,6 +378,13 @@ function onInput() {}
           :role="item.role"
           :error="item.error"
           :loading="item.loading"
+          :is-start="item.id === currentConversation"
+          :question-token="item.questionTokens"
+          :prompt-token="item.promptTokens"
+          :completion-token="item.completionTokens"
+          :total-token="item.totalTokens"
+          :context-message-count="item.contextMessagesCount"
+          :credit="item.credit"
         />
       </div>
 

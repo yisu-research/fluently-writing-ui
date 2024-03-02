@@ -30,11 +30,15 @@ export default {
     request.put(`/api/conversations/${id}`, data, { noNeedTip: true } as AxiosRequestConfig),
 
   // 清除上下文
-  cleanChatApi: (id: number) => request.put(`/api/conversations/${id}/clear`, { noNeedTip: true } as AxiosRequestConfig),
+  cleanChatApi: (id: number) =>
+    request.put(`/api/conversations/${id}/clear`, { noNeedTip: true } as AxiosRequestConfig),
 
   // 消息流
   getMessageStreamApi: (data: any) =>
     request.get('/api/messages/stream', { noNeedTip: true, data, params: data } as AxiosRequestConfig),
+
+  // 消息详情
+  getMessageDetailApi: (id: number) => request.get(`/api/messages/${id}`, { noNeedTip: true } as AxiosRequestConfig),
 
   // 获取消息列表
   getMessageListApi: (data: any) =>
@@ -58,7 +62,7 @@ export default {
     request.post('/api/users/invite', data, { noNeedTip: true } as AxiosRequestConfig),
 
   // 产品列表
-  getProductListApi: (data: any) => request.get('/api/products', data),
+  getProductListApi: () => request.get('/api/products'),
 
   // 订单列表
   getOrderListApi: (data: any) => request.get('/api/orders', { noNeedTip: true, params: data } as AxiosRequestConfig),

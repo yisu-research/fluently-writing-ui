@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useMessage } from 'naive-ui'
+import { NPopover, useMessage } from 'naive-ui'
 import dayjs from 'dayjs'
 import { chatRole } from '../../../../store/modules/chat/helper'
 import AvatarComponent from './avatar-chat.vue'
@@ -15,6 +15,12 @@ interface Props {
   role?: chatRole
   error?: boolean
   loading?: boolean
+  isStart: boolean
+  questionToken: number
+  promptToken: number
+  completionToken: number
+  contextMessageCount: number
+  credit: string
 }
 
 interface Emit {
@@ -33,6 +39,39 @@ const textRef = ref<HTMLElement>()
 const asRawText = ref(false)
 
 const messageRef = ref<HTMLElement>()
+
+const charges = ref([
+  {
+    title: '本轮提示长度',
+    value: props.questionToken,
+    unit: 'tokens',
+    icon: 'solar:pen-new-square-linear',
+  },
+  {
+    title: '提问总长度（包含历史）',
+    value: props.promptToken,
+    unit: 'tokens',
+    icon: 'ph:chat-circle',
+  },
+  {
+    title: '本轮回答长度',
+    value: props.completionToken,
+    unit: 'tokens',
+    icon: 'ph:swap',
+  },
+  {
+    title: '包含历史对话',
+    value: props.contextMessageCount,
+    unit: '轮',
+    icon: 'solar:inbox-archive-linear',
+  },
+  {
+    title: '本次消耗',
+    value: props.credit,
+    unit: '积分',
+    icon: 'solar:wallet-2-linear',
+  },
+])
 
 const options = computed(() => {
   const common = [
@@ -167,7 +206,45 @@ const dateTime = computed(() => {
               <span>{{ item.label }}</span>
             </button>
           </template>
+          <div v-if="!inversion">
+            <!-- Popover -->
+            <NPopover trigger="click">
+              <template #trigger>
+                <button
+                  class="flex items-center gap-1 px-2 mb-2 text-xs transition border rounded-full shadow-sm text-slate-400 hover:text-neutral-800 dark:hover:text-neutral-300"
+                >
+                  <SvgIcon icon="ph:lightning-a" class="w-4 h-4 text-slate-400" />
+                  <span>本次计费</span>
+                </button>
+              </template>
+              <div>
+                <template v-for="charge of charges" :key="charge.title">
+                  <div class="flex items-center gap-2 py-1 text-slate-500">
+                    <div class="w-4 h-4">
+                      <SvgIcon :icon="charge.icon" class="w-full h-full text-slate-500" />
+                    </div>
+                    <span
+                      >{{ charge.title }}: <span class="font-semibold text-slate-600">{{ charge.value }}</span>
+                      {{ charge.unit }}</span
+                    >
+                  </div>
+                </template>
+              </div>
+            </NPopover>
+
+            <!-- End Popover -->
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
+  <div v-if="isStart" class="">
+    <div class="relative">
+      <div class="absolute inset-0 flex items-center" aria-hidden="true">
+        <div class="w-full border-t border-gray-300" />
+      </div>
+      <div class="relative flex justify-center">
+        <span class="px-2 text-sm text-gray-500 bg-white">开始新的语境</span>
       </div>
     </div>
   </div>

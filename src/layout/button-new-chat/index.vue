@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { NTooltip } from 'naive-ui'
 import day from 'dayjs'
 import { router } from '../../router/index'
 import { SvgIcon } from '@/components/common'
@@ -107,7 +106,7 @@ async function createChat(model: string) {
                     <span>{{ item.name }}</span>
                   </span>
 
-                  <NTooltip trigger="hover" :show-arrow="false">
+                  <!-- <NTooltip trigger="hover" :show-arrow="false">
                     <template #trigger>
                       <SvgIcon
                         icon="solar:info-circle-line-duotone"
@@ -116,7 +115,7 @@ async function createChat(model: string) {
                       />
                     </template>
                     {{ item.tips }}
-                  </NTooltip>
+                  </NTooltip> -->
                 </button>
               </MenuItem>
             </template>

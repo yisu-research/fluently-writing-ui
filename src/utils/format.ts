@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+
 export function prettyObject(msg: any) {
   const obj = msg
   if (typeof msg !== 'string') {
@@ -25,4 +27,22 @@ export function isValidPassword(val: string) {
 export function isValidCode(code: string) {
   const regex = /^\d{6}$/
   return regex.test(code)
+}
+
+/**
+ * @desc  格式化时间
+ * @param {(Object|string|number)} time
+ * @param {string} format
+ * @returns {string | null}
+ */
+export function formatDateTime(time = undefined, format = 'YYYY-MM-DD HH:mm:ss') {
+  return dayjs(time).format(format)
+}
+
+export function GenNonDuplicateID(randomLength: any) {
+  return Number(Math.random().toString().substr(3, randomLength) + Date.now()).toString(36)
+}
+
+export function formatDate(date = undefined, format = 'YYYY-MM-DD') {
+  return formatDateTime(date, format)
 }

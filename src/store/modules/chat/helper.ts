@@ -60,6 +60,13 @@ export interface MessageType {
   dateTime: string
   error: boolean
   loading: boolean
+  spendCount: number
+  credit: string
+  questionTokens: number
+  promptTokens: number
+  completionTokens: number
+  totalTokens: number
+  contextMessagesCount: number
 }
 
 export enum chatRole {
@@ -84,6 +91,7 @@ export interface conversationType {
   model: modelType
   pattern: string
   spendCount: number
+  startMessageId: number
   state: conversationState
   userId: number
 }

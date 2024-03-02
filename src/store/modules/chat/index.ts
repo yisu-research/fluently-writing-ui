@@ -16,9 +16,16 @@ export const useChatStore = defineStore('chat-store', {
     getCleaned(): boolean {
       return this.cleaned
     },
+    getCurrentConversation(): conversationType | undefined {
+      return this.conversations.find((item) => item.id === this.current)
+    },
     // 当前聊天内容
     getCurrentMessages(): MessageType[] {
       return this.chats.find((item) => item.id === this.current)?.messages || []
+    },
+    // 获取当前聊天的最后一条消息
+    getLastMessage(): MessageType | undefined {
+      return this.chats.find((item) => item.id === this.current)?.messages.slice(-1)[0]
     },
     // 当前聊天内容的同步状态
     getCurrentSync(): boolean {
@@ -55,6 +62,15 @@ export const useChatStore = defineStore('chat-store', {
           spendCount: item.spend_count,
           state: item.state,
           userId: item.user_id,
+          startMessageId: item.start_message_id,
+        }
+      })
+    },
+    // 修改当前对话的 startMessageId
+    updateStartMessageId(startMessageId: number) {
+      this.conversations.forEach((item) => {
+        if (item.id === this.current) {
+          item.startMessageId = startMessageId
         }
       })
     },
@@ -165,6 +181,13 @@ export const useChatStore = defineStore('chat-store', {
               dateTime: item.created_at,
               error: false,
               loading: false,
+              spendCount: item.spend_count,
+              credit: item.credit,
+              questionTokens: item.question_tokens,
+              promptTokens: item.prompt_tokens,
+              completionTokens: item.completion_tokens,
+              totalTokens: item.total_tokens,
+              contextMessagesCount: item.context_messages_count,
             })
           })
         }
@@ -174,6 +197,45 @@ export const useChatStore = defineStore('chat-store', {
         return false
       }
     },
+
+    // 更新对话通过id
+    async updateMessagesById(id: number) {
+      const chat = this.findChatById(id)
+
+      try {
+        // 与服务端同步
+        const res: any = await api.getMessageListApi({ conversation_id: id })
+
+        if (res.length) {
+          chat.messages = []
+          res.forEach((item: any) => {
+            chat.messages.push({
+              id: item.id,
+              conversationId: item.conversation_id,
+              model: item.model,
+              pattern: item.pattern,
+              role: item.role,
+              content: item.content,
+              dateTime: item.created_at,
+              error: false,
+              loading: false,
+              spendCount: item.spend_count,
+              credit: item.credit,
+              questionTokens: item.question_tokens,
+              promptTokens: item.prompt_tokens,
+              completionTokens: item.completion_tokens,
+              totalTokens: item.total_tokens,
+              contextMessagesCount: item.context_messages_count,
+            })
+          })
+        }
+        return true
+      } catch (error) {
+        console.error(error)
+        return false
+      }
+    },
+
     // 添加聊天
     addChatByConversationId(id: number, message: MessageType) {
       const index = this.chats.findIndex((item) => item.id === id)
