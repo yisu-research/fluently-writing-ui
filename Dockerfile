@@ -2,7 +2,7 @@
 FROM node:16-alpine3.16 as build-stage
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --registry=https://registry.npm.taobao.org
+RUN npm install --registry=http://registry.npmmirror.com
 COPY . .
 RUN npm run build
 
