@@ -47,6 +47,11 @@ const options = [
   },
 ]
 
+function clickLogout() {
+  userStore.logout()
+  router.push('/login')
+}
+
 function handleClickOption(path: string) {
   router.push(path)
 }
@@ -70,11 +75,11 @@ function handleClickOption(path: string) {
               <p class="text-sm font-medium text-gray-400">{{ email }}</p>
             </div>
           </div>
-          <SvgIcon
+          <!-- <SvgIcon
             icon="solar:moon-fog-outline"
             class="w-6 h-6 text-slate-500 dark:text-white hover:text-teal-600/80"
             aria-hidden="true"
-          />
+          /> -->
           <!-- <SvgIcon
             icon="solar:sun-fog-linear"
             class="w-6 h-6 mr-2 text-slate-500 dark:text-white"
@@ -116,6 +121,7 @@ function handleClickOption(path: string) {
           <div class="px-1 py-1">
             <MenuItem v-slot="{ active }">
               <button
+                @click="clickLogout"
                 class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
                 :class="[active ? 'bg-teal-600/10 text-teal-600' : 'text-gray-900 dark:text-white']"
               >

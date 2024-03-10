@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import { NButton, NDrawer, NDrawerContent } from 'naive-ui'
 import { RouterLink } from 'vue-router'
 import { useWindowSize } from '@vueuse/core'
 import LogoName from '@/components/common/LogoName/index.vue'
 // import SwitchLanguage from '@/components/common/switch-language/index.vue'
-import { SvgIcon, SwitchTheme } from '@/components/common'
+import { SvgIcon } from '@/components/common'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
+import { useUserStoreWithOut } from '@/store'
+import { router } from '@/router'
 
 // Comment: 移动端菜单是否打开
 const mobileMenuOpen = ref(false)
@@ -24,6 +26,10 @@ const { width } = useWindowSize()
 const drawerWidth = ref(500)
 
 const { isMobile } = useBasicLayout()
+
+const userStore = useUserStoreWithOut()
+
+const isLogin = computed(() => userStore.getUsername)
 
 // Comment: 监听屏幕宽度，当屏幕宽度小于 768 时，抽屉的宽度为屏幕宽度
 watchEffect(() => {
@@ -57,6 +63,10 @@ function handleScroll() {
   } else {
     scrolled.value = false
   }
+}
+
+function clickUsername() {
+  router.push('/user-center')
 }
 
 // Comment: 这里是导航栏的配置
@@ -97,22 +107,34 @@ const barOptions: { title: string; icon: string; path: string }[] = [
       <LogoName name="一粟科研" />
       <div class="flex items-center justify-end flex-1">
         <!-- 主题切换按钮 -->
-        <SwitchTheme />
+        <!-- <SwitchTheme /> -->
         <!-- 多语言按钮 -->
         <!-- <SwitchLanguage /> -->
 
         <!-- 垂直分割线 -->
-        <div class="hidden mx-4 lg:block">
+        <!-- <div class="hidden mx-4 lg:block">
           <div class="flex items-center h-4 py-2">
             <div class="w-px h-5 bg-slate-300 dark:bg-gray-700" aria-hidden="true"></div>
           </div>
-        </div>
+        </div> -->
 
         <div v-if="!isMobile" class="hidden lg:flex lg:gap-x-12">
-          <NButton v-for="item in barOptions" :key="item.title" text size="large" class="leading-6">
-            <SvgIcon :icon="item.icon" class="mr-1" />
-            <RouterLink :to="item.path" class="font-bold">{{ item.title }}</RouterLink>
-          </NButton>
+          <template v-for="item in barOptions" :key="item.title">
+            <div v-if="!isLogin">
+              <NButton text size="large" class="leading-6">
+                <SvgIcon :icon="item.icon" class="mr-1" />
+                <RouterLink :to="item.path" class="font-bold">{{ item.title }}</RouterLink>
+              </NButton>
+            </div>
+            <div
+              v-else
+              class="font-bold z-10 cursor-pointer text-teal-600 flex items-center gap-2 border border-teal-600/20 rounded-lg px-2 py-0.5 shadow-sm hover:shadow-md"
+              @click="clickUsername"
+            >
+              <SvgIcon icon="ph:user-circle-duotone" class="h-5 w-5" />
+              <p>{{ userStore.getUsername }}</p>
+            </div>
+          </template>
         </div>
       </div>
     </nav>

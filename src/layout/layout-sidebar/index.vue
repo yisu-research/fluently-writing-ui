@@ -90,6 +90,10 @@ async function initData() {
   // 对话列表
   await chatStore.fetchConversation()
 }
+
+function goHome() {
+  router.push('/')
+}
 </script>
 
 <template>
@@ -197,7 +201,8 @@ async function initData() {
   <!-- Static sidebar for desktop -->
   <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
     <div
-      class="flex items-center justify-between h-16 gap-2 px-4 border-r bg-teal-400/5 shrink-0 backdrop-filter backdrop-blur-2x"
+      @click="goHome"
+      class="flex items-center cursor-pointer justify-between h-16 gap-2 px-4 border-r bg-teal-400/5 shrink-0 backdrop-filter backdrop-blur-2x"
     >
       <div class="flex items-center">
         <IconLogo class="w-auto h-8 text-teal-600 sm:h-8 sm:w-8" />

@@ -1,5 +1,3 @@
-// import {  } from 'uuid';
-
 export interface ChatState {
   current: number | null
   total: number

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { removeToken } from '../auth/helper'
 import type { Gender, UserState } from './helper'
 import { getLocalSetting, setLocalSetting } from './helper'
 import { store } from '@/store'
@@ -59,6 +60,30 @@ export const useUserStore = defineStore('user-store', {
     setGender(gender: Gender) {
       this.gender = gender
       this.recordState()
+    },
+    // 退出登录
+    logout() {
+      this.id = undefined
+      this.username = undefined
+      this.email = undefined
+      this.balance = undefined
+      this.credit = undefined
+      this.invite_code = undefined
+      this.first_purchase = undefined
+      this.created_at = undefined
+      this.updated_at = undefined
+      this.invitation_count = {
+        invitee_count: undefined,
+        total_income: undefined,
+        call_count: undefined,
+        withdraw: undefined,
+        balance: undefined,
+        credit: undefined,
+      }
+      this.avatar = undefined
+      this.recordState()
+      // 清除token
+      removeToken()
     },
 
     // 记录状态

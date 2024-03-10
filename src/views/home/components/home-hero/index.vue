@@ -3,10 +3,14 @@ import { NButton } from 'naive-ui'
 import { computed } from 'vue'
 import HeroSvg from '@/assets/svg/hero.svg'
 import { SvgIcon } from '@/components/common'
-import { useAppStore } from '@/store'
+import { useAppStore, useUserStoreWithOut } from '@/store'
+import { router } from '@/router'
 
 // app
 const appStore = useAppStore()
+
+// user
+const userStore = useUserStoreWithOut()
 
 // isDark
 const isDark = computed(() => appStore.isDarkTheme)
@@ -20,8 +24,21 @@ const slogan = '激发灵感，提高效率'
 // 现在开始
 const start = '现在开始'
 
+const isLogin = computed(() => userStore.getUsername)
+
 // footnote
 const footnote = 'Powered by'
+
+function clickStart() {
+  console.log('clickStart')
+  if (userStore.getUsername) {
+    console.log('已登录')
+    router.push('/chat')
+  } else {
+    console.log('未登录')
+    router.push('/login')
+  }
+}
 </script>
 
 <template>
@@ -93,14 +110,11 @@ const footnote = 'Powered by'
             <a href="https://chat.openai.com" class="text-teal-500 hover:text-teal-400">ChatGPT</a>
           </p>
         </div>
-
         <div class="flex items-center mt-10 gap-x-6">
-          <router-link to="/chat">
-            <NButton type="primary" size="large" class="hover:ring-2 hover:ring-green-200">
-              <SvgIcon icon="solar:ufo-3-line-duotone" class="mr-2 text-lg text-teal-50" />
-              <span class="font-bold text-teal-50">{{ start }}</span>
-            </NButton>
-          </router-link>
+          <NButton @click="clickStart" type="primary" size="large" class="hover:ring-2 hover:ring-green-200">
+            <SvgIcon icon="solar:ufo-3-line-duotone" class="mr-2 text-lg text-teal-50" />
+            <span class="font-bold text-teal-50">{{ start }}</span>
+          </NButton>
         </div>
       </div>
 
