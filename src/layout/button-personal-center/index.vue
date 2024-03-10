@@ -121,9 +121,9 @@ function handleClickOption(path: string) {
           <div class="px-1 py-1">
             <MenuItem v-slot="{ active }">
               <button
-                @click="clickLogout"
                 class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
                 :class="[active ? 'bg-teal-600/10 text-teal-600' : 'text-gray-900 dark:text-white']"
+                @click="clickLogout"
               >
                 <SvgIcon
                   icon="ph:sign-out"

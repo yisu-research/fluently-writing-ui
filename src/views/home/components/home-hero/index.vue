@@ -30,12 +30,9 @@ const isLogin = computed(() => userStore.getUsername)
 const footnote = 'Powered by'
 
 function clickStart() {
-  console.log('clickStart')
   if (userStore.getUsername) {
-    console.log('已登录')
     router.push('/chat')
   } else {
-    console.log('未登录')
     router.push('/login')
   }
 }
@@ -111,7 +108,7 @@ function clickStart() {
           </p>
         </div>
         <div class="flex items-center mt-10 gap-x-6">
-          <NButton @click="clickStart" type="primary" size="large" class="hover:ring-2 hover:ring-green-200">
+          <NButton type="primary" size="large" class="hover:ring-2 hover:ring-green-200" @click="clickStart">
             <SvgIcon icon="solar:ufo-3-line-duotone" class="mr-2 text-lg text-teal-50" />
             <span class="font-bold text-teal-50">{{ start }}</span>
           </NButton>

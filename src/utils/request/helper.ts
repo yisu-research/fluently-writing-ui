@@ -1,5 +1,3 @@
-
-
 export function resolveResError(code: number, message: string) {
   switch (code) {
     case 400:
