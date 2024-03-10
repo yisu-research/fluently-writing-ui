@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, toRefs } from 'vue'
 import { NPopover, useMessage } from 'naive-ui'
 import dayjs from 'dayjs'
 import { chatRole } from '../../../../store/modules/chat/helper'
@@ -32,6 +32,8 @@ const props = defineProps<Props>()
 
 const emit = defineEmits<Emit>()
 
+const { questionToken, promptToken, completionToken, contextMessageCount, credit } = toRefs(props)
+
 const message = useMessage()
 
 const textRef = ref<HTMLElement>()
@@ -40,34 +42,34 @@ const asRawText = ref(false)
 
 const messageRef = ref<HTMLElement>()
 
-const charges = ref([
+const charges = computed(() => [
   {
     title: '本轮提示长度',
-    value: props.questionToken,
+    value: questionToken.value,
     unit: 'tokens',
     icon: 'solar:pen-new-square-linear',
   },
   {
     title: '提问总长度（包含历史）',
-    value: props.promptToken,
+    value: promptToken.value,
     unit: 'tokens',
     icon: 'ph:chat-circle',
   },
   {
     title: '本轮回答长度',
-    value: props.completionToken,
+    value: completionToken.value,
     unit: 'tokens',
     icon: 'ph:swap',
   },
   {
     title: '包含历史对话',
-    value: props.contextMessageCount,
+    value: contextMessageCount.value,
     unit: '轮',
     icon: 'solar:inbox-archive-linear',
   },
   {
     title: '本次消耗',
-    value: props.credit,
+    value: credit.value,
     unit: '积分',
     icon: 'solar:wallet-2-linear',
   },
@@ -218,7 +220,7 @@ const dateTime = computed(() => {
                 </button>
               </template>
               <div>
-                <template v-for="charge of charges" :key="charge.title">
+                <template v-for="charge of charges" :key="charge.value">
                   <div class="flex items-center gap-2 py-1 text-slate-500">
                     <div class="w-4 h-4">
                       <SvgIcon :icon="charge.icon" class="w-full h-full text-slate-500" />

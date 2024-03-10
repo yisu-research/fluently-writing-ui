@@ -11,7 +11,7 @@ import { Message } from './components'
 import { useScroll } from './hooks/useScroll'
 import { SvgIcon } from '@/components/common'
 import { useChatStoreWithOut } from '@/store/modules'
-import { type ContentType, chatRole, type modelType } from '@/store/modules/chat/helper'
+import { type ContentType, type MessageType, chatRole, type modelType } from '@/store/modules/chat/helper'
 import { getToken } from '@/store/modules/auth/helper'
 import { prettyObject } from '@/utils/format'
 import api from '@/api'
@@ -218,11 +218,34 @@ const onSend = useDebounceFn(() => {
     let responseText = ''
     let remainText = ''
     let finished = false
+    let tokenInfo = ''
 
     // 为了让响应看起来更平滑，我们需要对响应进行动画处理
     function animateResponseText() {
       if ((finished || controller.signal.aborted) && remainText.length === 0) {
         responseText += remainText
+        // 更新聊天记录
+        const tokenInfoJson: any = JSON.parse(tokenInfo.slice('[TOKEN_COUNTER] - '.length))
+        const lastMessage: MessageType = {
+          id: uuidAssistant,
+          conversationId: chatStore.getCurrent!,
+          model: model.value as modelType,
+          pattern: pattern.value as string,
+          role: chatRole.assistant,
+          content: tokenInfoJson.content,
+          dateTime: new Date().toISOString(),
+          error: false,
+          loading: false,
+          spendCount: tokenInfoJson.spend_count,
+          questionTokens: tokenInfoJson.question_tokens,
+          promptTokens: tokenInfoJson.prompt_tokens,
+          completionTokens: tokenInfoJson.completion_tokens,
+          totalTokens: tokenInfoJson.total_tokens,
+          contextMessagesCount: tokenInfoJson.context_messages_count,
+          credit: tokenInfoJson.credit,
+        }
+        chatStore.updateChatByConversationId(chatStore.getCurrent!, lastMessage)
+        scrollToBottom()
         return
       }
 
@@ -256,6 +279,7 @@ const onSend = useDebounceFn(() => {
 
     const finish = () => {
       loading.value = false
+
       if (!finished) {
         finished = true
       }
@@ -307,8 +331,6 @@ const onSend = useDebounceFn(() => {
       onmessage: (msg: any) => {
         if (msg.data === '[DONE]' || finished) {
           chatStore.setCleaned(false)
-          // 更新聊天记录
-          chatStore.updateMessagesById(Number(chatId.value))
           return finish()
         }
 
@@ -330,6 +352,11 @@ const onSend = useDebounceFn(() => {
           )
           scrollToBottom()
           return finish()
+        }
+
+        if (msg.data.includes('[TOKEN_COUNTER]')) {
+          tokenInfo = msg.data
+          return
         }
 
         const text = msg.data
@@ -369,7 +396,7 @@ function onInput() {}
     class="relative w-full h-screen lg:ps-64 overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-teal-500/10 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-teal-600/80 dark:[&::-webkit-scrollbar-track]:bg-slate-700 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500"
   >
     <div class="max-w-4xl min-h-[calc(100%)] p-4 mx-auto w-full flex flex-col justify-between">
-      <div>
+      <div class="pt-16">
         <Message
           v-for="(item, index) of messages"
           :key="index"

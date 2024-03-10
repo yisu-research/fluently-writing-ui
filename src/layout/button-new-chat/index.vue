@@ -68,7 +68,7 @@ async function createChat(model: string) {
         >
           <div class="flex items-center gap-2">
             <SvgIcon icon="solar:sticker-smile-square-linear" class="w-6 h-6 shrink-0" />
-            <span>创建新对话</span>
+            <span>开始创作</span>
           </div>
           <SvgIcon
             icon="solar:alt-arrow-down-linear"

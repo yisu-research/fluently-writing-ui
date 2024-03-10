@@ -33,18 +33,12 @@ const options = [
     icon: 'ph:storefront',
     path: '/cost-center',
   },
-  {
-    name: '模版中心',
-    key: 'mbzx',
-    icon: 'ph:stack',
-    path: '/example-center',
-  },
-  {
-    name: '邀请朋友',
-    key: 'yqpy',
-    icon: 'ph:handshake',
-    path: '/invite-user',
-  },
+  // {
+  //   name: '模版中心',
+  //   key: 'mbzx',
+  //   icon: 'ph:stack',
+  //   path: '/example-center',
+  // }
 ]
 
 function clickLogout() {

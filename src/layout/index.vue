@@ -37,7 +37,7 @@ async function initData() {
 <template>
   <div class="">
     <LayoutSidebar v-model:sidebar-open="sidebarOpen" />
-    <div class="lg:pl-72">
+    <div class="lg:pl-72 h-screen">
       <LayoutHeader v-model:sidebar-open="sidebarOpen" />
       <LayoutMain />
     </div>

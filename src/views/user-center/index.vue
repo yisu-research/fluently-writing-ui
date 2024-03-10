@@ -4,7 +4,6 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import dayjs from 'dayjs'
 import { NNumberAnimation, NPagination, useMessage } from 'naive-ui'
 import { useClipboard } from '@vueuse/core'
-import IncentiveWithdrawal from './incentive-withdrawal.vue'
 import BindEmail from './bind-email.vue'
 import { useUserStoreWithOut } from '@/store'
 import 'dayjs/locale/zh-cn'
@@ -163,9 +162,9 @@ function copyInvitePromo() {
           </div>
 
           <div
-            class="grid items-start max-w-2xl grid-cols-1 grid-rows-1 px-4 mx-auto mt-16 gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+            class="items-start max-w-2xl grid-cols-1 grid-rows-1 px-4 mx-auto mt-16 gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none"
           >
-            <div class="lg:col-start-3 lg:row-end-1">
+            <div class="">
               <div class="rounded-lg shadow-sm bg-gray-50 ring-1 ring-gray-900/5">
                 <dl class="flex flex-wrap">
                   <div class="flex-auto pt-6 pl-6">
@@ -194,7 +193,7 @@ function copyInvitePromo() {
                       <time datetime="2023-01-31">创建于{{ dayjs().to(userStore.getCreatedAt) }}</time>
                     </dd>
                   </div>
-                  <div class="flex items-center justify-between w-full pr-4 mt-3">
+                  <div class="flex items-center justify-between w-full pr-4 my-3">
                     <div class="flex w-full px-6 gap-x-4">
                       <dt class="flex-none">
                         <span class="sr-only">Status</span>
@@ -212,7 +211,7 @@ function copyInvitePromo() {
                   </div>
                   <BindEmail :open="bindEmailDialog" :is-email-bind="isEmailBind" @close="closeBindEmailDialog" />
                 </dl>
-                <div class="px-4 pb-4 mt-6 border-t border-gray-900/5">
+                <!-- <div class="px-4 pb-4 mt-6 border-t border-gray-900/5">
                   <div
                     class="flex justify-between flex-none w-full px-2 py-2 mt-4 cursor-pointer hover:rounded-lg gap-x-4 hover:bg-slate-100"
                   >
@@ -242,11 +241,11 @@ function copyInvitePromo() {
                     :amount="withdrawalAmount"
                     @close="closeWithdrawalDialog"
                   />
-                </div>
+                </div> -->
               </div>
 
               <div
-                class="mt-4 bg-gradient-to-br from-indigo-200/40 from-5% via-sky-50/10 via-10% to-white to-20% rounded-lg shadow-sm ring-1 ring-gray-900/5"
+                class="mt-8 bg-gradient-to-br from-indigo-200/40 from-5% via-sky-50/10 via-10% to-white to-20% rounded-lg shadow-sm ring-1 ring-gray-900/5"
               >
                 <img :src="inviteImage" class="h-28 w-28 mt" />
                 <div class="px-4 pb-4">
@@ -338,7 +337,7 @@ function copyInvitePromo() {
                 </div>
               </div>
             </div>
-            <div class="sm:rounded-lg sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2">
+            <div class="sm:rounded-lg sm:pb-14 mt-8 lg:col-span-2 lg:row-span-2 lg:row-end-2">
               <div>
                 <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
                   <div

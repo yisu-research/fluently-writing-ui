@@ -12,7 +12,7 @@ function toggleSidebar() {
 </script>
 
 <template>
-  <div class="sticky top-0 z-40 lg:mx-auto lg:max-w-7xl lg:px-8">
+  <div class="absolute top-0 z-40 lg:mx-auto lg:max-w-7xl lg:px-8 w-full">
     <div
       class="flex items-center h-16 px-4 shadow-sm bg-primary lg:h-0 gap-x-4 sm:gap-x-6 sm:px-6 lg:px-0 lg:shadow-none"
     >
