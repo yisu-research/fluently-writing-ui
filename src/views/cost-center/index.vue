@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
-import { NButton, NLayout, NModal, NPopconfirm, NPopover, NQrCode, NSpin, NTag, useMessage } from 'naive-ui'
+import { NButton, NDataTable, NLayout, NModal, NPopconfirm, NPopover, NQrCode, NSpin, NTag, useMessage } from 'naive-ui'
 import Record from './record/index.vue'
 import api from '@/api'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { useUserStoreWithOut } from '@/store'
 import { formatDateTime } from '@/utils/format'
-import JiFei from '@/assets/images/jifei.png'
 
 import QrCodeImg from '@/assets/images/qrcode.jpg'
 
@@ -135,6 +134,85 @@ const handleClose = () => {
   state.showModal = false
   handleAfterLeave()
 }
+
+// 计费表格
+const createColumns = () => {
+  return [
+    {
+      title: 'Name',
+      key: 'credit',
+      rowSpan: (rowData, rowIndex) => (rowIndex === 0 ? 7 : 1),
+    },
+    {
+      title: 'Age',
+      key: 'type',
+      rowSpan: (rowData, rowIndex) => {
+        if (rowIndex === 0 || rowIndex === 2) {
+          return 2
+        }
+        if (rowIndex === 4) {
+          return 3
+        }
+        return 1
+      },
+    },
+    {
+      title: 'Address',
+      key: 'description',
+      colSpan: (rowData, rowIndex) => (rowIndex === 2 ? 2 : 1),
+    },
+  ]
+}
+
+const createData = () => [
+  {
+    key: 0,
+    credit: '1 积分',
+    type: 'ChatGPT',
+    description: '输入: 20000 tokens',
+  },
+  {
+    key: 1,
+    credit: '1 积分',
+    type: 'ChatGPT',
+    description: '输出: 6667 tokens',
+  },
+  {
+    key: 2,
+    credit: '1 积分',
+    type: 'GPT4',
+    description: '输入: 1000 tokens',
+  },
+  {
+    key: 3,
+    credit: '1 积分',
+    type: 'GPT4',
+    description: '输出: 333 tokens',
+  },
+  {
+    key: 4,
+    credit: '1 积分',
+    type: 'GPT4-Vision',
+    description: '输入: 1000 tokens',
+  },
+
+  {
+    key: 5,
+    credit: '1 积分',
+    type: 'GPT4-Vision',
+    description: '输出: 333 tokens',
+  },
+  {
+    key: 6,
+    credit: '1 积分',
+    type: 'GPT4-Vision',
+    description: '图片: 4张',
+  },
+]
+
+const data = ref(createData())
+
+const columns = ref(createColumns())
 
 onMounted(async () => {
   try {
@@ -341,7 +419,7 @@ onMounted(async () => {
 
           <div class="my-4 text-xl">
             <p>计费规则</p>
-            <img :src="JiFei" class="w-full h-auto" alt="计费规则" />
+            <NDataTable :columns="columns" :data="data" :single-line="false" class="my-4" />
             <p class="my-0.5 flex items-start gap-x-2">
               <span>什么是token:</span
               ><a class="text-teal-500" href="https://zhuanlan.zhihu.com/p/608783584"

@@ -24,7 +24,7 @@ const slogan = '激发灵感，提高效率'
 // 现在开始
 const start = '现在开始'
 
-const isLogin = computed(() => userStore.getUsername)
+// const isLogin = computed(() => userStore.getUsername)
 
 // footnote
 const footnote = 'Powered by'

@@ -51,17 +51,17 @@ function closeBindEmailDialog() {
 
 const isEmailBind = computed(() => !!userStore.getEmail)
 
-const withdrawalDialog = ref(false)
+// const withdrawalDialog = ref(false)
 
-const withdrawalAmount = computed(() => userStore.getWithdraw)
+// const withdrawalAmount = computed(() => userStore.getWithdraw)
 
-function openWithdrawalDialog() {
-  withdrawalDialog.value = true
-}
+// function openWithdrawalDialog() {
+//   withdrawalDialog.value = true
+// }
 
-function closeWithdrawalDialog() {
-  withdrawalDialog.value = false
-}
+// function closeWithdrawalDialog() {
+//   withdrawalDialog.value = false
+// }
 
 const invitationCode = computed(() => userStore.getInviteCode)
 
@@ -337,7 +337,7 @@ function copyInvitePromo() {
                 </div>
               </div>
             </div>
-            <div class="sm:rounded-lg sm:pb-14 mt-8 lg:col-span-2 lg:row-span-2 lg:row-end-2">
+            <div class="mt-8 sm:rounded-lg sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2">
               <div>
                 <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
                   <div
