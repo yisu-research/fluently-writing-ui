@@ -139,14 +139,14 @@ const handleClose = () => {
 const createColumns = () => {
   return [
     {
-      title: 'Name',
+      title: '积分',
       key: 'credit',
-      rowSpan: (rowData, rowIndex) => (rowIndex === 0 ? 7 : 1),
+      rowSpan: (rowData: any, rowIndex: any) => (rowIndex === 0 ? 7 : 1),
     },
     {
-      title: 'Age',
+      title: '模型',
       key: 'type',
-      rowSpan: (rowData, rowIndex) => {
+      rowSpan: (rowData: any, rowIndex: any) => {
         if (rowIndex === 0 || rowIndex === 2) {
           return 2
         }
@@ -157,9 +157,9 @@ const createColumns = () => {
       },
     },
     {
-      title: 'Address',
+      title: '积分消耗',
       key: 'description',
-      colSpan: (rowData, rowIndex) => (rowIndex === 2 ? 2 : 1),
+      colSpan: (rowData: any, rowIndex: any) => (rowIndex === 2 ? 2 : 1),
     },
   ]
 }
@@ -419,19 +419,21 @@ onMounted(async () => {
 
           <div class="my-4 text-xl">
             <p>计费规则</p>
-            <NDataTable :columns="columns" :data="data" :single-line="false" class="my-4" />
-            <p class="my-0.5 flex items-start gap-x-2">
-              <span>什么是token:</span
-              ><a class="text-teal-500" href="https://zhuanlan.zhihu.com/p/608783584"
-                >https://zhuanlan.zhihu.com/p/608783584</a
-              >
-            </p>
-            <p class="my-0.5 flex items-start gap-x-2">
-              <span>在线token计算:</span
-              ><a class="text-teal-500" href="https://platform.openai.com/tokenizer"
-                >https://platform.openai.com/tokenizer</a
-              >
-            </p>
+            <NDataTable :columns="columns" :data="data" :single-line="false" class="my-4 text-xs" />
+            <div class="list-disc list-inside">
+              <p class="my-0.5 flex items-start gap-x-2 text-sm">
+                <span>* 什么是token:</span
+                ><a class="text-teal-500" href="https://zhuanlan.zhihu.com/p/608783584"
+                  >https://zhuanlan.zhihu.com/p/608783584</a
+                >
+              </p>
+              <p class="my-0.5 flex items-start gap-x-2 text-sm">
+                <span>* 在线token计算:</span
+                ><a class="text-teal-500" href="https://platform.openai.com/tokenizer"
+                  >https://platform.openai.com/tokenizer</a
+                >
+              </p>
+            </div>
           </div>
 
           <!-- 消费记录 -->

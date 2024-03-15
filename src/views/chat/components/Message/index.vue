@@ -84,13 +84,13 @@ const options = computed(() => {
     },
   ]
 
-  if (props.role === chatRole.assistant) {
-    common.unshift({
-      label: asRawText.value ? '预览' : '显示原文',
-      key: 'toggleRenderType',
-      icon: asRawText.value ? 'ic:outline-code-off' : 'ic:outline-code',
-    })
-  }
+  // if (props.role === chatRole.assistant) {
+  //   common.unshift({
+  //     label: asRawText.value ? '预览' : '显示原文',
+  //     key: 'toggleRenderType',
+  //     icon: asRawText.value ? 'ic:outline-code-off' : 'ic:outline-code',
+  //   })
+  // }
 
   return common
 })
