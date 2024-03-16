@@ -10,11 +10,12 @@ export interface AppState {
   sideCollapsed: boolean
   theme: Theme
   language: Language
+  v4Notice: boolean
 }
 
 // 应用的默认设置
 export function defaultSetting(): AppState {
-  return { sideCollapsed: false, theme: 'light', language: 'zh-CN' }
+  return { sideCollapsed: false, theme: 'light', language: 'zh-CN', v4Notice: true}
 }
 
 // 从本地存储中获取应用设置

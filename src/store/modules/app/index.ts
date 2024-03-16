@@ -12,6 +12,9 @@ export const useAppStore = defineStore('app-store', {
     getLanguage(): Language {
       return this.language
     },
+    getV4Notice(): boolean {
+      return this.v4Notice
+    }
   },
   actions: {
     // 侧边栏折叠状态
@@ -32,6 +35,11 @@ export const useAppStore = defineStore('app-store', {
         this.language = language
         this.recordState()
       }
+    },
+    // v4 notice
+    setV4Notice(v4Notice: boolean) {
+      this.v4Notice = v4Notice
+      this.recordState()
     },
 
     // 记录状态

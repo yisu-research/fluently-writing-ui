@@ -43,6 +43,6 @@ export function GenNonDuplicateID(randomLength: any) {
   return Number(Math.random().toString().substr(3, randomLength) + Date.now()).toString(36)
 }
 
-export function formatDate(date = undefined, format = 'YYYY-MM-DD') {
+export function formatDate(date: any = undefined, format = 'YYYY-MM-DD') {
   return formatDateTime(date, format)
 }
