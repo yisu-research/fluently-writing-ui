@@ -14,7 +14,7 @@ export const useAppStore = defineStore('app-store', {
     },
     getV4Notice(): boolean {
       return this.v4Notice
-    }
+    },
   },
   actions: {
     // 侧边栏折叠状态
