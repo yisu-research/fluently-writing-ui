@@ -356,7 +356,7 @@ onMounted(async () => {
                       </div>
                       <div class="flex flex-col items-center justify-center mt-6 md:base-2/3 md:mt-0">
                         <div class="">
-                          <NQrCode :value="qrcode.value" class="w-40 h-40" />
+                          <NQrCode :value="qrcode" class="w-40 h-40" />
                         </div>
                         <div class="flex">
                           <p>使用微信扫一扫支付</p>
