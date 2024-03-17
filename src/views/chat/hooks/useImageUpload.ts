@@ -72,7 +72,8 @@ export function useImageUpload() {
         },
       })
       .then((res: any) => {
-        imageUrl.value = res.url.replace('https', 'http').replace('.com', '.com:3001')
+        // imageUrl.value = res.url.replace('https', 'http').replace('.com', '.com:3001')
+        imageUrl.value = res.url
         loadingState.value = 'success'
         message.success('上传成功')
       })
