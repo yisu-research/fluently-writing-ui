@@ -86,6 +86,11 @@ function handleClickConversion(id: number, model: string, pattern: string) {
   router.push({ path: `/chat/${id}`, query: { model, pattern } })
 }
 
+function clickConversionOnMobile(id: number, model: string, pattern: string) {
+  handleClickConversion(id, model, pattern)
+  toggleSidebar()
+}
+
 async function initData() {
   // 对话列表
   await chatStore.fetchConversation()
@@ -157,21 +162,21 @@ function goHome() {
                   <li>
                     <ul ref="mobileList" :class="heightClass" role="list" class="space-y-1 overflow-y-scroll">
                       <li v-for="item in navigation" :key="item.name">
-                        <a
-                          href=""
+                        <button
                           class="flex items-center justify-between p-2 text-sm font-semibold leading-6 rounded-md group gap-x-3"
                           :class="[
                             item.id === chatStore.getCurrent
                               ? 'bg-slate-300/30 dark:bg-gray-700 text-teal-600'
                               : 'text-gray-700  dark:text-white',
                           ]"
+                          @click.stop="clickConversionOnMobile(item.id, item.model, item.pattern)"
                         >
                           <div class="flex items-center gap-2">
                             <SvgIcon :icon="modelIconStr(item.model)" class="w-5 h-5 shrink-0" />
                             <p>{{ item.name }}</p>
                           </div>
                           <EditConversion :id="item.id" />
-                        </a>
+                        </button>
                       </li>
                       <li v-show="loading" ref="loadBox" class="flex items-center justify-center w-full">
                         <SvgIcon icon="svg-spinners:bars-scale-fade" class="w-5 h-5 text-teal-500 shrink-0" />
@@ -201,7 +206,7 @@ function goHome() {
   <!-- Static sidebar for desktop -->
   <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
     <div
-      class="flex items-center cursor-pointer justify-between h-16 gap-2 px-4 border-r bg-teal-400/5 shrink-0 backdrop-filter backdrop-blur-2x"
+      class="flex items-center justify-between h-16 gap-2 px-4 border-r cursor-pointer bg-teal-400/5 shrink-0 backdrop-filter backdrop-blur-2x"
       @click="goHome"
     >
       <div class="flex items-center">
@@ -236,7 +241,7 @@ function goHome() {
                       ? 'bg-teal-600/10 dark:bg-gray-700 text-teal-600'
                       : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-white dark:hover:text-teal-600',
                   ]"
-                  @click="handleClickConversion(item.id, item.model, item.pattern)"
+                  @click.stop="handleClickConversion(item.id, item.model, item.pattern)"
                 >
                   <div class="flex items-center gap-2">
                     <SvgIcon :icon="modelIconStr(item.model)" class="w-5 h-5 shrink-0" />

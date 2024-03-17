@@ -115,7 +115,7 @@ async function deleteConversation() {
                     @click="closeModal"
                   >
                     <span class="sr-only">Close</span>
-                    <SvgIcon icon="ph:x-bold" class="w-5 h-5" aria-hidden="true" />
+                    <SvgIcon icon="ph:x-bold" class="w-5 h-5 text-slate-600" aria-hidden="true" />
                   </button>
                 </div>
                 <div class="my-8">
