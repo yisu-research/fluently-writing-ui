@@ -274,7 +274,7 @@ const handleLogin = () => {
                   </NForm>
                 </NTabPane>
                 <NTabPane name="loginByCode" tab="验证码登录">
-                  <NForm ref="formCodeRed" :model="formCode" :rules="rulesForEmail" size="large">
+                  <NForm ref="formCodeRef" :model="formCode" :rules="rulesForEmail" size="large">
                     <NFormItemRow label="邮箱" path="email">
                       <NInput v-model:value="formCode.email" placeholder="请输入邮箱地址" />
                     </NFormItemRow>
