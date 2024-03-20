@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 import { NNumberAnimation, NPagination, useMessage } from 'naive-ui'
 import { useClipboard } from '@vueuse/core'
 import BindEmail from './bind-email.vue'
+import IncentiveWithdrawal from './incentive-withdrawal.vue'
 import { useUserStoreWithOut } from '@/store'
 import 'dayjs/locale/zh-cn'
 import { SvgIcon } from '@/components/common'
@@ -51,17 +52,17 @@ function closeBindEmailDialog() {
 
 const isEmailBind = computed(() => !!userStore.getEmail)
 
-// const withdrawalDialog = ref(false)
+const withdrawalDialog = ref(false)
 
-// const withdrawalAmount = computed(() => userStore.getWithdraw)
+const withdrawalAmount = computed(() => userStore.getWithdraw)
 
-// function openWithdrawalDialog() {
-//   withdrawalDialog.value = true
-// }
+function openWithdrawalDialog() {
+  withdrawalDialog.value = true
+}
 
-// function closeWithdrawalDialog() {
-//   withdrawalDialog.value = false
-// }
+function closeWithdrawalDialog() {
+  withdrawalDialog.value = false
+}
 
 const invitationCode = computed(() => userStore.getInviteCode)
 
@@ -211,8 +212,8 @@ function copyInvitePromo() {
                   </div>
                   <BindEmail :open="bindEmailDialog" :is-email-bind="isEmailBind" @close="closeBindEmailDialog" />
                 </dl>
-                <!-- <div class="px-4 pb-4 mt-6 border-t border-gray-900/5">
-                  <div
+                <div class="px-4 pb-4 mt-6 border-t border-gray-900/5">
+                  <!-- <div
                     class="flex justify-between flex-none w-full px-2 py-2 mt-4 cursor-pointer hover:rounded-lg gap-x-4 hover:bg-slate-100"
                   >
                     <div class="flex items-center gap-x-4">
@@ -223,7 +224,7 @@ function copyInvitePromo() {
                       <dd class="text-sm leading-6 text-gray-500">修改密码</dd>
                     </div>
                     <SvgIcon icon="solar:alt-arrow-right-linear" class="w-6 h-6 text-gray-400" aria-hidden="true" />
-                  </div>
+                  </div> -->
                   <div
                     class="flex justify-between flex-none w-full px-2 py-2 mt-4 cursor-pointer hover:rounded-lg gap-x-4 hover:bg-slate-100"
                   >
@@ -241,7 +242,7 @@ function copyInvitePromo() {
                     :amount="withdrawalAmount"
                     @close="closeWithdrawalDialog"
                   />
-                </div> -->
+                </div>
               </div>
 
               <div
