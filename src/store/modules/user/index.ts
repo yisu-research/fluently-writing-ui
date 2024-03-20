@@ -23,6 +23,7 @@ export const useUserStore = defineStore('user-store', {
     getInviteeCount: (state) => state.invitation_count.invitee_count ?? 0,
     getWithdraw: (state) => (state.invitation_count.total_income ?? 0) / 100,
     getCallCount: (state) => state.invitation_count.call_count ?? 0,
+    getInviteeCredit: (state) => state.invitation_count.credit ?? 0,
   },
   actions: {
     async fetchProfile() {

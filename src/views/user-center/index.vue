@@ -101,7 +101,7 @@ watch(
       if (item.id === 'invite') {
         item.value = userStore.getInviteeCount
       } else if (item.id === 'experience') {
-        item.value = userStore.getCallCount
+        item.value = userStore.getInviteeCredit
       } else if (item.id === 'cash') {
         item.value = userStore.getWithdraw
       }
