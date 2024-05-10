@@ -309,7 +309,7 @@ const handleLogin = () => {
               </NButton>
               <div class="flex items-center justify-between my-2 sm:mb-0">
                 <NButton text @click="handleForgotPassword">忘记密码？</NButton>
-                <router-link to="/register"><NButton text class="">没有账号？去注册 </NButton></router-link>
+                <router-link to="/signup"><NButton text class="">没有账号？去注册 </NButton></router-link>
               </div>
             </div>
           </div>

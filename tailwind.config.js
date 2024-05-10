@@ -28,6 +28,12 @@ module.exports = {
         '5xl': '66rem',
         '8xl': '88rem',
       },
+      colors: {
+        primary: '#15B8A6',
+        secondary: '#202937',
+        tertiary: '#4B5563',
+        quaternary: '#E4E7EB',
+      },
       opacity: {
         1: '0.01',
         2.5: '0.025',

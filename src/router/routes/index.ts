@@ -19,8 +19,8 @@ export const baseRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    name: 'register',
-    path: '/register',
+    name: 'Signup',
+    path: '/signup',
     component: () => import('@/views/system/register/index.vue'),
     meta: {
       title: '注册',

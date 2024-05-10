@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import type { FormInst } from 'naive-ui'
 import { NButton, NForm, NFormItemRow, NInput, useMessage } from 'naive-ui'
 import api from '@/api'
@@ -14,6 +14,7 @@ import { useAppStore, useAuthStore } from '@/store'
 const appStore = useAppStore()
 
 const authStore = useAuthStore()
+const route = useRoute()
 const router = useRouter()
 const message = useMessage()
 
@@ -24,7 +25,7 @@ const formSignupRef = ref<FormInst | null>(null)
 // isDark
 const isDark = computed(() => appStore.isDarkTheme)
 
-const formSignup = ref({
+const formSignup = ref<{ username: string; password: string; invite_code: any }>({
   username: '',
   password: '',
   invite_code: null,
@@ -73,6 +74,10 @@ const onSignup = async () => {
     }
   })
 }
+
+onMounted(() => {
+  formSignup.value.invite_code = route.query.invite_code ?? ''
+})
 </script>
 
 <template>
