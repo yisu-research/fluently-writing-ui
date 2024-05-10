@@ -11,7 +11,6 @@ import 'dayjs/locale/zh-cn'
 import { SvgIcon } from '@/components/common'
 import api from '@/api'
 import inviteImage from '@/assets/svg/invite.svg'
-import { getProxyConfig } from '@/settings'
 
 dayjs.locale('zh-cn')
 dayjs.extend(relativeTime)
@@ -19,8 +18,6 @@ dayjs.extend(relativeTime)
 const userStore = useUserStoreWithOut()
 
 const avatar = userStore.getAvatar
-
-const proxyConfig = getProxyConfig(import.meta.env.MODE)
 
 const stats = ref([
   { id: 'invite', title: '邀请人数', value: 0, precision: 0, icon: 'solar:hand-stars-linear' },
