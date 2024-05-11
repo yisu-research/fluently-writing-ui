@@ -151,6 +151,10 @@ const onClean = useDebounceFn(async () => {
 }, 300)
 
 const onSend = useDebounceFn(() => {
+  if (loading.value) {
+    message.warning('请等待上一次对话完成')
+    return
+  }
   if (prompt.value === '') {
     message.warning('请输入问题')
     return
@@ -389,6 +393,8 @@ const onSend = useDebounceFn(() => {
 function newline() {
   prompt.value += '\n'
 }
+
+function onInput() {}
 </script>
 
 <template>
