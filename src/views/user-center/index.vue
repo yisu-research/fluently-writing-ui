@@ -2,7 +2,17 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import dayjs from 'dayjs'
-import { NNumberAnimation, NPagination, useMessage } from 'naive-ui'
+import {
+  NButton,
+  NCard,
+  NForm,
+  NFormItemRow,
+  NInput,
+  NModal,
+  NNumberAnimation,
+  NPagination,
+  useMessage,
+} from 'naive-ui'
 import { useClipboard } from '@vueuse/core'
 import BindEmail from './bind-email.vue'
 import IncentiveWithdrawal from './incentive-withdrawal.vue'
@@ -11,6 +21,7 @@ import 'dayjs/locale/zh-cn'
 import { SvgIcon } from '@/components/common'
 import api from '@/api'
 import inviteImage from '@/assets/svg/invite.svg'
+import { isValidEmail, isValidPassword } from '@/utils/format'
 
 dayjs.locale('zh-cn')
 dayjs.extend(relativeTime)
@@ -146,6 +157,182 @@ function copyInvitePromo() {
   promoCopy(invitePromo.value)
   message.success('邀请文案已复制到剪贴板')
 }
+
+// change password
+const showPasswordModal = ref<any>(false)
+
+const refPassChange = ref<any>(null)
+const modelPassChange = ref<any>({
+  code: null,
+  oldPassword: null,
+  newPassword: null,
+  confirmedPassword: null,
+})
+const refPassConfirm = ref<any>(null)
+const useEmail2ChangePass = ref<any>(false)
+
+function onReset() {
+  showPasswordModal.value = true
+}
+
+function afterLeave() {
+  // 重置 modelPassChange
+  modelPassChange.value = {
+    code: null,
+    oldPassword: null,
+    newPassword: null,
+    confirmedPassword: null,
+  }
+  useEmail2ChangePass.value = false
+}
+
+const validatePasswordStartWith = (rule: any, value: any) => {
+  return (
+    !!modelPassChange.value.newPassword &&
+    modelPassChange.value.newPassword.startsWith(value) &&
+    modelPassChange.value.newPassword.length >= value.length
+  )
+}
+const validatePasswordSame = (rule: any, value: any) => {
+  return value === modelPassChange.value.newPassword
+}
+const handlePasswordInput = () => {
+  if (modelPassChange.value.confirmedPassword) {
+    refPassConfirm.value?.validate({ trigger: 'password-input' })
+  }
+}
+
+const formPassChangeRules = {
+  code: [
+    {
+      key: 'code',
+      required: true,
+      message: '请输入验证码',
+      trigger: 'blur',
+    },
+  ],
+  oldPassword: [
+    {
+      key: 'old',
+      required: true,
+      message: '请输入旧密码',
+      trigger: 'blur',
+    },
+  ],
+  newPassword: [
+    {
+      required: true,
+      validator(rule: any, value: any) {
+        if (!value) {
+          return new Error('请输入新密码')
+        } else if (!isValidPassword(value)) {
+          return new Error('密码应为 8~32 位，且包含数字或字母')
+        }
+        return true
+      },
+      trigger: 'blur',
+    },
+  ],
+  confirmedPassword: [
+    {
+      required: true,
+      message: '请再次输入密码',
+      trigger: ['input', 'blur'],
+    },
+    {
+      validator: validatePasswordStartWith,
+      message: '两次密码输入不一致',
+      trigger: 'input',
+    },
+    {
+      validator: validatePasswordSame,
+      message: '两次密码输入不一致',
+      trigger: ['blur', 'password-input'],
+    },
+  ],
+}
+
+const loadPassChange = ref(false)
+const handlePassChangeClick = async (e: any) => {
+  e.preventDefault()
+  const useEmail = useEmail2ChangePass.value
+  refPassChange.value?.validate(
+    async (err: any) => {
+      if (!err) {
+        loadPassChange.value = true
+        try {
+          if (useEmail) {
+            await api.resetPasswordApi({
+              email: userStore.email,
+              code: modelPassChange.value.code,
+              password: modelPassChange.value.newPassword,
+            })
+            message.success('密码重置成功')
+          } else {
+            await api.updatePasswordApi({
+              old_password: modelPassChange.value.oldPassword,
+              new_password: modelPassChange.value.newPassword,
+            })
+            message.success('密码更改成功')
+          }
+        } catch (_err: any) {
+          console.error(_err)
+          if (useEmail) {
+            message.error(`密码重置失败，${_err.error.message}`)
+          } else {
+            message.error(`密码更改失败，${_err.error.message}`)
+          }
+        } finally {
+          modelPassChange.value = {
+            code: null,
+            oldPassword: null,
+            newPassword: null,
+            confirmedPassword: null,
+          }
+          loadPassChange.value = false
+        }
+      } else {
+        console.error(err)
+        message.error('请按提示正确填写内容')
+      }
+      showPasswordModal.value = false
+    },
+    (rule: any) => {
+      return rule?.key !== (useEmail ? 'old' : 'code')
+    },
+  )
+}
+
+// send verify code
+const loadEmailCode = ref(false)
+const freezeEmailCode = ref(false)
+const countDown = ref(60)
+
+const handleSendEmailCode = async (email: any) => {
+  if (!isValidEmail(email)) {
+    message.error('邮箱地址不合法')
+    return
+  }
+  loadEmailCode.value = true
+  try {
+    await api.sendCodeApi({ category: 'email', email })
+    message.success('验证码已发送，请注意查收')
+    freezeEmailCode.value = true
+    const timer = setInterval(() => {
+      countDown.value--
+      if (countDown.value === 0) {
+        clearInterval(timer)
+        freezeEmailCode.value = false
+        countDown.value = 30
+      }
+    }, 1000)
+  } catch (err: any) {
+    console.error(err)
+    message.error(`验证码发送失败，${err.error.message}`)
+  } finally {
+    loadEmailCode.value = false
+  }
+}
 </script>
 
 <template>
@@ -213,8 +400,9 @@ function copyInvitePromo() {
                   <BindEmail :open="bindEmailDialog" :is-email-bind="isEmailBind" @close="closeBindEmailDialog" />
                 </dl>
                 <div class="px-4 pb-4 mt-6 border-t border-gray-900/5">
-                  <!-- <div
+                  <div
                     class="flex justify-between flex-none w-full px-2 py-2 mt-4 cursor-pointer hover:rounded-lg gap-x-4 hover:bg-slate-100"
+                    @click="onReset"
                   >
                     <div class="flex items-center gap-x-4">
                       <dt class="flex-none">
@@ -224,11 +412,95 @@ function copyInvitePromo() {
                       <dd class="text-sm leading-6 text-gray-500">修改密码</dd>
                     </div>
                     <SvgIcon icon="solar:alt-arrow-right-linear" class="w-6 h-6 text-gray-400" aria-hidden="true" />
-                  </div> -->
+                  </div>
+                  <NModal v-model:show="showPasswordModal" :mask-closable="false" @after-leave="afterLeave">
+                    <NCard
+                      style="width: 600px"
+                      title="更改密码"
+                      :bordered="false"
+                      size="huge"
+                      role="dialog"
+                      aria-modal="true"
+                    >
+                      <template #header-extra>
+                        <button
+                          class="p-1.5 bg-gray-100 hover:bg-gray-200 rounded-md text-md focus:outline-none"
+                          @click="showPasswordModal = false"
+                        >
+                          <SvgIcon icon="ph:x" class="w-4 h-4 text-gray-400" aria-hidden="true" />
+                        </button>
+                      </template>
+                      <NForm ref="refPassChange" :model="modelPassChange" :rules="formPassChangeRules">
+                        <NFormItemRow v-if="useEmail2ChangePass" label="验证码" path="code">
+                          <NInput v-model:value="modelPassChange.code" placeholder="请输入验证码" class="mr-2" />
+                          <NButton
+                            type="primary"
+                            dashed
+                            :disabled="freezeEmailCode"
+                            :loading="loadEmailCode"
+                            @click="handleSendEmailCode(userStore.email)"
+                          >
+                            <span v-if="freezeEmailCode">{{ countDown }}&thinsp;秒后再发送</span>
+                            <span v-else>获取验证码</span>
+                          </NButton>
+                        </NFormItemRow>
+                        <NFormItemRow v-else label="旧密码" path="oldPassword">
+                          <NInput
+                            v-model:value="modelPassChange.oldPassword"
+                            placeholder="请输入旧密码"
+                            type="password"
+                            @keydown.enter.prevent
+                          />
+                        </NFormItemRow>
+                        <NFormItemRow label="新密码" path="newPassword">
+                          <NInput
+                            v-model:value="modelPassChange.newPassword"
+                            placeholder="请输入新密码"
+                            type="password"
+                            @input="handlePasswordInput"
+                            @keydown.enter.prevent
+                          />
+                        </NFormItemRow>
+                        <NFormItemRow ref="refPassConfirm" label="确认新密码" path="confirmedPassword" first>
+                          <NInput
+                            v-model:value="modelPassChange.confirmedPassword"
+                            placeholder="请再次输入新密码"
+                            :disabled="!modelPassChange.newPassword"
+                            type="password"
+                            @keydown.enter.prevent
+                          />
+                        </NFormItemRow>
+                      </NForm>
+                      <div v-if="isEmailBind" class="flex justify-end">
+                        <NButton quaternary type="primary" @click="useEmail2ChangePass = !useEmail2ChangePass">
+                          <span v-if="useEmail2ChangePass">收不到验证码？改用密码验证 </span>
+                          <span v-else>不记得旧密码？改用邮箱认证</span>
+                          <SvgIcon icon="ph:caret-double-right-light" class="w-4 h-4 ml-1" aria-hidden="true" />
+                        </NButton>
+                      </div>
+                      <template #footer>
+                        <div class="flex justify-end">
+                          <NButton
+                            :disabled="
+                              !modelPassChange.newPassword ||
+                              !modelPassChange.confirmedPassword ||
+                              modelPassChange.newPassword !== modelPassChange.confirmedPassword
+                            "
+                            type="primary"
+                            :loading="loadPassChange"
+                            @click="handlePassChangeClick"
+                          >
+                            更改
+                          </NButton>
+                        </div>
+                      </template>
+                    </NCard>
+                  </NModal>
                   <div
                     class="flex justify-between flex-none w-full px-2 py-2 mt-4 cursor-pointer hover:rounded-lg gap-x-4 hover:bg-slate-100"
+                    @click="openWithdrawalDialog"
                   >
-                    <div class="flex items-center gap-x-4" @click="openWithdrawalDialog">
+                    <div class="flex items-center gap-x-4">
                       <dt class="flex-none">
                         <span class="sr-only">password</span>
                         <SvgIcon icon="ph:money-duotone" class="w-6 h-6 text-gray-400" aria-hidden="true" />
