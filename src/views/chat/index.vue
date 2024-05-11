@@ -386,7 +386,9 @@ const onSend = useDebounceFn(() => {
   }
 }, 500)
 
-function onInput() {}
+function newline() {
+  prompt.value += '\n'
+}
 </script>
 
 <template>
@@ -434,6 +436,8 @@ function onInput() {}
             type="textarea"
             class="block w-full h-24 p-4 pb-2 text-sm overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-teal-600/20 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-teal-600/50 dark:[&::-webkit-scrollbar-track]:bg-slate-700 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500 max-h-[12rem] bg-transparent border border-b-0 border-gray-200 rounded-b-none m shadow-in rounded-xl focus:ring-0 ring-transparent focus:border-teal-500 dark:bg-slate-800 dark:border-gray-700 dark:text-gray-400"
             placeholder="问点什么吧..."
+            @keydown.enter.prevent.exact="onSend"
+            @keydown.shift.enter="newline"
             @focus="handleInputFocus"
             @blur="isFocus = false"
             @input="onInput"
