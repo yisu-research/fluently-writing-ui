@@ -328,7 +328,7 @@ const handleLogin = () => {
               <p class="font-bold">一粟科研</p>
             </div>
             <p class="mt-4 text-sm leading-6 text-center lg:mt-0 text-slate-500 dark:text-slate-400">
-              © 2023 一粟科研 Inc. All rights reserved.
+              © 2024 一粟科研 Inc. All rights reserved.
             </p>
           </div>
         </div>
