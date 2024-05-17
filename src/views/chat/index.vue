@@ -9,6 +9,7 @@ import { useImageUpload } from './hooks/useImageUpload'
 import { useChatView } from './hooks/useChatView'
 import { Message } from './components'
 import { useScroll } from './hooks/useScroll'
+import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { SvgIcon } from '@/components/common'
 import { useChatStoreWithOut } from '@/store/modules'
 import { type ContentType, type MessageType, chatRole, type modelType } from '@/store/modules/chat/helper'
@@ -22,12 +23,12 @@ const prompt = ref('')
 
 const message = useMessage()
 
+const { isMobile } = useBasicLayout()
+
 // 获取页面路由参数
 const route = useRoute()
 
 const model = computed(() => route.query.model)
-
-const pattern = computed(() => route.query.pattern)
 
 // 获取页面路由参数
 const chatId = computed(() => route.params.id as string)
@@ -44,8 +45,9 @@ interface modelMapType {
 }
 const modelMap: modelMapType = {
   'gpt-3.5-turbo': 'GPT3.5',
-  'gpt-4-1106-preview': 'GPT4',
-  'gpt-4-vision-preview': 'GPT4 Vision',
+  'gpt-4o': 'GPT4o',
+  // 'gpt-4-1106-preview': 'GPT4',
+  // 'gpt-4-vision-preview': 'GPT4 Vision',
 }
 
 const REQUEST_TIMEOUT_MS = 60000
@@ -159,6 +161,7 @@ const onSend = useDebounceFn(() => {
     message.warning('请输入问题')
     return
   }
+
   // 新问题的 uuid, 用于标识问题。请求返回时，根据 uuid 更新对应的问题
   const uuidUser = uuidv4()
 
@@ -170,7 +173,7 @@ const onSend = useDebounceFn(() => {
   ]
 
   // 如果是 vision 模式，则需要判断是否有图片
-  if (model.value === 'gpt-4-vision-preview' && fileList.value.length > 0) {
+  if (model.value === 'gpt-4o' && fileList.value.length > 0) {
     contents.push({
       type: 'image_url',
       image_url: {
@@ -179,14 +182,7 @@ const onSend = useDebounceFn(() => {
     })
   }
 
-  addMessage(
-    uuidUser,
-    chatStore.getCurrent!,
-    model.value as modelType,
-    pattern.value as string,
-    chatRole.user,
-    contents,
-  )
+  addMessage(uuidUser, chatStore.getCurrent!, model.value as modelType, chatRole.user, contents)
   scrollToBottom()
 
   // 重置输入框
@@ -201,14 +197,7 @@ const onSend = useDebounceFn(() => {
       text: '正在思考中...',
     },
   ]
-  addMessage(
-    uuidAssistant,
-    chatStore.getCurrent!,
-    model.value as modelType,
-    pattern.value as string,
-    chatRole.assistant,
-    contentsAssistant,
-  )
+  addMessage(uuidAssistant, chatStore.getCurrent!, model.value as modelType, chatRole.assistant, contentsAssistant)
   scrollToBottom()
 
   const controller = new AbortController()
@@ -234,7 +223,6 @@ const onSend = useDebounceFn(() => {
           id: uuidAssistant,
           conversationId: chatStore.getCurrent!,
           model: model.value as modelType,
-          pattern: pattern.value as string,
           role: chatRole.assistant,
           content: tokenInfoJson.content,
           dateTime: new Date().toISOString(),
@@ -259,19 +247,12 @@ const onSend = useDebounceFn(() => {
         responseText += fetchText
         remainText = remainText.slice(fetchCount)
 
-        updateMessage(
-          uuidAssistant,
-          chatStore.getCurrent!,
-          model.value as modelType,
-          pattern.value as string,
-          chatRole.assistant,
-          [
-            {
-              type: 'text',
-              text: responseText,
-            },
-          ],
-        )
+        updateMessage(uuidAssistant, chatStore.getCurrent!, model.value as modelType, chatRole.assistant, [
+          {
+            type: 'text',
+            text: responseText,
+          },
+        ])
         scrollToBottom()
       }
 
@@ -350,7 +331,6 @@ const onSend = useDebounceFn(() => {
             uuidAssistant,
             chatStore.getCurrent!,
             model.value as modelType,
-            pattern.value as string,
             chatRole.assistant,
             updateContents,
           )
@@ -390,6 +370,16 @@ const onSend = useDebounceFn(() => {
   }
 }, 500)
 
+function onEnter() {
+  // 如果在移动端就换行
+  if (isMobile.value) {
+    prompt.value += '\n'
+    return
+  }
+
+  onSend()
+}
+
 function newline() {
   prompt.value += '\n'
 }
@@ -426,7 +416,7 @@ function onInput() {}
       <!-- 输入组件 -->
       <footer class="sticky bottom-0 z-10 w-full max-w-4xl mx-auto -mb-4 sm:py-6">
         <!-- Input -->
-        <div class="mb-2">
+        <div class="flex items-center justify-between mb-2 gap-x-4">
           <span
             class="inline-flex items-center gap-x-1.5 rounded-full bg-teal-600/10 px-3 py-1 text-sm font-medium text-teal-400/90 backdrop-blur-sm"
           >
@@ -435,6 +425,30 @@ function onInput() {}
             </svg>
             {{ modelText }}
           </span>
+          <div v-if="!isMobile" class="flex items-center">
+            <kbd
+              class="min-h-[30px] inline-flex justify-center items-center mr-1 py-1 px-1.5 bg-gray-200 font-mono text-sm text-gray-800 rounded-md dark:bg-neutral-700 dark:text-neutral-200"
+            >
+              Enter
+            </kbd>
+            <span> 发送，</span>
+            <!-- KBD -->
+            <span class="flex flex-wrap items-center mr-1 text-sm text-gray-600 gap-x-1 dark:text-neutral-400">
+              <span
+                class="min-h-[30px] inline-flex justify-center items-center py-1 px-1.5 bg-gray-200 border border-transparent font-mono text-sm text-gray-800 rounded-md dark:bg-neutral-700 dark:text-neutral-200"
+              >
+                Shift
+              </span>
+              +
+              <span
+                class="min-h-[30px] inline-flex justify-center items-center py-1 px-1.5 bg-gray-200 border border-transparent font-mono text-sm text-gray-800 rounded-md dark:bg-neutral-700 dark:text-neutral-200"
+              >
+                Enter
+              </span>
+            </span>
+            <span>换行</span>
+            <!-- End KBD -->
+          </div>
         </div>
         <div class="rounded-xl bg-slate-50/60 backdrop-blur-lg">
           <textarea
@@ -442,7 +456,7 @@ function onInput() {}
             type="textarea"
             class="block w-full h-24 p-4 pb-2 text-sm overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-teal-600/20 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-teal-600/50 dark:[&::-webkit-scrollbar-track]:bg-slate-700 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500 max-h-[12rem] bg-transparent border border-b-0 border-gray-200 rounded-b-none m shadow-in rounded-xl focus:ring-0 ring-transparent focus:border-teal-500 dark:bg-slate-800 dark:border-gray-700 dark:text-gray-400"
             placeholder="问点什么吧..."
-            @keydown.enter.prevent.exact="onSend"
+            @keypress.enter.prevent.exact="onEnter"
             @keydown.shift.enter="newline"
             @focus="handleInputFocus"
             @blur="isFocus = false"
@@ -471,7 +485,7 @@ function onInput() {}
                 >
                   <NUploadTrigger #="{ handleClick }" abstract>
                     <button
-                      v-if="model === 'gpt-4-vision-preview'"
+                      v-if="model === 'gpt-4o'"
                       type="button"
                       class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-gray-500 rounded-lg hover:bg-teal-600/10 hover:scale-105 hover:text-teal-600 focus:z-10 dark:hover:text-teal-500"
                       @click="handleClick"

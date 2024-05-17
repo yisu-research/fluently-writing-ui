@@ -52,7 +52,6 @@ export interface MessageType {
   id: IdType
   conversationId: number
   model: modelType
-  pattern: string
   role: chatRole
   content: ContentType[]
   dateTime: string
@@ -79,15 +78,16 @@ export enum conversationState {
 
 export enum modelType {
   GPT3_5 = 'gpt-3.5-turbo',
-  GPT4 = 'gpt-4-1106-preview',
-  GPT4_VISION = 'gpt-4-vision-preview',
+  GPT4o = 'gpt-4o',
+  // GPT4 = 'gpt-4-1106-preview',
+  // GPT4_VISION = 'gpt-4-vision-preview',
 }
 
 export interface conversationType {
   id: number
   name: string
   model: modelType
-  pattern: string
+  // pattern: string
   spendCount: number
   startMessageId: number
   state: conversationState

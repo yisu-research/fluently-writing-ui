@@ -8,7 +8,6 @@ export function useChatView() {
     id: IdType,
     conversationId: number,
     model: modelType,
-    pattern: string,
     role: chatRole,
     contents: ContentType[],
   ) => {
@@ -19,7 +18,6 @@ export function useChatView() {
       id,
       conversationId,
       model,
-      pattern,
       role,
       content: contents,
       dateTime: new Date().toISOString(),
@@ -41,7 +39,6 @@ export function useChatView() {
     id: IdType,
     conversationId: number,
     model: modelType,
-    pattern: string,
     role: chatRole,
     contents: ContentType[],
   ) => {
@@ -52,7 +49,6 @@ export function useChatView() {
       id,
       conversationId,
       model,
-      pattern,
       role,
       content: contents,
       dateTime: new Date().toISOString(),

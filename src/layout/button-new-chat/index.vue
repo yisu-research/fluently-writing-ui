@@ -17,17 +17,23 @@ const options = [
     tips: '单次 ChatGPT4 对话将消耗 1 积分',
   },
   {
-    name: 'GPT4',
-    key: 'gpt-4-1106-preview',
-    icon: 'solar:chat-round-call-outline',
-    tips: '单次 ChatGPT4 对话将消耗 10 积分',
-  },
-  {
-    name: 'GPT4 Vision',
-    key: 'gpt-4-vision-preview',
+    name: 'GPT4o',
+    key: 'gpt-4o',
     icon: 'solar:eye-scan-linear',
-    tips: '单次 ChatGPT4 Vision 对话将消耗 15 积分',
+    tips: '单次 ChatGPT4 Vision 对话将消耗 5 积分',
   },
+  // {
+  //   name: 'GPT4',
+  //   key: 'gpt-4-1106-preview',
+  //   icon: 'solar:chat-round-call-outline',
+  //   tips: '单次 ChatGPT4 对话将消耗 10 积分',
+  // },
+  // {
+  //   name: 'GPT4 Vision',
+  //   key: 'gpt-4-vision-preview',
+  //   icon: 'solar:eye-scan-linear',
+  //   tips: '单次 ChatGPT4 Vision 对话将消耗 15 积分',
+  // },
 ]
 
 // 创建对话
@@ -37,12 +43,12 @@ const options = [
 async function createChat(model: string) {
   try {
     const uuid = day(Date.now()).format('YYMMDD-HH:mm:ss')
-    const res: any = await api.createChatApi({ name: uuid, model, pattern: 'multi' })
+    const res: any = await api.createChatApi({ name: uuid, model })
     const conversation: conversationType = {
       id: res.id,
       name: res.name,
       model: res.model,
-      pattern: res.pattern,
+      // pattern: res.pattern,
       spendCount: res.spend_count,
       state: res.state,
       userId: res.user_id,
@@ -52,7 +58,7 @@ async function createChat(model: string) {
     chatStore.insertConversation(conversation)
 
     // 导航到新创建的对话
-    router.push({ path: `/chat/${res.id}`, query: { id: res.id, model: res.model, pattern: 'multi' } })
+    router.push({ path: `/chat/${res.id}`, query: { id: res.id, model: res.model } })
   } catch (err) {
     console.error(err)
   }

@@ -75,19 +75,18 @@ function setSideInfiniteScroll() {
 function modelIconStr(model: modelType) {
   const iconMap = {
     [modelType.GPT3_5]: 'solar:chat-line-linear',
-    [modelType.GPT4]: 'solar:chat-round-line-linear',
-    [modelType.GPT4_VISION]: 'solar:eye-scan-linear',
+    [modelType.GPT4o]: 'solar:eye-scan-linear',
   }
 
   return iconMap[model]
 }
 
-function handleClickConversion(id: number, model: string, pattern: string) {
-  router.push({ path: `/chat/${id}`, query: { model, pattern } })
+function handleClickConversion(id: number, model: string) {
+  router.push({ path: `/chat/${id}`, query: { model } })
 }
 
-function clickConversionOnMobile(id: number, model: string, pattern: string) {
-  handleClickConversion(id, model, pattern)
+function clickConversionOnMobile(id: number, model: string) {
+  handleClickConversion(id, model)
   toggleSidebar()
 }
 
@@ -169,7 +168,7 @@ function goHome() {
                               ? 'bg-slate-300/30 dark:bg-gray-700 text-teal-600'
                               : 'text-gray-700  dark:text-white',
                           ]"
-                          @click.stop="clickConversionOnMobile(item.id, item.model, item.pattern)"
+                          @click.stop="clickConversionOnMobile(item.id, item.model)"
                         >
                           <div class="flex items-center gap-2">
                             <SvgIcon :icon="modelIconStr(item.model)" class="w-5 h-5 shrink-0" />
@@ -241,7 +240,7 @@ function goHome() {
                       ? 'bg-teal-600/10 dark:bg-gray-700 text-teal-600'
                       : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-white dark:hover:text-teal-600',
                   ]"
-                  @click.stop="handleClickConversion(item.id, item.model, item.pattern)"
+                  @click.stop="handleClickConversion(item.id, item.model)"
                 >
                   <div class="flex items-center gap-2">
                     <SvgIcon :icon="modelIconStr(item.model)" class="w-5 h-5 shrink-0" />
