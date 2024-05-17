@@ -21,6 +21,10 @@ module.exports = {
     },
 
     extend: {
+      fontFamily: {
+        jinbu: '"DingTalk_JinBuTi_Regular", sans-serif',
+        nunito: '"Nunito", sans-serif',
+      },
       maxWidth: {
         lg: '33rem',
         '2xl': '40rem',
@@ -29,8 +33,25 @@ module.exports = {
         '8xl': '88rem',
       },
       colors: {
-        primary: '#15B8A6',
-        secondary: '#202937',
+        primary: '#00A76F',
+        'primary-1': '#C9FAD6',
+        'primary-2': '#5CE49B',
+        'primary-3': '#007868',
+        'primary-4': '#004B51',
+        secondary: '#8F33FF',
+        'secondary-1': '#EFD6FF',
+        'secondary-2': '#C685FF',
+        'secondary-3': '#5119B7',
+        'secondary-4': '#27097A',
+        'grey-100': '#F9FAFB',
+        'grey-200': '#F5F6F8',
+        'grey-300': '#DFE3E8',
+        'grey-400': '#C5CDD5',
+        'grey-500': '#919EAB',
+        'grey-600': '#637381',
+        'grey-700': '#454F5B',
+        'grey-800': '#212B37',
+        'grey-900': '#161C24',
         tertiary: '#4B5563',
         quaternary: '#E4E7EB',
       },

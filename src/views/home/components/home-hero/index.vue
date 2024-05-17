@@ -22,7 +22,7 @@ const title = '一粟创作助手'
 const slogan = '激发灵感，提高效率'
 
 // 现在开始
-const start = '现在开始'
+const start = '马上开始'
 
 // const isLogin = computed(() => userStore.getUsername)
 
@@ -66,7 +66,7 @@ function clickStart() {
       <rect width="100%" height="100%" stroke-width="0" fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)" />
     </svg>
 
-    <div class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]">
+    <div class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-15rem]">
       <svg
         class="relative left-[calc(50%-11rem)] -z-10 h-[21.1875rem] max-w-none -translate-x-1/3 rotate-[20deg] sm:left-[calc(50%-20rem)] sm:h-[62.375rem]"
         viewBox="0 0 1155 678"
@@ -85,8 +85,8 @@ function clickStart() {
             y2="474.645"
             gradientUnits="userSpaceOnUse"
           >
-            <stop :stop-color="isDark ? '#05EF99' : '#2DD4BF'" />
-            <stop offset="1" :stop-color="isDark ? '#993FF8' : '#CDF973'" />
+            <stop :stop-color="isDark ? '#02EADA' : '#07D768'" />
+            <stop offset="1" :stop-color="isDark ? '#7103E6' : '#ADFF0A'" />
           </linearGradient>
         </defs>
       </svg>
@@ -95,7 +95,7 @@ function clickStart() {
       <div class="flex flex-col items-center max-w-2xl mx-auto lg:items-start lg:mx-0 lg:flex-auto">
         <!-- 渐变色标题 -->
         <h1
-          class="max-w-lg mt-10 text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-emerald-300 sm:text-6xl xl:text-7xl"
+          class="max-w-lg mt-10 text-4xl font-bold tracking-tight text-transparent font-jinbu bg-clip-text bg-gradient-to-r from-primary-2 to-primary-3 sm:text-6xl xl:text-7xl"
         >
           {{ title }}
         </h1>
@@ -104,7 +104,7 @@ function clickStart() {
           <p class="mt-6 text-2xl leading-8 text-slate-600 dark:text-slate-300">{{ slogan }}</p>
           <p class="text-lg text-gray-600 leading-2 dark:text-gray-400">
             {{ footnote }}
-            <a href="https://chat.openai.com" class="text-teal-500 hover:text-teal-400">ChatGPT</a>
+            <a href="https://chat.openai.com" class="text-primary hover:text-teal-400">ChatGPT</a>
           </p>
         </div>
         <div class="flex items-center mt-10 gap-x-6">
