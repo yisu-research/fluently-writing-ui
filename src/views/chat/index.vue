@@ -425,23 +425,23 @@ function onInput() {}
             </svg>
             {{ modelText }}
           </span>
-          <div v-if="!isMobile" class="flex items-center">
+          <div v-if="!isMobile" class="flex items-center px-4 py-1 rounded-lg bg-teal-600/20 w-fit">
             <kbd
-              class="min-h-[30px] inline-flex justify-center items-center mr-1 py-1 px-1.5 bg-gray-200 font-mono text-sm text-gray-800 rounded-md dark:bg-neutral-700 dark:text-neutral-200"
+              class="min-h-[30px] inline-flex justify-center items-center mr-1 py-0.5 px-1.5 bg-gray-100 font-mono text-sm text-gray-500 rounded-md dark:bg-neutral-700 dark:text-neutral-200"
             >
               Enter
             </kbd>
             <span> 发送，</span>
             <!-- KBD -->
-            <span class="flex flex-wrap items-center mr-1 text-sm text-gray-600 gap-x-1 dark:text-neutral-400">
+            <span class="flex flex-wrap items-center mr-1 text-sm text-gray-500 gap-x-1 dark:text-neutral-400">
               <span
-                class="min-h-[30px] inline-flex justify-center items-center py-1 px-1.5 bg-gray-200 border border-transparent font-mono text-sm text-gray-800 rounded-md dark:bg-neutral-700 dark:text-neutral-200"
+                class="min-h-[30px] inline-flex justify-center items-center py-0.5 px-1.5 bg-gray-100 border border-transparent font-mono text-sm text-gray-500 rounded-md dark:bg-neutral-700 dark:text-neutral-200"
               >
                 Shift
               </span>
               +
               <span
-                class="min-h-[30px] inline-flex justify-center items-center py-1 px-1.5 bg-gray-200 border border-transparent font-mono text-sm text-gray-800 rounded-md dark:bg-neutral-700 dark:text-neutral-200"
+                class="min-h-[30px] inline-flex justify-center items-center py-0.5 px-1.5 bg-gray-100 border border-transparent font-mono text-sm text-gray-500 rounded-md dark:bg-neutral-700 dark:text-neutral-200"
               >
                 Enter
               </span>

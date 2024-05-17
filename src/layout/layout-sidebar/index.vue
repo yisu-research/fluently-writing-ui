@@ -102,7 +102,7 @@ function goHome() {
 
 <template>
   <TransitionRoot as="template" :show="sidebarOpen">
-    <Dialog as="div" class="relative z-50 lg:hidden" @close="toggleSidebar">
+    <Dialog as="div" class="relative z-40 lg:hidden" @close="toggleSidebar">
       <TransitionChild
         as="template"
         enter="transition-opacity ease-linear duration-300"
@@ -203,7 +203,7 @@ function goHome() {
   </TransitionRoot>
 
   <!-- Static sidebar for desktop -->
-  <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+  <div class="hidden lg:fixed lg:inset-y-0 lg:z-40 lg:flex lg:w-72 lg:flex-col">
     <div
       class="flex items-center justify-between h-16 gap-2 px-4 border-r cursor-pointer bg-teal-400/5 shrink-0 backdrop-filter backdrop-blur-2x"
       @click="goHome"

@@ -141,7 +141,7 @@ const createColumns = () => {
     {
       title: '积分',
       key: 'credit',
-      rowSpan: (rowData: any, rowIndex: any) => (rowIndex === 0 ? 7 : 1),
+      rowSpan: (rowData: any, rowIndex: any) => (rowIndex === 0 ? 10 : 1),
     },
     {
       title: '模型',
@@ -150,7 +150,7 @@ const createColumns = () => {
         if (rowIndex === 0 || rowIndex === 2) {
           return 2
         }
-        if (rowIndex === 4) {
+        if (rowIndex === 4 || rowIndex === 7) {
           return 3
         }
         return 1
@@ -177,37 +177,55 @@ const createData = () => [
     type: 'ChatGPT',
     description: '输出: 6667 tokens',
   },
-  // {
-  //   key: 2,
-  //   credit: '1 积分',
-  //   type: 'GPT4',
-  //   description: '输入: 1000 tokens',
-  // },
-  // {
-  //   key: 3,
-  //   credit: '1 积分',
-  //   type: 'GPT4',
-  //   description: '输出: 333 tokens',
-  // },
-  // {
-  //   key: 4,
-  //   credit: '1 积分',
-  //   type: 'GPT4-Vision',
-  //   description: '输入: 1000 tokens',
-  // },
+  {
+    key: 2,
+    credit: '1 积分',
+    type: 'GPT4',
+    description: '输入: 1000 tokens',
+  },
+  {
+    key: 3,
+    credit: '1 积分',
+    type: 'GPT4',
+    description: '输出: 333 tokens',
+  },
+  {
+    key: 4,
+    credit: '1 积分',
+    type: 'GPT4-Vision',
+    description: '输入: 1000 tokens',
+  },
 
-  // {
-  //   key: 5,
-  //   credit: '1 积分',
-  //   type: 'GPT4-Vision',
-  //   description: '输出: 333 tokens',
-  // },
-  // {
-  //   key: 6,
-  //   credit: '1 积分',
-  //   type: 'GPT4-Vision',
-  //   description: '图片: 4张',
-  // },
+  {
+    key: 5,
+    credit: '1 积分',
+    type: 'GPT4-Vision',
+    description: '输出: 333 tokens',
+  },
+  {
+    key: 6,
+    credit: '1 积分',
+    type: 'GPT4-Vision',
+    description: '图片: 4张',
+  },
+  {
+    key: 7,
+    credit: '1 积分',
+    type: 'GPT4-o',
+    description: '输入：2000 tokens',
+  },
+  {
+    key: 8,
+    credit: '1 积分',
+    type: 'GPT-4o',
+    description: '输出：666 tokens',
+  },
+  {
+    key: 9,
+    credit: '1 积分',
+    type: 'GPT4-o',
+    description: '图片: 4张',
+  },
 ]
 
 const data = ref(createData())

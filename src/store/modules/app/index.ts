@@ -15,6 +15,9 @@ export const useAppStore = defineStore('app-store', {
     getV4Notice(): boolean {
       return this.v4Notice
     },
+    getGpt4oNotice(): boolean {
+      return this.gpt4oNotice
+    }
   },
   actions: {
     // 侧边栏折叠状态
@@ -39,6 +42,12 @@ export const useAppStore = defineStore('app-store', {
     // v4 notice
     setV4Notice(v4Notice: boolean) {
       this.v4Notice = v4Notice
+      this.recordState()
+    },
+
+    // gpt4o notice
+    setGpt4oNotice(gpt4oNotice: boolean) {
+      this.gpt4oNotice = gpt4oNotice
       this.recordState()
     },
 
