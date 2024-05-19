@@ -111,7 +111,7 @@ onMounted(() => {
                   </div>
                 </div>
 
-                <div class="flex justify-center mt-4 ">
+                <div class="flex justify-center mt-4">
                   <button
                     type="button"
                     class="inline-flex justify-center px-4 py-2 text-sm font-medium border border-transparent rounded-md bg-emerald-100 text-emerald-900 hover:bg-emerald-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"

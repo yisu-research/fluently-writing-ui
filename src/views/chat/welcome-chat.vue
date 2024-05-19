@@ -15,7 +15,7 @@ import ButtonNewChat from '@/layout/button-new-chat/index.vue'
       <div class="w-48">
         <ButtonNewChat />
       </div>
-    </div>  
+    </div>
   </div>
 </template>
 

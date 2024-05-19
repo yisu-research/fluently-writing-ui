@@ -17,7 +17,7 @@ export const useAppStore = defineStore('app-store', {
     },
     getGpt4oNotice(): boolean {
       return this.gpt4oNotice
-    }
+    },
   },
   actions: {
     // 侧边栏折叠状态

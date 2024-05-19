@@ -147,10 +147,10 @@ const createColumns = () => {
       title: '模型',
       key: 'type',
       rowSpan: (rowData: any, rowIndex: any) => {
-        if (rowIndex === 0 || rowIndex === 2) {
+        if (rowIndex === 0) {
           return 2
         }
-        if (rowIndex === 4 || rowIndex === 7) {
+        if (rowIndex === 4 || rowIndex === 2) {
           return 3
         }
         return 1
@@ -177,37 +177,37 @@ const createData = () => [
     type: 'ChatGPT',
     description: '输出: 6667 tokens',
   },
-  {
-    key: 2,
-    credit: '1 积分',
-    type: 'GPT4',
-    description: '输入: 1000 tokens',
-  },
-  {
-    key: 3,
-    credit: '1 积分',
-    type: 'GPT4',
-    description: '输出: 333 tokens',
-  },
-  {
-    key: 4,
-    credit: '1 积分',
-    type: 'GPT4-Vision',
-    description: '输入: 1000 tokens',
-  },
+  // {
+  //   key: 2,
+  //   credit: '1 积分',
+  //   type: 'GPT4',
+  //   description: '输入: 1000 tokens',
+  // },
+  // {
+  //   key: 3,
+  //   credit: '1 积分',
+  //   type: 'GPT4',
+  //   description: '输出: 333 tokens',
+  // },
+  // {
+  //   key: 4,
+  //   credit: '1 积分',
+  //   type: 'GPT4-Vision',
+  //   description: '输入: 1000 tokens',
+  // },
 
-  {
-    key: 5,
-    credit: '1 积分',
-    type: 'GPT4-Vision',
-    description: '输出: 333 tokens',
-  },
-  {
-    key: 6,
-    credit: '1 积分',
-    type: 'GPT4-Vision',
-    description: '图片: 4张',
-  },
+  // {
+  //   key: 5,
+  //   credit: '1 积分',
+  //   type: 'GPT4-Vision',
+  //   description: '输出: 333 tokens',
+  // },
+  // {
+  //   key: 6,
+  //   credit: '1 积分',
+  //   type: 'GPT4-Vision',
+  //   description: '图片: 4张',
+  // },
   {
     key: 7,
     credit: '1 积分',
