@@ -387,14 +387,30 @@ function newline() {
 function onInput() {}
 
 const placeholder = `问点什么吧... \nEnter 发送,Shift + Enter 换行`
+
+
+import UploadImg from './components/drag/UploadImg.vue'
+
+const uploadimgRef = ref()
+
+const handleDragover = () =>{
+    uploadimgRef.value.openUploadImg();
+}
+
+const handleDrop = () =>{
+    uploadimgRef.value.closeUploadImg();
+}
+
 </script>
 
 <template>
+
   <div
     id="scrollRef"
     ref="scrollRef"
     class="relative w-full h-screen overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-teal-500/10 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-teal-600/80 dark:[&::-webkit-scrollbar-track]:bg-slate-700 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500"
   >
+
     <div class="max-w-4xl min-h-[calc(100%)] p-4 mx-auto w-full flex flex-col justify-between">
       <div class="pt-16">
         <Message
@@ -416,7 +432,11 @@ const placeholder = `问点什么吧... \nEnter 发送,Shift + Enter 换行`
       </div>
 
       <!-- 输入组件 -->
-      <footer class="sticky bottom-0 z-10 w-full max-w-4xl mx-auto -mb-4 sm:py-6">
+      <footer class="sticky bottom-0 z-10 w-full max-w-4xl mx-auto -mb-4 sm:py-6" @dragover.prevent="handleDragover()">
+
+        <!-- 上传框 -->
+        <UploadImg ref="uploadimgRef" @drop.prevent="handleDrop()"/>
+
         <!-- Input -->
         <div class="flex items-center justify-between mb-2 gap-x-4">
           <span
@@ -464,6 +484,8 @@ const placeholder = `问点什么吧... \nEnter 发送,Shift + Enter 换行`
             @blur="isFocus = false"
             @input="onInput"
           ></textarea>
+
+          
 
           <!-- Toolbar -->
           <div
