@@ -27,14 +27,15 @@ defineExpose({
 </script>
 
 <template>
-  <div :class="isHidden" class="fixed inset-0 place-content-center z-50 opacity-25 bg-slate-200">
+  <div :class="isHidden" class="fixed inset-0 place-content-center z-50 opacity-25 ">
     <NUpload
           multiple
           directory-dnd:true
+          show-file-list:false
           action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
           :max="5"
         >
-          <NUploadDragger class="bg-slate-200" >
+          <NUploadDragger class="fixed inset-0 place-content-center z-50" >
             <div style="margin-bottom: 12px">
               <NIcon size="48" :depth="3">
                 <ArchiveIcon/>
