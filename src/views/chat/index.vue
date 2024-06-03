@@ -5,6 +5,7 @@ import { useRoute } from 'vue-router'
 import { v4 as uuidv4 } from 'uuid'
 import { EventStreamContentType, fetchEventSource } from '@fortaine/fetch-event-source'
 import { useDebounceFn } from '@vueuse/core'
+import UploadImg from './components/drag/UploadImg.vue'
 import { useImageUpload } from './hooks/useImageUpload'
 import { useChatView } from './hooks/useChatView'
 import { Message } from './components'
@@ -16,6 +17,7 @@ import { type ContentType, type MessageType, chatRole, type modelType } from '@/
 import { getToken } from '@/store/modules/auth/helper'
 import { prettyObject } from '@/utils/format'
 import api from '@/api'
+
 
 const chatStore = useChatStoreWithOut()
 
@@ -389,7 +391,6 @@ function onInput() {}
 const placeholder = `问点什么吧... \nEnter 发送,Shift + Enter 换行`
 
 
-import UploadImg from './components/drag/UploadImg.vue'
 
 const uploadimgRef = ref()
 
@@ -404,6 +405,11 @@ const handleDrop = () =>{
 </script>
 
 <template>
+
+  <div>
+    <!-- 上传框 -->
+    <UploadImg ref="uploadimgRef" @drop.prevent="handleDrop()"/>
+  </div>
 
   <div
     id="scrollRef"
@@ -433,9 +439,6 @@ const handleDrop = () =>{
 
       <!-- 输入组件 -->
       <footer class="sticky bottom-0 z-10 w-full max-w-4xl mx-auto -mb-4 sm:py-6" @dragover.prevent="handleDragover()">
-
-        <!-- 上传框 -->
-        <UploadImg ref="uploadimgRef" @drop.prevent="handleDrop()"/>
 
         <!-- Input -->
         <div class="flex items-center justify-between mb-2 gap-x-4">
