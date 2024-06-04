@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUpdated, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { NUpload, NUploadTrigger, useMessage } from 'naive-ui'
 import { useRoute } from 'vue-router'
 import { v4 as uuidv4 } from 'uuid'
@@ -106,21 +106,8 @@ function updateChat() {
   chatStore.initConversationById(Number(chatId.value))
 }
 
-const {
-  fileList,
-  onFileListChange,
-  customRequest,
-  fileName,
-  fileSize,
-  imageSrc,
-  imageUrl,
-  imgLoadingPercent,
-  loadingState,
-  remoteImage,
-  loadingColors,
-  progressBarStyle,
-  beforeUpload,
-} = useImageUpload()
+const { fileList, onFileListChange, customRequest, removeImage, images, beforeUpload } =
+  useImageUpload()
 
 const isFocus = ref(false)
 
@@ -172,11 +159,13 @@ const onSend = useDebounceFn(() => {
 
   // 如果是 vision 模式，则需要判断是否有图片
   if (model.value === 'gpt-4o' && fileList.value.length > 0) {
-    contents.push({
-      type: 'image_url',
-      image_url: {
-        url: imageUrl.value,
-      },
+    fileList.value.forEach((file) => {
+      contents.push({
+        type: 'image_url',
+        image_url: {
+          url: file.url as string,
+        },
+      })
     })
   }
 
@@ -435,7 +424,7 @@ const placeholder = `问点什么吧... \nEnter 发送,Shift + Enter 换行`
             {{ modelText }}
           </span>
         </div>
-        <div class="rounded-xl bg-slate-50/60 backdrop-blur-lg">
+        <div class="rounded-xl bg-slate-50/60 backdrop-blur-lg max-h-1/2">
           <textarea
             ref="promptRef"
             v-model="prompt"
@@ -452,7 +441,7 @@ const placeholder = `问点什么吧... \nEnter 发送,Shift + Enter 换行`
           <!-- Toolbar -->
           <div
             :class="[isFocus ? 'border-teal-500' : 'border-slate-200']"
-            class="p-2 bg-transparent border border-t-0 rounded-b-xl h-fit bottom-px inset-x-px dark:bg-slate-800"
+            class="p-2 overflow-y-auto bg-transparent border border-t-0 rounded-b-xl max-h-72 h-fit bottom-px inset-x-px dark:bg-slate-800"
           >
             <div class="flex items-center justify-between">
               <!-- Button Group -->
@@ -521,58 +510,39 @@ const placeholder = `问点什么吧... \nEnter 发送,Shift + Enter 换行`
             </div>
 
             <!-- File Uploading Progress Form -->
-            <div v-if="fileName !== ''" class="p-2 mt-2 border rounded-lg bg-slate-50">
-              <!-- Uploading File Content -->
-              <div class="flex items-center justify-between mb-2">
-                <div class="flex items-center gap-x-3">
-                  <span
-                    class="flex items-center justify-center w-10 h-10 text-gray-500 border border-gray-200 rounded-lg dark:border-neutral-700"
-                  >
-                    <img :src="imageSrc" alt="image" class="w-full h-full rounded-lg" />
-                  </span>
-                  <div>
-                    <p class="text-sm font-medium text-gray-800 dark:text-white">{{ fileName }}</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-500">{{ fileSize }}</p>
+            <div v-if="images.length > 0" class="p-2 mt-2 border rounded-lg bg-slate-50">
+              <template v-for="item of images" :key="item.id">
+                <!-- Uploading File Content -->
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-x-3">
+                    <span
+                      class="flex items-center justify-center w-10 h-10 text-gray-500 border border-gray-200 rounded-lg dark:border-neutral-700"
+                    >
+                      <img :src="item.src" alt="image" class="w-full h-full rounded-lg" />
+                    </span>
+                    <div>
+                      <p class="text-sm font-medium text-gray-800 dark:text-white">{{ item.name }}</p>
+                      <p class="text-xs text-gray-500 dark:text-gray-500">{{ item.size }}</p>
+                    </div>
+                  </div>
+                  <div v-if="item.state !== 'loading'" class="inline-flex items-center gap-x-2">
+                    <SvgIcon
+                      v-if="item.state === 'success'"
+                      icon="solar:check-circle-bold"
+                      class="flex-shrink-0 w-4 h-4 text-green-400"
+                    />
+                    <SvgIcon
+                      v-else-if="item.state === 'failed'"
+                      icon="solar:close-circle-bold"
+                      class="flex-shrink-0 w-4 h-4 text-red-400"
+                    />
+                    <button type="button" class="text-gray-500 hover:text-gray-800" @click="removeImage(item.id)">
+                      <SvgIcon icon="solar:trash-bin-minimalistic-linear" class="flex-shrink-0 w-4 h-4" />
+                    </button>
                   </div>
                 </div>
-                <div v-if="loadingState !== 'loading'" class="inline-flex items-center gap-x-2">
-                  <SvgIcon
-                    v-if="loadingState === 'success'"
-                    icon="solar:check-circle-bold"
-                    class="flex-shrink-0 w-4 h-4 text-green-400"
-                  />
-                  <SvgIcon
-                    v-else-if="loadingState === 'failed'"
-                    icon="solar:close-circle-bold"
-                    class="flex-shrink-0 w-4 h-4 text-red-400"
-                  />
-                  <button type="button" class="text-gray-500 hover:text-gray-800" @click="remoteImage">
-                    <SvgIcon icon="solar:trash-bin-minimalistic-linear" class="flex-shrink-0 w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-              <!-- End Uploading File Content -->
-
-              <!-- Progress Bar -->
-              <div class="flex items-center gap-x-3 whitespace-nowrap">
-                <div
-                  class="flex w-full h-2 overflow-hidden bg-gray-200 rounded-full dark:bg-gray-700"
-                  role="progressbar"
-                  aria-valuenow="25"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                >
-                  <div
-                    :class="[loadingColors[loadingState]]"
-                    class="flex flex-col justify-center overflow-hidden text-xs text-center text-white transition duration-500 rounded-full whitespace-nowrap dark:bg-blue-500"
-                    :style="progressBarStyle"
-                  ></div>
-                </div>
-                <div class="w-10 text-end">
-                  <span class="text-sm text-gray-800 dark:text-white">{{ (imgLoadingPercent * 100).toFixed(0) }}%</span>
-                </div>
-              </div>
-              <!-- End Progress Bar -->
+                <!-- End Uploading File Content -->
+              </template>
             </div>
             <!-- End File Uploading Progress Form -->
           </div>

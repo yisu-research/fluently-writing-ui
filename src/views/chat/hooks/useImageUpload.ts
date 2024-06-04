@@ -5,10 +5,19 @@ import type { FileInfo } from 'naive-ui/es/upload/src/interface'
 import api from '@/api'
 import { getBase64 } from '@/utils/image'
 
+// 扩展 FileInfo 类型
+interface ImageInfo extends FileInfo {
+  size: string
+  src: string
+  state: 'loading' | 'success' | 'failed'
+}
+
 export function useImageUpload() {
   const message = useMessage()
 
-  const fileList = ref<FileInfo[]>([])
+  const fileList = ref<ImageInfo[]>([])
+
+  const images = ref<any[]>([])
 
   const fileName = ref('')
 
@@ -19,8 +28,6 @@ export function useImageUpload() {
   const imageUrl = ref('')
 
   const imgLoadingPercent = ref(0)
-
-  const loadingState = ref<'loading' | 'success' | 'failed'>('loading')
 
   const loadingColors = {
     loading: 'bg-sky-400',
@@ -35,32 +42,37 @@ export function useImageUpload() {
   })
 
   function onFileListChange() {
-    if (fileList.value.length > 1) {
-      fileList.value.shift()
-    }
+    // if (fileList.value.length > 1) {
+    //   fileList.value.shift()
+    // }
   }
 
-  function remoteImage() {
-    fileList.value = []
-    fileName.value = ''
-    fileSize.value = ''
-    imageSrc.value = ''
-    imgLoadingPercent.value = 0
-    loadingState.value = 'loading'
+  function removeImage(id: string) {
+    fileList.value = fileList.value.filter((item) => item.id !== id)
+    images.value = images.value.filter((item) => item.id !== id)
   }
 
   const customRequest = async ({ file, withCredentials }: UploadCustomRequestOptions) => {
-    loadingState.value = 'loading'
     const formData = new FormData()
 
-    fileName.value = file.name
+    const flag = images.value.some((item) => {
+      if (item.id === fileList.value[fileList.value.length - 1].id) {
+        return true
+      }
+      return false
+    })
 
-    fileSize.value = Intl.NumberFormat('en-US', {
+    if (!flag) {
+      images.value.push(fileList.value[fileList.value.length - 1])
+    }
+
+    images.value[images.value.length - 1].state = 'loading'
+
+    images.value[images.value.length - 1].size = Intl.NumberFormat('en-US', {
       notation: 'compact',
-      maximumFractionDigits: 1,
     }).format(file.file!.size)
 
-    imageSrc.value = await getBase64(file.file as File)
+    images.value[images.value.length - 1].src = await getBase64(file.file as File)
 
     formData.append('file', file.file as File, file.name)
 
@@ -68,17 +80,18 @@ export function useImageUpload() {
       .uploadFileApi(formData, {
         withCredentials,
         onUploadProgress: async (progressEvent: any) => {
-          imgLoadingPercent.value = progressEvent.progress
+          images.value[images.value.length - 1].percentage = progressEvent.progress
         },
       })
       .then((res: any) => {
         // imageUrl.value = res.url.replace('https', 'http').replace('.com', '.com:3001')
-        imageUrl.value = res.url
-        loadingState.value = 'success'
+        // imageUrl.value = res.url
+        images.value[images.value.length - 1].url = res.url.replace('https', 'http').replace('.com', '.com:3001')
+        images.value[images.value.length - 1].state = 'success'
         message.success('上传成功')
       })
       .catch((error) => {
-        loadingState.value = 'failed'
+        images.value[images.value.length - 1].state = 'failed'
         message.success(error.message)
       })
   }
@@ -134,12 +147,12 @@ export function useImageUpload() {
     imageSrc,
     imageUrl,
     imgLoadingPercent,
-    loadingState,
     loadingColors,
     progressBarStyle,
     onFileListChange,
-    remoteImage,
+    removeImage,
     customRequest,
     beforeUpload,
+    images,
   }
 }
