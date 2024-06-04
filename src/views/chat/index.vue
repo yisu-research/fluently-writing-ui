@@ -74,10 +74,6 @@ const currentConversation = computed({
   },
 })
 
-onUpdated(() => {
-  scrollToBottom()
-})
-
 const messages = computed(() => chatStore.getCurrentMessages)
 
 // 监控 chatId 变化, 重新设置当前聊天窗口
