@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUpdated, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUpdated, ref, watch } from 'vue'
 import { NUpload, NUploadTrigger, useMessage } from 'naive-ui'
 import { useRoute } from 'vue-router'
 import { v4 as uuidv4 } from 'uuid'
@@ -20,6 +20,8 @@ import api from '@/api'
 const chatStore = useChatStoreWithOut()
 
 const prompt = ref('')
+
+const promptRef = ref<any>(null)
 
 const message = useMessage()
 
@@ -381,7 +383,16 @@ function onEnter() {
 }
 
 function newline() {
-  prompt.value += '\n'
+  const cursorLoca = promptRef.value?.selectionStart
+  const cursorLoca_ = promptRef.value.selectionEnd
+
+  prompt.value.length === cursorLoca
+    ? (prompt.value = `${prompt.value}\n`)
+    : (prompt.value = `${prompt.value.slice(0, cursorLoca)}\n${prompt.value.slice(cursorLoca)}`)
+
+  nextTick(() => {
+    promptRef.value.setSelectionRange(cursorLoca + 1, cursorLoca_ + 1)
+  })
 }
 
 function onInput() {}
@@ -427,33 +438,10 @@ const placeholder = `问点什么吧... \nEnter 发送,Shift + Enter 换行`
             </svg>
             {{ modelText }}
           </span>
-          <div v-if="!isMobile" class="flex items-center px-4 py-1 rounded-lg bg-teal-600/20 w-fit">
-            <!-- <kbd
-              class="min-h-[30px] inline-flex justify-center items-center mr-1 py-0.5 px-1.5 bg-gray-100 font-mono text-sm text-gray-500 rounded-md dark:bg-neutral-700 dark:text-neutral-200"
-            >
-              Enter
-            </kbd>
-            <span> 发送，</span> -->
-            <!-- KBD -->
-            <!-- <span class="flex flex-wrap items-center mr-1 text-sm text-gray-500 gap-x-1 dark:text-neutral-400">
-              <span
-                class="min-h-[30px] inline-flex justify-center items-center py-0.5 px-1.5 bg-gray-100 border border-transparent font-mono text-sm text-gray-500 rounded-md dark:bg-neutral-700 dark:text-neutral-200"
-              >
-                Shift
-              </span>
-              +
-              <span
-                class="min-h-[30px] inline-flex justify-center items-center py-0.5 px-1.5 bg-gray-100 border border-transparent font-mono text-sm text-gray-500 rounded-md dark:bg-neutral-700 dark:text-neutral-200"
-              >
-                Enter
-              </span>
-            </span>
-            <span>换行</span> -->
-            <!-- End KBD -->
-          </div>
         </div>
         <div class="rounded-xl bg-slate-50/60 backdrop-blur-lg">
           <textarea
+            ref="promptRef"
             v-model="prompt"
             type="textarea"
             class="block w-full h-24 p-4 pb-2 text-sm overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-teal-600/20 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-teal-600/50 dark:[&::-webkit-scrollbar-track]:bg-slate-700 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500 max-h-[12rem] bg-transparent border border-b-0 border-gray-200 rounded-b-none m shadow-in rounded-xl focus:ring-0 ring-transparent focus:border-teal-500 dark:bg-slate-800 dark:border-gray-700 dark:text-gray-400"
