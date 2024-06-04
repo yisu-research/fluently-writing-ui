@@ -8,10 +8,10 @@
   },
   "naiveThemeOverridesDark": {
     "common": {
-      "primaryColor": "#2dd4bf",
-      "primaryColorHover": "#2dd4bf",
-      "primaryColorPressed": "#2dd4bf",
-      "primaryColorSuppl": "#0d9488",
+      "primaryColor": "#00A76F",
+      "primaryColorHover": "#00A76F",
+      "primaryColorPressed": "#00A76F",
+      "primaryColorSuppl": "#007868",
 
       "infoColor": "#2080F0FF",
       "infoColorHover": "#4098FCFF",
@@ -38,10 +38,10 @@
   },
   "naiveThemeOverridesLight": {
     "common": {
-      "primaryColor": "#14b8a6",
-      "primaryColorHover": "#14b8a6",
-      "primaryColorPressed": "#2dd4bf",
-      "primaryColorSuppl": "#0d9488",
+      "primaryColor": "#00A76F",
+      "primaryColorHover": "#00A76F",
+      "primaryColorPressed": "#00A76F",
+      "primaryColorSuppl": "#007868",
 
       "infoColor": "#2080F0FF",
       "infoColorHover": "#4098FCFF",
