@@ -239,7 +239,7 @@ onMounted(async () => {
     state.products = products
       .map((item: any) => {
         const price = item.price / 100
-        const isDiscount = item.description !== '10'
+        const isDiscount = item.description !== '1'
         const mostPopular = price === 100
 
         return {
@@ -249,7 +249,7 @@ onMounted(async () => {
           description: item.description,
           credit: item.credit,
           callCount: item.call_count,
-          originalPrice: price / Number(item.description / 10),
+          originalPrice: price / Number(item.description),
           isDiscount,
           mostPopular,
         }
@@ -305,7 +305,7 @@ onMounted(async () => {
             >
               <div class="flex items-center justify-between gap-x-4">
                 <h3 v-if="tier.isDiscount" :id="tier.id" class="text-xl font-semibold leading-8 text-teal-500">
-                  {{ tier.isDiscount ? `${tier.description} 折` : '' }}
+                  {{ tier.isDiscount ? `${tier.description * 10} 折` : '' }}
                 </h3>
                 <h3 v-else :id="tier.id" class="text-xl font-semibold leading-8 text-transparent">
                   {{ `${tier.description * 10}折` }}

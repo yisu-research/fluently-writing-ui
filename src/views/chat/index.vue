@@ -106,8 +106,7 @@ function updateChat() {
   chatStore.initConversationById(Number(chatId.value))
 }
 
-const { fileList, onFileListChange, customRequest, removeImage, images, beforeUpload } =
-  useImageUpload()
+const { fileList, onFileListChange, customRequest, removeImage, images, beforeUpload } = useImageUpload()
 
 const isFocus = ref(false)
 
