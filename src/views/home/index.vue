@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import HomeHeader from './components/home-header/index.vue'
 import HomeHero from './components/home-hero/index.vue'
-import SectionImageRight from './components/section-image/index.vue'
-import SectionTemplate from './components/section-template/index.vue'
-import ContactUs from './components/contact-us/index.vue'
 import HomeFooter from './components/home-footer/index.vue'
 import EnglishWritingImg from '@/assets/images/english_writing.png'
 import CodingImage from '@/assets/images/coding.png'
@@ -152,11 +149,11 @@ const features = [
   <div class="dark:bg-gray-900">
     <HomeHeader />
     <HomeHero />
-    <template v-for="(content, index) in features" :key="content.title">
+    <!-- <template v-for="(content, index) in features" :key="content.title">
       <SectionImageRight :content="content" :position="index % 2 === 0 ? 'right' : 'left'" />
     </template>
-    <SectionTemplate />
-    <ContactUs />
+    <SectionTemplate /> -->
+    <!-- <ContactUs /> -->
     <HomeFooter />
   </div>
 </template>

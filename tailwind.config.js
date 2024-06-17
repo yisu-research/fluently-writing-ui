@@ -54,6 +54,10 @@ module.exports = {
         'grey-900': '#161C24',
         tertiary: '#4B5563',
         quaternary: '#E4E7EB',
+        'hight-class-gray': '#202937',
+        'hight-class-gray-1': '#4B5563',
+        'hight-class-green': '#0B9488',
+        'hight-class-green-1': '#15B8A6',
       },
       opacity: {
         1: '0.01',

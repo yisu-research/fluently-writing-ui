@@ -70,7 +70,7 @@ async function createChat(model: string) {
     <Menu v-slot="{ open }" as="div" class="relative inline-block w-full text-left">
       <div class="flex">
         <MenuButton
-          class="inline-flex items-center justify-between flex-1 w-full p-2 font-bold text-teal-50 rounded-lg shadow-sm shadow-teal-900/30 bg-gradient-to-r from-teal-600 from-10% to-teal-500/60 to-90% text-[1rem] hover:text-white hover:shadow-md dark:hover:text-teal-600 group focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+          class="inline-flex items-center justify-between flex-1 -mx-2 w-full p-2 font-bold text-teal-50 rounded-lg shadow-sm shadow-teal-900/30 bg-gradient-to-r from-primary-3 from-10% to-primary-2 to-90% text-[1rem] hover:text-white hover:shadow-md dark:hover:text-teal-600 group focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
         >
           <div class="flex items-center gap-2">
             <SvgIcon icon="solar:sticker-smile-square-linear" class="w-6 h-6 shrink-0" />

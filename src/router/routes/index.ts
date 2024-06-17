@@ -41,6 +41,14 @@ export const baseRoutes: RouteRecordRaw[] = [
         },
       },
       {
+        name: 'History',
+        path: '/history',
+        component: () => import('@/views/chat-history/index.vue'),
+        meta: {
+          title: '历史记录',
+        },
+      },
+      {
         name: 'chat-id',
         path: 'chat/:id',
         component: () => import('@/views/chat/index.vue'),

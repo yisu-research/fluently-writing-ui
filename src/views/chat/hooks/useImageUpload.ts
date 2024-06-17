@@ -86,7 +86,7 @@ export function useImageUpload() {
       .then((res: any) => {
         // imageUrl.value = res.url.replace('https', 'http').replace('.com', '.com:3001')
         // imageUrl.value = res.url
-        images.value[images.value.length - 1].url = res.url.replace('https', 'http').replace('.com', '.com:3001')
+        images.value[images.value.length - 1].url = res.url
         images.value[images.value.length - 1].state = 'success'
         message.success('上传成功')
       })

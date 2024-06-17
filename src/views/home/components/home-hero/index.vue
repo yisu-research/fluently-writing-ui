@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { NButton } from 'naive-ui'
 import { computed } from 'vue'
 import HeroSvg from '@/assets/svg/hero.svg'
 import { SvgIcon } from '@/components/common'
@@ -16,10 +15,11 @@ const userStore = useUserStoreWithOut()
 const isDark = computed(() => appStore.isDarkTheme)
 
 // title
-const title = '一粟创作助手'
+const title = '一粟科研AI平台'
 
 // slogan
-const slogan = '激发灵感，提高效率'
+const slogan =
+  '一站式的科研AI平台服务平台，基于最先进的AI技术构建，覆盖科研全流程，包括：数据标注，数据分析，论文解读，论文润色，智能对话，智能绘图，科研智能体等。'
 
 // 现在开始
 const start = '马上开始'
@@ -66,7 +66,9 @@ function clickStart() {
       <rect width="100%" height="100%" stroke-width="0" fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)" />
     </svg>
 
-    <div class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-15rem]">
+    <div
+      class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl backdrop-blur-3xl bg-white/90 sm:top-[-15rem]"
+    >
       <svg
         class="relative left-[calc(50%-11rem)] -z-10 h-[21.1875rem] max-w-none -translate-x-1/3 rotate-[20deg] sm:left-[calc(50%-20rem)] sm:h-[62.375rem]"
         viewBox="0 0 1155 678"
@@ -91,32 +93,32 @@ function clickStart() {
         </defs>
       </svg>
     </div>
-    <div class="px-6 py-24 mx-auto max-w-7xl sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-40">
+    <div class="px-6 py-24 mx-auto max-w-7xl sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-28">
       <div class="flex flex-col items-center max-w-2xl mx-auto lg:items-start lg:mx-0 lg:flex-auto">
         <!-- 渐变色标题 -->
         <h1
-          class="max-w-lg mt-10 text-4xl font-bold tracking-tight text-transparent font-jinbu bg-clip-text bg-gradient-to-r from-primary-2 to-primary-3 sm:text-6xl xl:text-7xl"
+          class="max-w-lg mt-8 text-4xl font-bold tracking-tight text-transparent font-jinbu bg-clip-text bg-gradient-to-r from-primary-2 to-primary-3 sm:text-5xl xl:text-6xl"
         >
           {{ title }}
         </h1>
 
         <div>
-          <p class="mt-6 text-2xl leading-8 text-slate-600 dark:text-slate-300">{{ slogan }}</p>
-          <p class="text-lg text-gray-600 leading-2 dark:text-gray-400">
-            {{ footnote }}
-            <a href="https://chat.openai.com" class="text-primary hover:text-teal-400">ChatGPT</a>
-          </p>
+          <p class="mt-6 text-xl font-medium leading-8 text-hight-class-gray-1 dark:text-slate-300">{{ slogan }}</p>
         </div>
         <div class="flex items-center mt-10 gap-x-6">
-          <NButton type="primary" size="large" class="hover:ring-2 hover:ring-green-200" @click="clickStart">
-            <SvgIcon icon="solar:ufo-3-line-duotone" class="mr-2 text-lg text-teal-50" />
-            <span class="font-bold text-teal-50">{{ start }}</span>
-          </NButton>
+          <button
+            type="button"
+            class="inline-flex items-center gap-x-2 rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            @click="clickStart"
+          >
+            <SvgIcon icon="solar:ufo-3-line-duotone" class="-ml-0.5 h-5 w-5" />
+            {{ start }}
+          </button>
         </div>
       </div>
 
       <div class="mx-auto mt-16 sm:mt-24 lg:mt-0 lg:flex-shrink-0 lg:flex-grow">
-        <img :src="HeroSvg" alt="" class="mx-auto w-[45rem] max-w-full drop-shadow-xl" />
+        <img :src="HeroSvg" alt="" class="mx-auto w-[40rem] max-w-full drop-shadow-xl" />
       </div>
     </div>
   </div>
