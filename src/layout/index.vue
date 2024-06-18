@@ -92,6 +92,7 @@ const navigation = ref([
     icon: 'ph:note-pencil',
     current: false,
     children: [
+      { name: '功能说明', path: '/funcdesc', type: 'path', current: false},
       { name: '新的创作', path: '/chat', type: 'path', current: false, },
       { name: '创作历史', path: '/history', type: 'path', current: false },
     ],

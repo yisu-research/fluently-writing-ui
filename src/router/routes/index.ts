@@ -49,6 +49,14 @@ export const baseRoutes: RouteRecordRaw[] = [
         },
       },
       {
+        name: 'FuncDesc',
+        path: '/funcdesc',
+        component: () => import('@/views/chat-funcdesc/index.vue'),
+        meta: {
+          title: '功能说明',
+        },
+      },
+      {
         name: 'chat-id',
         path: 'chat/:id',
         component: () => import('@/views/chat/index.vue'),
