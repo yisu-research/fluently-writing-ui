@@ -257,7 +257,7 @@ const handleLogin = () => {
           <div class="flex flex-col items-center justify-between flex-2 sm:w-96 lg:pl-6">
             <!-- title -->
             <RouterLink to="/" class="mt-12 font-semibold leading-6 text-gray-900 scale-150">
-              <LogoName name="一粟创作助手" />
+              <LogoName name="一粟科研AI平台" />
             </RouterLink>
 
             <!-- form -->

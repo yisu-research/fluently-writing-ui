@@ -71,14 +71,14 @@ async function initData() {
   await chatStore.fetchConversation()
 }
 
-function closeModal() {
-  isOpen.value = false
-}
+// function closeModal() {
+//   isOpen.value = false
+// }
 
-function read() {
-  appStore.setGpt4oNotice(false)
-  isOpen.value = false
-}
+// function read() {
+//   appStore.setGpt4oNotice(false)
+//   isOpen.value = false
+// }
 
 // const navigation = ref([
 //   { name: '个人中心', path: '/user-center', icon: 'ph:user-circle', current: true, type: 'path' },
@@ -92,8 +92,8 @@ const navigation = ref([
     icon: 'ph:note-pencil',
     current: false,
     children: [
-      { name: '新的创作', path: '/chat', type: 'path' },
-      { name: '创作历史', path: '/history', type: 'path' },
+      { name: '新的创作', path: '/chat', type: 'path', current: false, },
+      { name: '创作历史', path: '/history', type: 'path', current: false },
     ],
   },
   { name: '个人中心', path: '/user-center', icon: 'ph:user-circle', current: false, type: 'path' },
@@ -122,15 +122,10 @@ function goHome() {
   router.push('/')
 }
 
-// const teams = [
-//   { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
-//   { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
-//   { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
-// ]
 
 const sidebarOpen = ref(false)
 
-const collapsed = ref(false)
+// const collapsed = ref(false)
 
 const rightSidebarOpen = ref(false)
 
@@ -149,20 +144,6 @@ function handleClickOption(item: any) {
   }
 }
 
-// 移动端侧边栏对话列表高度
-const heightClass = computed(() => {
-  if (height.value > 800) {
-    return 'h-[36rem]'
-  } else if (height.value > 720) {
-    return 'h-[30rem]'
-  } else if (height.value > 640) {
-    return 'h-[24rem]'
-  } else if (height.value > 560) {
-    return 'h-[20rem]'
-  } else {
-    return 'h-[18rem]'
-  }
-})
 
 const chats = computed(() => chatStore.conversations)
 
@@ -190,74 +171,6 @@ function clickLogout() {
 </script>
 
 <template>
-  <!-- <div class="">
-    <LayoutSidebar v-model:sidebar-open="sidebarOpen" />
-    <div class="h-screen lg:pl-72">
-      <LayoutHeader v-model:sidebar-open="sidebarOpen" />
-      <LayoutMain />
-    </div>
-    <TransitionRoot appear :show="isOpen" as="template">
-      <Dialog as="div" class="relative z-50" @close="closeModal">
-        <TransitionChild
-          as="template"
-          enter="duration-300 ease-out"
-          enter-from="opacity-0"
-          enter-to="opacity-100"
-          leave="duration-200 ease-in"
-          leave-from="opacity-100"
-          leave-to="opacity-0"
-        >
-          <div class="fixed inset-0 bg-black/25" />
-        </TransitionChild>
-
-        <div class="fixed inset-0 overflow-y-auto">
-          <div class="flex items-center justify-center min-h-full p-4 text-center">
-            <TransitionChild
-              as="template"
-              enter="duration-300 ease-out"
-              enter-from="opacity-0 scale-95"
-              enter-to="opacity-100 scale-100"
-              leave="duration-200 ease-in"
-              leave-from="opacity-100 scale-100"
-              leave-to="opacity-0 scale-95"
-            >
-              <DialogPanel
-                class="w-full max-w-2xl p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl"
-              >
-                <DialogTitle as="h3" class="text-lg font-medium leading-6 text-gray-900">
-                  地表最强大模型 GPT-4o 重磅上线！🎉🎉🎉
-                </DialogTitle>
-                <div class="flex items-center justify-center p-4 my-4 rounded-xl bg-emerald-50">
-                  <img :src="aiSvg" alt="" class="w-4/5" />
-                </div>
-                <div class="mt-2 gap-x-8">
-                  <p class="text-sm text-gray-600">
-                    探索前沿智能，开启智慧新章。GPT4o全新上线，带你体验尖端技术的魅力！以卓越的理解力和响应速度，GPT4o将成为你的贴身助手，助力学习、工作、生活的每一环节。今天，就让GPT4o成为你无可替代的智能伙伴，一起创造无限可能！
-                  </p>
-                  <p class="text-sm text-gray-800">
-                    GPT-4o支持文字/图片的输入和文字的输出，同时价格只是GPT4的一半，欢迎体验!
-                  </p>
-                  <div>
-                    <img src="" alt="" />
-                  </div>
-                </div>
-
-                <div class="flex justify-center mt-4">
-                  <button
-                    type="button"
-                    class="inline-flex justify-center px-4 py-2 text-sm font-medium border border-transparent rounded-md bg-emerald-100 text-emerald-900 hover:bg-emerald-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
-                    @click="read"
-                  >
-                    立即体验
-                  </button>
-                </div>
-              </DialogPanel>
-            </TransitionChild>
-          </div>
-        </div>
-      </Dialog>
-    </TransitionRoot>
-  </div> -->
   <div>
     <TransitionRoot as="template" :show="sidebarOpen">
       <Dialog class="relative z-50 lg:hidden" @close="sidebarOpen = false">

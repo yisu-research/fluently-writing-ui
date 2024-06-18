@@ -151,7 +151,7 @@ function goHome() {
                 <p
                   class="text-lg font-black text-transparent sm:text-xl bg-gradient-to-r from-teal-600 to-emerald-400 bg-clip-text"
                 >
-                  一粟创作助手
+                  一粟科研AI平台
                 </p>
               </div>
               <nav class="flex flex-col flex-1">
@@ -213,7 +213,7 @@ function goHome() {
         <p
           class="text-lg font-black text-transparent sm:text-xl bg-gradient-to-r from-teal-600 to-emerald-400 bg-clip-text"
         >
-          一粟创作助手
+          一粟科研AI平台
         </p>
       </div>
       <img :src="christmasImg" alt="christmas" class="w-auto h-16 -mr-4" />

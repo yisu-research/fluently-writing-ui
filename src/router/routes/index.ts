@@ -7,7 +7,7 @@ export const baseRoutes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('@/views/home/index.vue'),
     meta: {
-      title: '一粟写作助手',
+      title: '一粟科研AI平台',
     },
   },
   {
