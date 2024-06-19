@@ -53,12 +53,6 @@ const modelData: {title: string, input: string, output: string, network: string,
         ]
     }
 ]
-const tips = [
-    'GLM4: 0.1元 / 1K tokens',
-    'gpt-4o： 0.035 / 1K tokens，0.105/1K tokens',
-    '1积分 = 0.01刀 = 0.07元'
-]
-
 
 
 </script>
@@ -140,16 +134,6 @@ const tips = [
             </tbody>
           </table>
           <!-- End Table -->
-
-          <!-- Footer -->
-          <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-neutral-700">
-            <div>
-              <p  v-for="(line, index) in tips" :key="index" class="text-sm text-gray-600 dark:text-neutral-400">
-                <span class="font-semibold text-gray-600 dark:text-neutral-200">{{ line }}</span>
-              </p>
-            </div>
-          </div>
-          <!-- End Footer -->
         </div>
       </div>
     </div>

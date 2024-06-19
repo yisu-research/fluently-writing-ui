@@ -21,6 +21,8 @@ const chatStore = useChatStoreWithOut()
 
 const prompt = ref('')
 
+const imgData = ref<File[]>([])
+
 const promptRef = ref<any>(null)
 
 const message = useMessage()
@@ -379,6 +381,21 @@ function newline() {
   })
 }
 
+function onPaste(event: ClipboardEvent) {
+  if(event.clipboardData){
+    const items = event.clipboardData.items
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i]
+      if (item.type.includes('image')) {
+        const file = item.getAsFile()
+        if(file){
+          imgData.value.push(file)
+        }
+      }
+    }
+  }
+}
+
 function onInput() {}
 
 const placeholder = `问点什么吧... \nEnter 发送,Shift + Enter 换行`
@@ -423,7 +440,7 @@ const placeholder = `问点什么吧... \nEnter 发送,Shift + Enter 换行`
             {{ modelText }}
           </span>
         </div>
-        <div class="rounded-xl bg-slate-50/60 backdrop-blur-lg max-h-1/2">
+        <div class="rounded-xl bg-slate-50/60 backdrop-blur-lg max-h-1/2" >
           <textarea
             ref="promptRef"
             v-model="prompt"
@@ -432,6 +449,7 @@ const placeholder = `问点什么吧... \nEnter 发送,Shift + Enter 换行`
             :placeholder="placeholder"
             @keypress.enter.prevent.exact="onEnter"
             @keydown.shift.enter="newline"
+            @paste="onPaste($event)"
             @focus="handleInputFocus"
             @blur="isFocus = false"
             @input="onInput"
