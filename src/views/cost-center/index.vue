@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
-import { NButton, NDataTable, NLayout, NModal, NPopconfirm, NPopover, NQrCode, NSpin, NTag, useMessage } from 'naive-ui'
+import { NButton, NLayout, NModal, NPopconfirm, NPopover, NQrCode, NSpin, NTag, useMessage } from 'naive-ui'
 import Record from './record/index.vue'
 import api from '@/api'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
@@ -432,10 +432,10 @@ onMounted(async () => {
                 <img :src="QrCodeImg" alt="Contact Us" class="w-40 h-40" />
               </NPopover>
             </p>
-            <p>* 按照输入500 tokens，输出500 tokens进行估算</p>
+            <!-- <p>* 按照输入500 tokens，输出500 tokens进行估算</p> -->
           </div>
 
-          <div class="my-4 text-xl">
+          <!-- <div class="my-4 text-xl">
             <p>计费规则</p>
             <NDataTable :columns="columns" :data="data" :single-line="false" class="my-4 text-xs" />
             <div class="list-disc list-inside">
@@ -452,7 +452,7 @@ onMounted(async () => {
                 >
               </p>
             </div>
-          </div>
+          </div> -->
 
           <!-- 消费记录 -->
           <Record />

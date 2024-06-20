@@ -11,16 +11,16 @@ const chatStore = useChatStoreWithOut()
 
 const options = [
   {
-    name: 'GPT3.5',
+    name: '大模型-3.5',
     key: 'gpt-3.5-turbo',
     icon: 'solar:chat-line-outline',
-    tips: '单次 ChatGPT4 对话将消耗 1 积分',
+    tips: '单次 大模型-3.5 对话将消耗 1 积分',
   },
   {
-    name: 'GPT4o',
+    name: '大模型-4.0',
     key: 'gpt-4o',
     icon: 'solar:eye-scan-linear',
-    tips: '单次 ChatGPT4 Vision 对话将消耗 5 积分',
+    tips: '单次大模型-4.0对话将消耗 5 积分',
   },
   // {
   //   name: 'GPT4',

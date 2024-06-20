@@ -46,8 +46,8 @@ interface modelMapType {
   [key: string]: string
 }
 const modelMap: modelMapType = {
-  'gpt-3.5-turbo': 'GPT3.5',
-  'gpt-4o': 'GPT4o',
+  'gpt-3.5-turbo': '大模型-3.5',
+  'gpt-4o': '大模型-4.0',
   // 'gpt-4-1106-preview': 'GPT4',
   // 'gpt-4-vision-preview': 'GPT4 Vision',
 }
@@ -106,7 +106,7 @@ function updateChat() {
   chatStore.initConversationById(Number(chatId.value))
 }
 
-const { fileList, onFileListChange, customRequest, removeImage, images, beforeUpload } = useImageUpload()
+const { fileList, onFileListChange, customRequest, removeImage, clearImages, images, beforeUpload } = useImageUpload()
 
 const isFocus = ref(false)
 
@@ -187,6 +187,8 @@ const onSend = useDebounceFn(() => {
   scrollToBottom()
 
   const controller = new AbortController()
+
+  clearImages()
 
   try {
     const chatPath = encodeURI(`/api/messages`)

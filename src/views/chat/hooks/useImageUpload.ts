@@ -52,6 +52,12 @@ export function useImageUpload() {
     images.value = images.value.filter((item) => item.id !== id)
   }
 
+  // 清空图片
+  function clearImages() {
+    fileList.value = []
+    images.value = []
+  }
+
   const customRequest = async ({ file, withCredentials }: UploadCustomRequestOptions) => {
     const formData = new FormData()
 
@@ -154,5 +160,6 @@ export function useImageUpload() {
     customRequest,
     beforeUpload,
     images,
+    clearImages,
   }
 }
