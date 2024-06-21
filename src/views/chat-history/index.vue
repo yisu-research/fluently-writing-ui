@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import dayjs from 'dayjs'
 import { useChatStoreWithOut } from '@/store'
 import EditConversion from '@/layout/edit-conversion/index.vue'
 import { SvgIcon } from '@/components/common'
@@ -20,6 +21,18 @@ function modelIconStr(model: modelType) {
   }
 
   return iconMap[model]
+}
+
+function formatTime(time: string) {
+  // 2024-06-21T01:31:49.583+08:00
+  // 显示一周内的星期几，超过一周显示日期年月日
+  const now = dayjs()
+  const target = dayjs(time)
+  const diff = now.diff(target, 'day')
+  if (diff < 7) {
+    return target.format('dddd')
+  }
+  return target.format('YYYY-MM-DD')
 }
 </script>
 
@@ -49,7 +62,10 @@ function modelIconStr(model: modelType) {
                   <SvgIcon :icon="modelIconStr(item.model)" class="w-5 h-5 shrink-0" />
                   <p>{{ item.name }}</p>
                 </div>
-                <EditConversion :id="item.id" />
+                <div class="flex items-center">
+                  <p class="text-xs font-light text-hight-class-gray">{{ formatTime(item.updatedAt) }}</p>
+                  <EditConversion :id="item.id" />
+                </div>
               </button>
             </li>
             <li v-show="loading" ref="loadBox" class="flex items-center justify-center w-full">

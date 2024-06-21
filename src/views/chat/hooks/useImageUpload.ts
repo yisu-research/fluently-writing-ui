@@ -6,10 +6,10 @@ import api from '@/api'
 import { getBase64 } from '@/utils/image'
 
 // 扩展 FileInfo 类型
-interface ImageInfo extends FileInfo {
-  size: string
-  src: string
-  state: 'loading' | 'success' | 'failed'
+export interface ImageInfo extends FileInfo {
+  size: string | number
+  src?: string
+  state?: 'loading' | 'success' | 'failed'
 }
 
 export function useImageUpload() {
@@ -41,11 +41,7 @@ export function useImageUpload() {
     }
   })
 
-  function onFileListChange() {
-    // if (fileList.value.length > 1) {
-    //   fileList.value.shift()
-    // }
-  }
+  function onFileListChange() {}
 
   function removeImage(id: string) {
     fileList.value = fileList.value.filter((item) => item.id !== id)
@@ -56,6 +52,23 @@ export function useImageUpload() {
   function clearImages() {
     fileList.value = []
     images.value = []
+  }
+
+  function uploadImage(file: File) {
+    const formData = new FormData()
+    formData.append('file', file, file.name)
+    api
+      .uploadFileApi(formData, {})
+      .then((res: any) => {
+        // imageUrl.value = res.url.replace('https', 'http').replace('.com', '.com:3001')
+        images.value[images.value.length - 1].url = res.url
+        images.value[images.value.length - 1].state = 'success'
+        message.success('上传成功')
+      })
+      .catch((error) => {
+        images.value[images.value.length - 1].state = 'failed'
+        message.success(error.message)
+      })
   }
 
   const customRequest = async ({ file, withCredentials }: UploadCustomRequestOptions) => {
@@ -91,7 +104,6 @@ export function useImageUpload() {
       })
       .then((res: any) => {
         // imageUrl.value = res.url.replace('https', 'http').replace('.com', '.com:3001')
-        // imageUrl.value = res.url
         images.value[images.value.length - 1].url = res.url
         images.value[images.value.length - 1].state = 'success'
         message.success('上传成功')
@@ -161,5 +173,6 @@ export function useImageUpload() {
     beforeUpload,
     images,
     clearImages,
+    uploadImage,
   }
 }

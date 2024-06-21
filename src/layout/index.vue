@@ -2,18 +2,14 @@
 import { computed, onMounted, ref } from 'vue'
 // import { useUpgradeLog } from './hooks/useUpgradeLog'
 import {
-  Dialog,
-  DialogPanel,
   Disclosure,
   DisclosureButton,
   DisclosurePanel,
   Popover,
   PopoverButton,
   PopoverPanel,
-  TransitionChild,
   TransitionRoot,
 } from '@headlessui/vue'
-import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { NLayout, NLayoutContent, NLayoutSider } from 'naive-ui'
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 import day from 'dayjs'
@@ -79,21 +75,6 @@ async function initData() {
   await chatStore.fetchConversation()
 }
 
-// function closeModal() {
-//   isOpen.value = false
-// }
-
-// function read() {
-//   appStore.setGpt4oNotice(false)
-//   isOpen.value = false
-// }
-
-// const navigation = ref([
-//   { name: '个人中心', path: '/user-center', icon: 'ph:user-circle', current: true, type: 'path' },
-//   { name: '消费中心', path: '/cost-center', icon: 'ph:storefront', current: false, type: 'path' },
-//   { name: '历史对话', path: '/history', icon: 'ph:clock-clockwise-fill', current: false, type: 'history' },
-// ])
-
 onMounted(() => {
   initData()
   if (markAsRead.value) {
@@ -106,10 +87,6 @@ function goHome() {
   router.push('/')
 }
 
-const sidebarOpen = ref(false)
-
-// const collapsed = ref(false)
-
 const rightSidebarOpen = ref(false)
 
 function handleClickOption(item: any) {
@@ -117,13 +94,9 @@ function handleClickOption(item: any) {
     router.push(item.path)
     if (isMobile.value) {
       rightSidebarOpen.value = false
-      sidebarOpen.value = false
     }
   } else {
     rightSidebarOpen.value = !rightSidebarOpen.value
-    if (isMobile.value) {
-      sidebarOpen.value = false
-    }
   }
 }
 
@@ -142,7 +115,6 @@ function handleClickConversion(id: number, model: string) {
   router.push({ path: `/chat/${id}`, query: { model } })
   if (isMobile.value) {
     rightSidebarOpen.value = false
-    sidebarOpen.value = false
   }
 }
 
@@ -257,180 +229,31 @@ async function createChat(model: string) {
     console.error(err)
   }
 }
+
+function updateCollapsed(value: boolean) {
+  collapsed.value = value
+}
 </script>
 
 <template>
   <div>
-    <TransitionRoot as="template" :show="sidebarOpen">
-      <Dialog class="relative z-50 lg:hidden" @close="sidebarOpen = false">
-        <TransitionChild
-          as="template"
-          enter="transition-opacity ease-linear duration-300"
-          enter-from="opacity-0"
-          enter-to="opacity-100"
-          leave="transition-opacity ease-linear duration-300"
-          leave-from="opacity-100"
-          leave-to="opacity-0"
-        >
-          <div class="fixed inset-0 bg-gray-900/80" />
-        </TransitionChild>
-
-        <div class="fixed inset-0 flex">
-          <TransitionChild
-            as="template"
-            enter="transition ease-in-out duration-300 transform"
-            enter-from="-translate-x-full"
-            enter-to="translate-x-0"
-            leave="transition ease-in-out duration-300 transform"
-            leave-from="translate-x-0"
-            leave-to="-translate-x-full"
-          >
-            <DialogPanel class="relative flex flex-1 w-full max-w-xs mr-16">
-              <TransitionChild
-                as="template"
-                enter="ease-in-out duration-300"
-                enter-from="opacity-0"
-                enter-to="opacity-100"
-                leave="ease-in-out duration-300"
-                leave-from="opacity-100"
-                leave-to="opacity-0"
-              >
-                <div class="absolute top-0 flex justify-center w-16 pt-5 left-full">
-                  <button type="button" class="-m-2.5 p-2.5" @click="sidebarOpen = false">
-                    <span class="sr-only">Close sidebar</span>
-                    <XMarkIcon class="w-6 h-6 text-white" aria-hidden="true" />
-                  </button>
-                </div>
-              </TransitionChild>
-              <!-- Sidebar component, swap this element with another sidebar if you like -->
-              <div class="flex flex-col pb-2 overflow-y-auto bg-white grow gap-y-5">
-                <div
-                  class="flex items-center justify-between h-16 gap-2 border-r cursor-pointer bg-teal-400/5 shrink-0 backdrop-filter backdrop-blur-2x"
-                  @click="goHome"
-                >
-                  <div class="flex items-center pl-4 gap-x-2">
-                    <IconLogo class="z-30 w-8 h-8 text-teal-600 sm:h-8 sm:w-8" />
-                    <p
-                      class="text-lg font-black text-transparent font-jinbu sm:text-xl bg-gradient-to-r from-teal-600 to-emerald-400 bg-clip-text"
-                    >
-                      一粟科研AI平台
-                    </p>
-                  </div>
-                  <!-- <img :src="goodSvg" alt="" class="w-16 h-16" /> -->
-                </div>
-                <nav class="flex flex-col flex-1 px-6">
-                  <ul role="list" class="flex flex-col flex-1 gap-y-7">
-                    <li>
-                      <ul role="list" class="-mx-2 space-y-1">
-                        <li v-for="item in navigation" :key="item.name">
-                          <div
-                            v-if="!item.children"
-                            class="flex p-2 text-sm font-semibold leading-6 rounded-md cursor-pointer group gap-x-3"
-                            :class="[
-                              item.current
-                                ? 'bg-gray-50 text-primary'
-                                : 'text-gray-700 hover:bg-gray-50 hover:text-primary-3',
-                            ]"
-                            @click="handleClickOption(item)"
-                          >
-                            <SvgIcon
-                              :icon="item.icon"
-                              :class="[item.current ? ' text-primary' : 'text-slate-500 group-hover:text-primary-3']"
-                              class="w-6 h-6 shrink-0"
-                              aria-hidden="true"
-                            />
-
-                            {{ item.name }}
-                          </div>
-                          <Disclosure v-else v-slot="{ open }" as="div">
-                            <DisclosureButton
-                              class="flex items-center w-full p-2 text-sm font-semibold leading-6 text-left text-gray-700 rounded-md gap-x-3"
-                              :class="[item.current ? 'bg-gray-50' : 'hover:bg-gray-50']"
-                            >
-                              <SvgIcon
-                                :icon="item.icon"
-                                :class="[item.current ? ' text-primary' : 'text-slate-500 group-hover:text-primary-3']"
-                                class="w-6 h-6 shrink-0"
-                                aria-hidden="true"
-                              />
-                              {{ item.name }}
-                              <ChevronRightIcon
-                                class="w-5 h-5 ml-auto shrink-0"
-                                :class="[open ? 'rotate-90 text-gray-500' : 'text-gray-400']"
-                                aria-hidden="true"
-                              />
-                            </DisclosureButton>
-                            <DisclosurePanel as="ul" class="px-2 mt-1">
-                              <li v-for="subItem in item.children" :key="subItem.name">
-                                <!-- 44px -->
-                                <DisclosureButton
-                                  as="div"
-                                  class="block py-2 pr-2 text-sm leading-6 text-gray-700 rounded-md pl-9"
-                                  :class="[subItem.current ? 'bg-gray-50' : 'hover:bg-gray-50']"
-                                  @click="handleClickOption(subItem)"
-                                  >{{ subItem.name }}</DisclosureButton
-                                >
-                              </li>
-                            </DisclosurePanel>
-                          </Disclosure>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="my-4 mt-auto -mx-6">
-                      <div class="inline-flex items-center gap-2 px-4">
-                        <img
-                          class="flex-shrink-0 inline-block w-12 h-12 rounded-full shadow-md dark:shadow-teal-700"
-                          :src="avatar"
-                          alt="Image Description"
-                        />
-                        <div class="flex flex-col items-start justify-start">
-                          <h3 class="font-semibold text-gray-800 text-md dark:text-white">{{ userName }}</h3>
-                          <p class="text-sm font-medium text-gray-400">{{ email }}</p>
-                        </div>
-                        <button
-                          class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
-                          :class="[active ? 'bg-teal-600/10 text-teal-600' : 'text-gray-900 dark:text-white']"
-                          @click="clickLogout"
-                        >
-                          <SvgIcon
-                            icon="ph:sign-out"
-                            :class="[active ? ' text-teal-600' : 'text-slate-500 dark:text-white']"
-                            class="w-5 h-5 mr-2"
-                            aria-hidden="true"
-                          />
-                        </button>
-                      </div>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            </DialogPanel>
-          </TransitionChild>
-        </div>
-      </Dialog>
-    </TransitionRoot>
-
     <NLayout has-sider class="h-screen">
       <NLayoutSider
         class="!z-50"
         collapse-mode="transform"
-        :collapsed-width="80"
+        :collapsed-width="isMobile ? 0 : 80"
         :width="288"
         bordered
+        :collapsed="collapsed"
         position="absolute"
         show-trigger="bar"
-        @update:collapsed="
-          (value: boolean) => {
-            console.log('update:collapsed', value)
-            collapsed = !value
-          }
-        "
+        @update:collapsed="updateCollapsed"
       >
         <div
-          v-show="!collapsed"
+          v-show="collapsed"
           :class="{
             'lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:block lg:w-20 lg:bg-white border-r border-hight-class-gray-1/5 shadow-sm shadow-hight-class-gray/5 lg:pb-4':
-              !collapsed,
+              collapsed,
           }"
           class="hidden"
         >
@@ -527,7 +350,7 @@ async function createChat(model: string) {
           </nav>
         </div>
 
-        <div v-show="collapsed" class="flex flex-col overflow-y-auto bg-white border-r border-gray-200 grow gap-y-5">
+        <div v-show="!collapsed" class="flex flex-col overflow-y-auto bg-white border-r border-gray-200 grow gap-y-5">
           <div
             class="flex items-center justify-between h-16 gap-2 cursor-pointer bg-primary/5 shrink-0"
             @click="goHome"
@@ -535,7 +358,7 @@ async function createChat(model: string) {
             <div class="flex items-center pl-4 gap-x-2">
               <img :src="logoSvg" alt="" class="w-8 h-8" />
               <p
-                class="text-sm font-black text-transparent font-jinbu sm:text-xl bg-gradient-to-r from-primary to-primary-2 bg-clip-text"
+                class="text-xl font-black text-transparent font-jinbu sm:text-xl bg-gradient-to-r from-primary to-primary-2 bg-clip-text"
               >
                 一粟科研AI平台
               </p>
@@ -646,17 +469,21 @@ async function createChat(model: string) {
         </div>
       </NLayoutSider>
       <NLayoutContent>
-        <main>
+        <main class="relative">
           <div
             :class="{
-              'lg:ml-20': !collapsed,
-              'lg:ml-72': collapsed,
+              'lg:ml-20': collapsed,
+              'lg:ml-72': !collapsed,
             }"
             class="py-10 sm:px-6 lg:px-8 lg:py-6"
           >
-            <LayoutHeader v-model:sidebar-open="sidebarOpen" />
+            <LayoutHeader v-model:collapsed="collapsed" />
             <LayoutMain :class="{ 'w-0 sm:w-auto': rightSidebarOpen }" />
           </div>
+          <div
+            v-show="!collapsed && isMobile"
+            class="absolute top-0 left-0 right-0 w-full h-screen bg-hight-class-gray/40"
+          ></div>
         </main>
       </NLayoutContent>
     </NLayout>

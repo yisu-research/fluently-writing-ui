@@ -62,6 +62,8 @@ export const useChatStore = defineStore('chat-store', {
           state: item.state,
           userId: item.user_id,
           startMessageId: item.start_message_id,
+          updatedAt: item.updated_at,
+          createdAt: item.created_at,
         }
       })
     },

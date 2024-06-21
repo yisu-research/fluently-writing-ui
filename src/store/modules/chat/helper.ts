@@ -92,6 +92,8 @@ export interface conversationType {
   startMessageId: number
   state: conversationState
   userId: number
+  updatedAt: string
+  createdAt: string
 }
 
 export function defaultState(): ChatState {

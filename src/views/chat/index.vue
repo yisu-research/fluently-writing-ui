@@ -16,6 +16,7 @@ import { type ContentType, type MessageType, chatRole, type modelType } from '@/
 import { getToken } from '@/store/modules/auth/helper'
 import { prettyObject } from '@/utils/format'
 import api from '@/api'
+import { getBase64 } from '@/utils/image'
 
 const chatStore = useChatStoreWithOut()
 
@@ -106,7 +107,8 @@ function updateChat() {
   chatStore.initConversationById(Number(chatId.value))
 }
 
-const { fileList, onFileListChange, customRequest, removeImage, clearImages, images, beforeUpload } = useImageUpload()
+const { fileList, onFileListChange, customRequest, removeImage, uploadImage, clearImages, images, beforeUpload } =
+  useImageUpload()
 
 const isFocus = ref(false)
 
@@ -381,7 +383,35 @@ function newline() {
   })
 }
 
-function onInput() {}
+async function onPaste(event: ClipboardEvent) {
+  const text: string | undefined = event.clipboardData?.getData('Text')
+  if (typeof text === 'string') {
+    const txt = text.replace(/\n/g, '')
+    prompt.value += txt
+  }
+  if (model.value === 'gpt-3.5-turbo') {
+    return
+  }
+  if (event.clipboardData) {
+    const items = event.clipboardData.items
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i]
+      if (item.type.includes('image')) {
+        const file = item.getAsFile()
+        if (file) {
+          const fileBase64 = await getBase64(file)
+          const data = { file, id: uuidv4(), state: 'loading', src: fileBase64 }
+          fileList.value.push(data as any)
+          images.value.push(data)
+          uploadImage(file)
+        }
+      }
+    }
+  }
+}
+
+function onInput(value: any) {
+}
 
 const placeholder = `问点什么吧... \nEnter 发送,Shift + Enter 换行`
 </script>
@@ -434,6 +464,7 @@ const placeholder = `问点什么吧... \nEnter 发送,Shift + Enter 换行`
             :placeholder="placeholder"
             @keypress.enter.prevent.exact="onEnter"
             @keydown.shift.enter="newline"
+            @paste.capture.prevent="onPaste($event)"
             @focus="handleInputFocus"
             @blur="isFocus = false"
             @input="onInput"

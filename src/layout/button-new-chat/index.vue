@@ -43,7 +43,7 @@ const options = [
 async function createChat(model: string) {
   try {
     const uuid = day(Date.now()).format('YYMMDD-HH:mm:ss')
-    const res: any = await api.createChatApi({ name: uuid, model })
+    const res: any = await api.createChatApi({ name: '未命名会话', model })
     const conversation: conversationType = {
       id: res.id,
       name: res.name,
@@ -53,6 +53,8 @@ async function createChat(model: string) {
       state: res.state,
       userId: res.user_id,
       startMessageId: res.start_message_id,
+      updatedAt: res.updated_at,
+      createdAt: res.created_at,
     }
 
     chatStore.insertConversation(conversation)
