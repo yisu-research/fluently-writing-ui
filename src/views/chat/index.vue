@@ -410,8 +410,7 @@ async function onPaste(event: ClipboardEvent) {
   }
 }
 
-function onInput(value: any) {
-}
+function onInput(value: any) {}
 
 const placeholder = `问点什么吧... \nEnter 发送,Shift + Enter 换行`
 </script>

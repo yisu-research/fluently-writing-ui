@@ -71,6 +71,7 @@ module.exports = {
       backgroundImage: {
         'world-map': "url('/src/assets/svg/world-map.svg')",
         dot: "url('/src/assets/svg/dot.svg')",
+        'hero-blur': "url('/src/assets/images/background-newsletter.488a0204.jpg')",
       },
     },
   },

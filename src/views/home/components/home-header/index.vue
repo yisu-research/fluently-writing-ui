@@ -3,6 +3,7 @@ import { computed, ref, watchEffect } from 'vue'
 import { NButton, NDrawer, NDrawerContent } from 'naive-ui'
 import { RouterLink } from 'vue-router'
 import { useWindowSize } from '@vueuse/core'
+import { useScrolled } from '../../hooks/useScrolled'
 import LogoName from '@/components/common/LogoName/index.vue'
 // import SwitchLanguage from '@/components/common/switch-language/index.vue'
 import { SvgIcon } from '@/components/common'
@@ -16,8 +17,7 @@ const mobileMenuOpen = ref(false)
 // Comment: header 的 ref
 const header = ref(null)
 
-// Comment: 是否滚动
-const scrolled = ref(false)
+const { scrolled } = useScrolled()
 
 // Comment: 屏幕宽度
 const { width } = useWindowSize()
@@ -40,28 +40,12 @@ watchEffect(() => {
 // a: watchEffect 函数会在组件渲染时执行一次，然后在依赖项发生变化时再次执行
 // q: 哪个是依赖项？
 // a: 这里的依赖项是 scrolled，当 scrolled 的值发生变化时，watchEffect 函数会再次执行
-watchEffect(() => {
-  window.addEventListener('scroll', handleScroll)
-  return () => {
-    window.removeEventListener('scroll', handleScroll)
-  }
-})
 
 function newFunc() {
   if (isMobile) {
     drawerWidth.value = (width.value * 5) / 6
   } else {
     drawerWidth.value = 360
-  }
-}
-
-// q: 解释一下这个 handleScroll 函数
-// a: 这里是监听滚动事件，当滚动距离大于 10 时，将 scrolled 的值设置为 true，否则设置为 false
-function handleScroll() {
-  if (window.scrollY > 0) {
-    scrolled.value = true
-  } else {
-    scrolled.value = false
   }
 }
 
@@ -74,23 +58,30 @@ function clickUsername() {
 const barOptions: { title: string; icon: string; path: string }[] = [
   {
     title: '登录',
-    icon: 'solar:login-3-line-duotone',
+    icon: 'hugeicons:login-03',
     path: '/login',
   },
 ]
 </script>
 
 <template>
-  <header class="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-2xl">
+  <header class="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-md">
     <div
       ref="header"
       :class="{
-        ' dark:bg-slate-600 opacity-60  border-b bg-white  dark:border-zinc-700 border-slate-200': scrolled,
+        ' dark:bg-slate-600 opacity-60  border-b bg-white/80  dark:border-zinc-700 border-slate-200': scrolled,
       }"
       class="absolute top-0 bottom-0 left-0 right-0"
     ></div>
     <!-- PC 端 -->
-    <nav class="flex items-center justify-between p-4 mx-auto max-w-7xl lg:px-8" aria-label="Global">
+    <nav
+      :class="{
+        'min-h-12 sm:min-h-20 transition-all duration-500 ease-in-out': !scrolled,
+        'min-h-12 sm:min-h-16 transition-all duration-500 ease-in-out': scrolled,
+      }"
+      class="flex items-center justify-between p-4 mx-auto max-w-7xl lg:px-8"
+      aria-label="Global"
+    >
       <div class="flex flex-1 lg:flex-none">
         <div class="flex lg:hidden">
           <NButton
@@ -100,7 +91,7 @@ const barOptions: { title: string; icon: string; path: string }[] = [
             @click="mobileMenuOpen = true"
           >
             <span class="sr-only">Open main menu</span>
-            <SvgIcon icon="uim:bars" class="text-xl" />
+            <SvgIcon icon="hugeicons:menu-01" class="text-xl" />
           </NButton>
         </div>
       </div>
@@ -122,8 +113,8 @@ const barOptions: { title: string; icon: string; path: string }[] = [
           <template v-for="item in barOptions" :key="item.title">
             <div v-if="!isLogin">
               <NButton text size="large" class="leading-6">
-                <SvgIcon :icon="item.icon" class="mr-1" />
-                <RouterLink :to="item.path" class="font-bold">{{ item.title }}</RouterLink>
+                <SvgIcon :icon="item.icon" class="w-5 h-5 mr-1 text-hight-class-gray" />
+                <RouterLink :to="item.path" class="font-bold text-hight-class-gray">{{ item.title }}</RouterLink>
               </NButton>
             </div>
             <div
@@ -131,7 +122,7 @@ const barOptions: { title: string; icon: string; path: string }[] = [
               class="font-bold z-10 cursor-pointer text-teal-600 flex items-center gap-2 border border-teal-600/20 rounded-lg px-2 py-0.5 shadow-sm hover:shadow-md"
               @click="clickUsername"
             >
-              <SvgIcon icon="ph:user-circle-duotone" class="h-5 w-5" />
+              <SvgIcon icon="ph:user-circle-duotone" class="w-5 h-5" />
               <p>{{ userStore.getUsername }}</p>
             </div>
           </template>
