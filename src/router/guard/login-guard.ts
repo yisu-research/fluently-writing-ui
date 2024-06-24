@@ -1,7 +1,7 @@
 import type { Router } from 'vue-router'
 import { getToken } from '@/store/modules/auth/helper'
 
-const whiteList = ['/login', '/register', '/']
+const whiteList = ['/login', '/signup', '/']
 
 export function createLoginGuard(router: Router) {
   router.beforeEach((to, from, next) => {

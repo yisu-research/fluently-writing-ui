@@ -219,7 +219,7 @@ const handleLogin = () => {
       <img
         :src="HeroBg"
         alt=""
-        class="relative left-[calc(50%-20rem)] -z-10 h-[60rem] max-w-none sm:-translate-x-1/3 sm:translate-y-1/4 sm:rotate-[180deg] sm:left-[calc(50%-20rem)] sm:h-[96rem]"
+        class="relative left-[calc(50%-20rem)] opacity-60 -z-10 h-[60rem] max-w-none sm:-translate-x-1/3 sm:translate-y-1/4 sm:rotate-[180deg] sm:left-[calc(50%-20rem)] sm:h-[96rem]"
       />
     </div>
     <div

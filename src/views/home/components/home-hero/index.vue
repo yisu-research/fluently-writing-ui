@@ -70,7 +70,7 @@ function clickStart() {
       <img
         :src="HeroBg"
         alt=""
-        class="w-full h-full scale-105 sm:object-cover sm:scale-150 sm:translate-y-72 opacity-90 hue-rotate-15 blur-xl"
+        class="w-full h-full scale-105 opacity-30 sm:object-cover sm:scale-150 sm:translate-y-72 -hue-rotate-90 blur-xl"
       />
     </div>
     <div class="absolute top-0 left-0 right-0 h-screen bg-white -z-10 opacity-20 blur-3xl"></div>
