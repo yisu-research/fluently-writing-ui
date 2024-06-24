@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from 'vue'
-import { NButton, NDrawer, NDrawerContent } from 'naive-ui'
+import { NButton } from 'naive-ui'
 import { RouterLink } from 'vue-router'
 import { useWindowSize } from '@vueuse/core'
 import { useScrolled } from '../../hooks/useScrolled'
@@ -84,7 +84,7 @@ const barOptions: { title: string; icon: string; path: string }[] = [
     >
       <div class="flex flex-1 lg:flex-none">
         <div class="flex lg:hidden">
-          <NButton
+          <!-- <NButton
             text
             size="large"
             class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
@@ -92,7 +92,7 @@ const barOptions: { title: string; icon: string; path: string }[] = [
           >
             <span class="sr-only">Open main menu</span>
             <SvgIcon icon="hugeicons:menu-01" class="text-xl" />
-          </NButton>
+          </NButton> -->
         </div>
       </div>
       <LogoName name="一粟科研" />
@@ -129,46 +129,5 @@ const barOptions: { title: string; icon: string; path: string }[] = [
         </div>
       </div>
     </nav>
-
-    <!-- 移动端抽屉 -->
-    <NDrawer v-model:show="mobileMenuOpen" :width="drawerWidth" placement="left" @close="mobileMenuOpen = false">
-      <NDrawerContent class="w-full p-0 m-0 bg-slate-50 dark:bg-gray-900">
-        <div class="flex items-center justify-between">
-          <LogoName name="一粟科研" />
-          <NButton text size="large" class="-m-2.5 rounded-md p-2.5" @click="mobileMenuOpen = false">
-            <span class="sr-only">Close menu</span>
-            <SvgIcon icon="uim:multiply" class="text-xl" />
-          </NButton>
-        </div>
-        <div
-          class="mt-6 overflow-hidden bg-white rounded-lg shadow-sm dark:bg-slate-700 dark:bg-opacity-80 ring-1 ring-slate-100 dark:ring-teal-800"
-        >
-          <div class="px-2 sm:px-2">
-            <div class="space-y-2">
-              <span v-for="(item, index) in barOptions" :key="item.title" text size="large" class="w-full mx-auto">
-                <RouterLink :to="item.path">
-                  <div
-                    class="flex items-center justify-between w-full px-2 py-2 my-2 rounded-lg hover:bg-gray-50 hover:dark:bg-slate-600"
-                  >
-                    <div
-                      class="flex items-center justify-start gap-2 text-base font-semibold leading-7 dark:text-white text-slate-700"
-                    >
-                      <SvgIcon :icon="item.icon" class="text-teal-600 dark:text-teal-300" />
-                      {{ item.title }}
-                    </div>
-                    <SvgIcon icon="uil:angle-right-b" class="" /></div
-                ></RouterLink>
-
-                <!-- 分割线 -->
-                <span
-                  v-if="index !== barOptions.length - 1"
-                  class="flex mx-2 border-b border-gray-200 dark:border-teal-800"
-                />
-              </span>
-            </div>
-          </div>
-        </div>
-      </NDrawerContent>
-    </NDrawer>
   </header>
 </template>
