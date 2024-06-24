@@ -1,7 +1,7 @@
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue'
 
 export function useScrolled() {
-  const scrolled = ref(false);
+  const scrolled = ref(false)
 
   function handleScroll() {
     if (window.scrollY > 0) {
