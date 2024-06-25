@@ -11,14 +11,22 @@ import { Message } from './components'
 import { useScroll } from './hooks/useScroll'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { SvgIcon } from '@/components/common'
-import { useChatStoreWithOut } from '@/store/modules'
+import { useChatStoreWithOut, useUserStoreWithOut } from '@/store/modules'
 import { type ContentType, type MessageType, chatRole, type modelType } from '@/store/modules/chat/helper'
 import { getToken } from '@/store/modules/auth/helper'
 import { prettyObject } from '@/utils/format'
 import api from '@/api'
 import { getBase64 } from '@/utils/image'
+import BindEmail from '@/views/user-center/bind-email.vue'
+import {isValidEmail} from '@/utils/format'
 
 const chatStore = useChatStoreWithOut()
+
+const userStore = useUserStoreWithOut()
+
+// 弹出绑定邮箱对话框
+const isEmailBind = computed(() => !!userStore.getEmail)
+const openEmailBind = ref(false)
 
 const prompt = ref('')
 
@@ -138,7 +146,24 @@ const onClean = useDebounceFn(async () => {
   }
 }, 300)
 
+function checkBindEmail() {
+  if(userStore.getEmail && isValidEmail(userStore.getEmail)){
+    return true
+  }
+  openEmailBind.value = true
+  return false
+}
+
+function closeEmailBind() {
+  openEmailBind.value = false
+}
+
 const onSend = useDebounceFn(() => {
+  // 检查用户是否已经绑定了邮箱
+  if(!checkBindEmail()){
+    return 
+  }
+
   if (loading.value) {
     message.warning('请等待上一次对话完成')
     return
@@ -537,6 +562,7 @@ const placeholder = `问点什么吧... \nEnter 发送,Shift + Enter 换行`
                   <span>发送</span>
                 </button>
                 <!-- End Send Button -->
+                 <BindEmail :open="openEmailBind" :is-email-bind="isEmailBind" @close="closeEmailBind" />
               </div>
               <!-- End Button Group -->
             </div>
