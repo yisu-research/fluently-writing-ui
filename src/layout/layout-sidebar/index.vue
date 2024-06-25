@@ -10,7 +10,6 @@ import {
   TransitionRoot,
 } from '@headlessui/vue'
 import { NLayoutSider } from 'naive-ui'
-import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 import { computed, ref, toRefs } from 'vue'
 import day from 'dayjs'
 import { IconLogo } from '@/components/icons'
@@ -66,11 +65,12 @@ const navigation = ref([
     icon: 'hugeicons:quill-write-02',
     current: false,
     expanded: true,
+    ref: 'ai-creation',
     children: [
-      { name: '大模型（3.5）', key: 'gpt-3.5-turbo', type: 'key', icon: 'hugeicons:group-items', current: false },
-      { name: '大模型（4.0）', key: 'gpt-4o', type: 'key', icon: 'hugeicons:group-layers', current: false },
+      { name: '大模型基础', key: 'gpt-3.5-turbo', type: 'key', icon: 'hugeicons:group-items', current: false },
+      { name: '大模型高级', key: 'gpt-4o', type: 'key', icon: 'hugeicons:group-layers', current: false },
       {
-        name: '创作历史',
+        name: '历史记录',
         path: '/history',
         type: 'path',
         icon: 'hugeicons:approximately-equal-square',
@@ -170,6 +170,8 @@ async function createChat(model: string) {
 function updateCollapsed(value: boolean) {
   changeCollapsed(value)
 }
+
+const durationList = ['150', '300', '500', '700', '1000']
 </script>
 
 <template>
@@ -245,7 +247,7 @@ function updateCollapsed(value: boolean) {
                 <li v-for="item in navigation" :key="item.name">
                   <div
                     v-if="!item.children"
-                    class="flex p-3 text-sm font-semibold leading-6 rounded-xl group gap-x-3"
+                    class="flex flex-col items-center p-3 text-xs font-semibold leading-6 rounded-xl group gap-x-3"
                     :class="[
                       item.current
                         ? 'bg-primary/10 text-primary'
@@ -254,49 +256,61 @@ function updateCollapsed(value: boolean) {
                     @click="clickDisclosureButton(item, false, 1)"
                   >
                     <SvgIcon :icon="item.icon" class="w-6 h-6 shrink-0" aria-hidden="true" />
-                    <span class="sr-only">{{ item.name }}</span>
+                    <span class="mt-1">{{ item.name }}</span>
                   </div>
-                  <Popover v-if="item.children" v-slot="{ open }" class="relative z-50">
+                  <Popover
+                    v-if="item.children"
+                    v-slot="{ open }"
+                    class="relative z-50 transition-all duration-700 ease-in-out hover:duration-700 hover:ease-in-out hover:transition-all group"
+                  >
                     <PopoverButton
-                      class="flex p-3 text-sm font-semibold leading-6 rounded-xl group gap-x-3 focus:outline-none focus:ring-0 focus:ring-transparent focus-visible:ring-transparent"
+                      class="z-50 flex flex-col items-center p-3 text-xs font-semibold leading-6 group rounded-xl gap-x-3 focus:outline-none focus:ring-0 focus:ring-transparent focus-visible:ring-transparent"
                       :class="[
                         item.current
                           ? 'bg-primary/10 text-primary'
-                          : 'text-hight-class-gray hover:bg-primary/10 hover:text-hight-class-gray-1 hover:scale-95 transition duration-300 ease-in-out',
+                          : 'text-hight-class-gray hover:bg-primary/10 hover:text-hight-class-gray-1 hover:scale-95 transition-all duration-700 ease-in-out hover:transition-all hover:duration-700 hover:ease-in-out',
                       ]"
                       @click="clickDisclosureButton(item, open)"
                     >
                       <SvgIcon :icon="item.icon" class="w-6 h-6 shrink-0" aria-hidden="true" />
-                      <span class="sr-only">{{ item.name }}</span>
+                      <span class="mt-1">{{ item.name }}</span>
                     </PopoverButton>
 
-                    <transition
-                      enter-active-class="transition duration-200 ease-out"
-                      enter-from-class="translate-y-1 opacity-0"
-                      enter-to-class="translate-y-0 opacity-100"
-                      leave-active-class="transition duration-150 ease-in"
-                      leave-from-class="translate-y-0 opacity-100"
-                      leave-to-class="translate-y-1 opacity-0"
+                    <TransitionChild
+                      as="template"
+                      enter="transition ease-in-out duration-300 transform"
+                      enter-from="-translate-x-full"
+                      enter-to="translate-x-0"
+                      leave="transition ease-in-out duration-300 transform"
+                      leave-from="translate-x-0"
+                      leave-to="-translate-x-full"
                     >
-                      <PopoverPanel class="absolute z-50 max-w-sm w-48 px-4 mt-3 -top-1.5 left-20 sm:px-0">
-                        <div class="overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5">
-                          <div class="relative grid gap-4 p-4 bg-white">
+                      <PopoverPanel
+                        static
+                        class="absolute hidden w-48 max-w-sm px-4 mt-3 group-hover:block focus-visible:block -top-2 left-[4rem] sm:px-0 group-hover:transition-all group-hover:duration-700 group-hover:ease-in-out"
+                      >
+                        <div class="relative overflow-hidden rounded-xl">
+                          <div class="absolute w-8 h-8 bg-green-500 rounded-full right-6 -top-3"></div>
+                          <div class="absolute w-12 h-12 rounded-full bg-rose-500 -bottom-6 left-6"></div>
+                          <div
+                            class="relative grid gap-4 p-4 mx-4 transition-all duration-700 ease-in-out transform border shadow-sm border-hight-class-gray-1/5 rounded-xl bg-white/80 backdrop-blur-xl from:translate-y-1 to:translate-y-0"
+                          >
                             <div
                               v-for="subItem in item.children"
                               :key="subItem.name"
                               :class="[subItem.current ? ' text-primary bg-primary-3/10 ' : 'text-hight-class-gray']"
-                              class="flex items-center -m-2 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none"
+                              class="flex items-center -m-2 transition duration-150 ease-in-out rounded-lg cursor-pointer text- hover:text-hight-class-gray/80 hover:bg-grey-400/20 focus:outline-none"
                               @click="clickSubDisclosureButton(subItem)"
                             >
-                              <div class="flex items-center justify-center w-10 h-10 text-white shrink-0 sm:w-12">
+                              <div class="flex items-center justify-center w-10 h-10 shrink-0 sm:w-12">
                                 <SvgIcon
-                                  :class="[subItem.current ? ' text-primary/60 ' : 'text-slate-500/60']"
+                                  :class="[subItem.current ? ' text-primary/60 ' : '']"
                                   :icon="subItem.icon"
                                   class="w-6 h-6 shrink-0"
                                   aria-hidden="true"
                                 />
                               </div>
-                              <div class="ml-2">
+                              <div>
                                 <p class="text-sm font-medium">
                                   {{ subItem.name }}
                                 </p>
@@ -304,8 +318,8 @@ function updateCollapsed(value: boolean) {
                             </div>
                           </div>
                         </div>
-                      </PopoverPanel>
-                    </transition>
+                      </PopoverPanel></TransitionChild
+                    >
                   </Popover>
                 </li>
 
@@ -388,7 +402,7 @@ function updateCollapsed(value: boolean) {
                         />
                         {{ item.name }}
                       </div>
-                      <Disclosure v-else v-slot="{ open }" as="div">
+                      <Disclosure v-else v-slot="{ open }" :default-open="true" as="div">
                         <DisclosureButton
                           class="flex items-center w-full p-2 text-sm font-bold leading-6 text-left rounded-md gap-x-3 focus:outline-none focus:ring-0 focus:ring-transparent"
                           :class="[
@@ -403,45 +417,48 @@ function updateCollapsed(value: boolean) {
                             aria-hidden="true"
                           />
                           {{ item.name }}
-                          <ChevronRightIcon
+                          <SvgIcon
+                            icon="hugeicons:arrow-right-01"
                             class="w-5 h-5 ml-auto shrink-0"
-                            :class="[item.current ? 'rotate-90 text-gray-500' : 'text-gray-400']"
+                            :class="[item.expanded ? 'rotate-90 text-gray-500' : 'text-gray-400']"
                             aria-hidden="true"
                           />
                         </DisclosureButton>
-                        <TransitionRoot
-                          appear
-                          :show="item.expanded"
-                          enter="transition-opacity duration-150 ease-in-out"
-                          enter-from="opacity-80"
-                          enter-to="opacity-100"
-                          leave="transition-opacity duration-150 ease-in-out"
-                          leave-from="opacity-100"
-                          leave-to="opacity-80"
-                        >
+                        <TransitionRoot as="div" :show="item.expanded">
                           <DisclosurePanel as="ul" class="px-2 mt-1" static>
-                            <li v-for="subItem in item.children" :key="subItem.name">
-                              <!-- 44px -->
-                              <DisclosureButton
-                                as="div"
-                                class="block py-2 pl-2 pr-2 ml-2 text-sm leading-6 text-gray-700 rounded-md"
-                                :class="[subItem.current ? 'bg-gray-50 text-primary' : 'hover:bg-gray-50']"
-                                @click="clickSubDisclosureButton(subItem)"
+                            <li v-for="(subItem, index) in item.children" :key="subItem.name">
+                              <TransitionChild
+                                :enter="
+                                  [`duration-${durationList[index]}`, 'transition ease-in-out transform'].join(' ')
+                                "
+                                enter-from="-translate-x-1/2"
+                                enter-to="translate-x-0"
+                                :leave="[`duration-300`, 'transition ease-in-out transform'].join(' ')"
+                                leave-from="translate-x-0"
+                                leave-to="-translate-x-1/2"
                               >
-                                <div class="flex items-center font-medium gap-x-2">
-                                  <SvgIcon
-                                    :icon="subItem.icon"
-                                    :class="[
-                                      subItem.current
-                                        ? ' text-primary/80'
-                                        : 'text-hight-class-gray/60 group-hover:text-primary-3',
-                                    ]"
-                                    class="w-5 h-5 shrink-0"
-                                    aria-hidden="true"
-                                  />
-                                  <span>{{ subItem.name }}</span>
-                                </div>
-                              </DisclosureButton>
+                                <!-- 44px -->
+                                <DisclosureButton
+                                  as="div"
+                                  class="block py-2 pl-2 pr-2 ml-2 text-sm leading-6 text-gray-700 rounded-md"
+                                  :class="[subItem.current ? 'bg-gray-50 text-primary' : 'hover:bg-gray-50']"
+                                  @click="clickSubDisclosureButton(subItem)"
+                                >
+                                  <div class="flex items-center font-medium gap-x-2">
+                                    <SvgIcon
+                                      :icon="subItem.icon"
+                                      :class="[
+                                        subItem.current
+                                          ? ' text-primary/80'
+                                          : 'text-hight-class-gray/60 group-hover:text-primary-3',
+                                      ]"
+                                      class="w-5 h-5 shrink-0"
+                                      aria-hidden="true"
+                                    />
+                                    <span>{{ subItem.name }}</span>
+                                  </div>
+                                </DisclosureButton></TransitionChild
+                              >
                             </li>
                           </DisclosurePanel>
                         </TransitionRoot>

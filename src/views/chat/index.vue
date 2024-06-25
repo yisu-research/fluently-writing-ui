@@ -47,8 +47,8 @@ interface modelMapType {
   [key: string]: string
 }
 const modelMap: modelMapType = {
-  'gpt-3.5-turbo': '大模型-3.5',
-  'gpt-4o': '大模型-4.0',
+  'gpt-3.5-turbo': '大模型-基础',
+  'gpt-4o': '大模型-高级',
   // 'gpt-4-1106-preview': 'GPT4',
   // 'gpt-4-vision-preview': 'GPT4 Vision',
 }

@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { SvgIcon } from '@/components/common'
-
 const title = '模型列表'
 
-const titles = ['模型', '输入', '输出', '联网', '备注', '1积分额度']
+const titles = ['模型', '输入', '输出', '备注', '1积分额度']
 
 const modelData: any[] = [
   {
-    title: '大模型-3.5',
+    title: '大模型-基础',
     input: '文本',
     output: '文本',
     network: 'hugeicons:cancel-circle-half-dot',
@@ -17,7 +15,7 @@ const modelData: any[] = [
     cost: ['输入20000 tokens', '输出 6667 tokens'],
   },
   {
-    title: '大模型-4.0',
+    title: '大模型-高级',
     input: '文本+图片',
     output: '文本',
     network: 'hugeicons:cancel-circle-half-dot',
@@ -73,9 +71,9 @@ const modelData: any[] = [
                   </td>
                   <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">{{ model.input }}</td>
                   <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">{{ model.output }}</td>
-                  <td class="w-20 px-3 py-4 text-sm text-gray-500">
+                  <!-- <td class="w-20 px-3 py-4 text-sm text-gray-500">
                     <SvgIcon :icon="model.network" class="w-4 h-4 text-red-500" />
-                  </td>
+                  </td> -->
                   <td class="w-16 px-3 py-4 text-sm text-gray-500">{{ model.note }}</td>
                   <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
                     <div v-for="item of model.cost" :key="item">
