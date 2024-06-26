@@ -28,7 +28,7 @@ const options = [
     path: '/user-center',
   },
   {
-    name: '消费中心',
+    name: '充值中心',
     key: 'xfzx',
     icon: 'ph:storefront',
     path: '/cost-center',

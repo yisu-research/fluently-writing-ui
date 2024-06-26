@@ -34,7 +34,7 @@ const { collapsed } = toRefs(props)
 
 const userStore = useUserStoreWithOut()
 
-const { isMobile } = useBasicLayout()
+const { isDesktop } = useBasicLayout()
 
 const avatar = computed(() => (userStore.getGender === Gender.Man ? manImage : womanImage))
 
@@ -80,7 +80,7 @@ const navigation = ref([
     ],
   },
   { name: '个人中心', path: '/user-center', type: 'path', icon: 'hugeicons:user', current: false },
-  { name: '消费中心', path: '/cost-center', type: 'path', icon: 'hugeicons:store-02', current: false },
+  { name: '充值中心', path: '/cost-center', type: 'path', icon: 'hugeicons:store-02', current: false },
 ])
 
 function clickDisclosureButton(item: any, open: boolean, level = 0) {
@@ -189,7 +189,7 @@ const durationList = ['150', '300', '500', '700', '1000']
     <NLayoutSider
       class="!z-50"
       collapse-mode="transform"
-      :collapsed-width="isMobile ? 0 : 80"
+      :collapsed-width="isDesktop ? 0 : 80"
       :width="288"
       bordered
       :collapsed="collapsed"

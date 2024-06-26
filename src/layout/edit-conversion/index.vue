@@ -73,8 +73,8 @@ async function deleteConversation() {
 <template>
   <div>
     <SvgIcon
-      icon="solar:pen-new-square-linear"
-      class="w-6 h-6 p-1 rounded-md hover:text-teal-600 dark:text-slate-3 00 hover:bg-teal-600/10 text-slate-600 shrink-0"
+      icon="hugeicons:edit-01"
+      class="w-6 h-6 p-1 rounded-md text-violet-500 hover:text-teal-600 dark:text-slate-3 00 hover:bg-teal-600/10 shrink-0"
       @click.stop="openModal"
     />
   </div>

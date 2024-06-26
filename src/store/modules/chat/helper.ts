@@ -79,8 +79,6 @@ export enum conversationState {
 export enum modelType {
   GPT3_5 = 'gpt-3.5-turbo',
   GPT4o = 'gpt-4o',
-  // GPT4 = 'gpt-4-1106-preview',
-  // GPT4_VISION = 'gpt-4-vision-preview',
 }
 
 export interface conversationType {

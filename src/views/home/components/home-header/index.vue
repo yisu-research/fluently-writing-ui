@@ -11,9 +11,6 @@ import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { useUserStoreWithOut } from '@/store'
 import { router } from '@/router'
 
-// Comment: 移动端菜单是否打开
-const mobileMenuOpen = ref(false)
-
 // Comment: header 的 ref
 const header = ref(null)
 

@@ -63,14 +63,13 @@ function changeCollapsed(value: boolean) {
   <div>
     <NLayout has-sider class="h-screen">
       <LayoutSidebar v-model:collapsed="collapsed" @change-collapsed="changeCollapsed" />
-      <NLayoutContent>
+      <NLayoutContent class="h-screen">
         <main class="relative">
           <div
             :class="{
               'lg:ml-20': collapsed,
               'lg:ml-72': !collapsed,
             }"
-            class="py-10 sm:px-6 lg:px-8 lg:py-6"
           >
             <LayoutHeader v-model:collapsed="collapsed" />
             <LayoutMain />
