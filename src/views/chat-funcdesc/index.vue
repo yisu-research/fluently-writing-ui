@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const title = '模型列表'
+import { SvgIcon } from '@/components/common'
+const title = '模型说明'
 
 const titles = ['模型', '输入', '输出', '备注', '1积分额度']
 
@@ -7,6 +8,7 @@ const modelData: any[] = [
   {
     title: '大模型-基础',
     input: '文本',
+    icon: 'hugeicons:group-items',
     output: '文本',
     network: 'hugeicons:cancel-circle-half-dot',
     stroke: 'blue',
@@ -17,6 +19,7 @@ const modelData: any[] = [
   {
     title: '大模型-高级',
     input: '文本+图片',
+    icon: 'hugeicons:group-layers',
     output: '文本',
     network: 'hugeicons:cancel-circle-half-dot',
     stroke: 'blue',
@@ -24,65 +27,100 @@ const modelData: any[] = [
     note: '当前地表最强的AI模型（对标GPT4-o），支持文本/图片的输入和文本输出，适合完成较复杂，对结果质量要求较高的任务。',
     cost: ['输入2000 tokens', '输入 4张图片 ', '输出 666 tokens'],
   },
-  // {
-  //     title: '大模型-联网',
-  //     input: '文本',
-  //     output: '文本',
-  //     network: 'M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z',
-  //     stroke: 'green',
-  //     fill: 'white',
-  //     note: '当前地表最强的AI模型（对标GPT4-o），支持文本/图片的输入和文本输出，且联网，适合完成时效性更高，质量要求更高的任务。',
-  //     cost: [
-  //         '输入 500 tokens',
-  //         '输出 500 tokens'
-  //     ]
-  // }
 ]
 </script>
 
 <template>
-  <div class="px-4 sm:px-6 lg:px-8">
-    <div class="sm:flex sm:items-center">
-      <div class="sm:flex-auto">
-        <h1 class="text-base font-semibold leading-6 text-gray-900">{{ title }}</h1>
+  <div class="h-screen bg-slate-100/80">
+    <div class="p-4 sm:p-6 lg:p-8">
+      <div class="hidden mt-16 bg-white border lg:mt-0 border-slate-200 rounded-xl sm:block">
+        <div class="sm:flex sm:items-center min-h-16">
+          <div class="px-4 sm:flex-auto">
+            <h1 class="text-base font-semibold leading-6 text-gray-900">{{ title }}</h1>
+          </div>
+        </div>
+        <div class="flow-root">
+          <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+              <div class="overflow-hidden shadow sm:rounded-b-xl">
+                <table class="min-w-full divide-y divide-gray-300">
+                  <thead class="bg-gray-100">
+                    <tr>
+                      <th
+                        v-for="(item, index) of titles"
+                        :key="item"
+                        scope="col"
+                        :class="{
+                          'w-4': index === 0,
+                          'w-3': index === 1 || index === 2,
+                          'w-6': index === 3,
+                          'w-20': index === 4,
+                        }"
+                        class="py-3.5 first:pl-4 first:px-0 px-3 first:pr-3 text-left text-sm font-semibold text-gray-900 first:sm:pl-6"
+                      >
+                        {{ item }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <tr v-for="model in modelData" :key="model.title">
+                      <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 max-w-8 whitespace-nowrap sm:pl-6">
+                        {{ model.title }}
+                      </td>
+                      <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap max-w-2">{{ model.input }}</td>
+                      <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap max-w-2">{{ model.output }}</td>
+                      <td class="w-20 px-3 py-4 text-sm text-gray-500">{{ model.note }}</td>
+                      <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap max-w-8">
+                        <div v-for="item of model.cost" :key="item">
+                          <span>{{ item }}</span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="flow-root mt-8">
-      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-          <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-            <table class="min-w-full divide-y divide-gray-300">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th
-                    v-for="item of titles"
-                    :key="item"
-                    scope="col"
-                    class="py-3.5 first:pl-4 first:px-0 px-3 first:pr-3 text-left text-sm font-semibold text-gray-900 first:sm:pl-6"
-                  >
-                    {{ item }}
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr v-for="model in modelData" :key="model.title">
-                  <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
-                    {{ model.title }}
-                  </td>
-                  <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">{{ model.input }}</td>
-                  <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">{{ model.output }}</td>
-                  <!-- <td class="w-20 px-3 py-4 text-sm text-gray-500">
-                    <SvgIcon :icon="model.network" class="w-4 h-4 text-red-500" />
-                  </td> -->
-                  <td class="w-16 px-3 py-4 text-sm text-gray-500">{{ model.note }}</td>
-                  <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
-                    <div v-for="item of model.cost" :key="item">
-                      <span>{{ item }}</span>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+      <div class="mt-16 bg-white border sm:hidden rounded-xl border-slate-200">
+        <div class="flex items-center min-h-16">
+          <div class="flex-auto px-4">
+            <h1 class="text-base font-semibold leading-6 text-gray-900">{{ title }}</h1>
+          </div>
+        </div>
+        <div class="flex flex-col px-4 pb-4 gap-y-4">
+          <div v-for="model of modelData" :key="model.title">
+            <div class="rounded-xl bg-primary-4/5">
+              <div class="flex justify-between p-4 items center">
+                <div class="flex items-center gap-2 text-lg font-bold text-hight-class-gray">
+                  <SvgIcon :icon="model.icon" class="w-5 h-5 shrink-0" :stroke="model.stroke" :fill="model.fill" />
+                  <p>{{ model.title }}</p>
+                </div>
+              </div>
+              <div class="flex justify-between px-4">
+                <div class="flex-1">
+                  <span class="text-sm font-semibold text-gray-900">输入：</span>
+                  <span class="text-sm text-gray-500">{{ model.input }}</span>
+                </div>
+                <div class="flex-1">
+                  <span class="text-sm font-semibold text-gray-900">输出：</span>
+                  <span class="text-sm text-gray-500">{{ model.output }}</span>
+                </div>
+              </div>
+              <div class="flex justify-between p-4">
+                <div class="flex-1">
+                  <span class="text-sm font-semibold text-gray-900">1积分额度</span>
+                </div>
+                <div class="flex-1">
+                  <div v-for="item of model.cost" :key="item">{{ item }}</div>
+                </div>
+              </div>
+              <div class="p-4 border-t">
+                <span class="font-bold text-hight-class-gray-1">备注：</span>
+                <span class="text-hight-class-gray-1">{{ model.note }}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
