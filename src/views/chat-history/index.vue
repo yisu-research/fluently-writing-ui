@@ -10,60 +10,77 @@ import { router } from '@/router'
 import { modelType } from '@/store/modules/chat/helper'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 
-const { height } = useWindowSize()
-
-const { isMobile, isDesktop } = useBasicLayout()
-
-const minuendHeight = computed(() => {
-  if (isMobile) {
-    return 140
-  }
-  if (isDesktop) {
-    return 120
-  }
-  return 100
-})
-
-const listHight = computed(() => `height: ${height.value - minuendHeight.value}px`)
-
-const chatStore = useChatStoreWithOut()
-const chats = computed(() => chatStore.conversations)
-const total = computed(() => chatStore.total)
-const loading = ref(false)
-const noMore = computed(() => chats.value.length >= total.value)
-function handleClickConversion(id: number, model: string) {
-  router.push({ path: `/chat/${id}`, query: { model, type: 'history' } })
+// height
+function useHeight() {
+  const { height } = useWindowSize()
+  const { isMobile, isDesktop } = useBasicLayout()
+  const minuendHeight = computed(() => {
+    if (isMobile) {
+      return 140
+    }
+    if (isDesktop) {
+      return 120
+    }
+    return 100
+  })
+  const listHight = computed(() => `height: ${height.value - minuendHeight.value}px`)
+  return {listHight}
 }
+const { listHight } = useHeight()
 
-async function handleLoad() {
-  if (loading.value || noMore.value) {
-    return
+// chat-history
+function useChatHistory() {
+  const chatStore = useChatStoreWithOut()
+  const chats = computed(() => chatStore.conversations)
+  const total = computed(() => chatStore.total)
+  const currentID = computed(() => chatStore.getCurrent)
+  function handleClickConversion(id: number, model: string) {
+    router.push({ path: `/chat/${id}`, query: { model, type: 'history' } })
   }
-  loading.value = true
-  await chatStore.fetchConversation()
-  loading.value = false
-}
+  // loading
+  const loading = ref(false)
+  const noMore = computed(() => chats.value.length >= total.value)
+  async function handleLoad() {
+    if (loading.value || noMore.value) {
+      return
+    }
+    loading.value = true
+    await chatStore.fetchConversation()
+    loading.value = false
+  }
+  function modelIconStr(model: modelType) {
+    const iconMap = {
+      [modelType.GPT3_5]: 'hugeicons:group-items',
+      [modelType.GPT4o]: 'hugeicons:group-layers',
+    }
 
-function modelIconStr(model: modelType) {
-  const iconMap = {
-    [modelType.GPT3_5]: 'hugeicons:group-items',
-    [modelType.GPT4o]: 'hugeicons:group-layers',
+    return iconMap[model]
+  }
+  function formatTime(time: string) {
+    // 2024-06-21T01:31:49.583+08:00
+    // 显示一周内的星期几，超过一周显示日期年月日
+    const now = dayjs()
+    const target = dayjs(time)
+    const diff = now.diff(target, 'day')
+    if (diff < 7) {
+      return target.format('dddd')
+    }
+    return target.format('YYYY-MM-DD')
   }
 
-  return iconMap[model]
-}
-
-function formatTime(time: string) {
-  // 2024-06-21T01:31:49.583+08:00
-  // 显示一周内的星期几，超过一周显示日期年月日
-  const now = dayjs()
-  const target = dayjs(time)
-  const diff = now.diff(target, 'day')
-  if (diff < 7) {
-    return target.format('dddd')
+  return {
+    chats,
+    loading,
+    noMore,
+    currentID,
+    handleClickConversion,
+    handleLoad,
+    modelIconStr,
+    formatTime,
   }
-  return target.format('YYYY-MM-DD')
 }
+const { chats, loading, noMore, currentID, handleClickConversion, handleLoad, modelIconStr, formatTime } = useChatHistory()
+
 </script>
 
 <template>
@@ -89,7 +106,7 @@ function formatTime(time: string) {
                 <button
                   class="flex items-center justify-between w-full p-2 my-2 text-sm font-semibold bg-white border rounded-lg group border-slate-200/60 gap-x-3"
                   :class="[
-                    item.id === chatStore.getCurrent
+                    item.id === currentID
                       ? 'bg-teal-600/10 dark:bg-gray-700 text-teal-600'
                       : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-white dark:hover:text-teal-600',
                   ]"

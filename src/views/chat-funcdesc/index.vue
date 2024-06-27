@@ -1,43 +1,55 @@
 <script setup lang="ts">
-const title = '模型列表'
 
-const titles = ['模型', '输入', '输出', '备注', '1积分额度']
+function useFuncDesc() {
+  const title = '模型列表'
 
-const modelData: any[] = [
-  {
-    title: '大模型-基础',
-    input: '文本',
-    output: '文本',
-    network: 'hugeicons:cancel-circle-half-dot',
-    stroke: 'blue',
-    fill: 'none',
-    note: '当前性价比最高的AI模型（对标ChaGPT3.5），适合一般的日常任务。',
-    cost: ['输入20000 tokens', '输出 6667 tokens'],
-  },
-  {
-    title: '大模型-高级',
-    input: '文本+图片',
-    output: '文本',
-    network: 'hugeicons:cancel-circle-half-dot',
-    stroke: 'blue',
-    fill: 'none',
-    note: '当前地表最强的AI模型（对标GPT4-o），支持文本/图片的输入和文本输出，适合完成较复杂，对结果质量要求较高的任务。',
-    cost: ['输入2000 tokens', '输入 4张图片 ', '输出 666 tokens'],
-  },
-  // {
-  //     title: '大模型-联网',
-  //     input: '文本',
-  //     output: '文本',
-  //     network: 'M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z',
-  //     stroke: 'green',
-  //     fill: 'white',
-  //     note: '当前地表最强的AI模型（对标GPT4-o），支持文本/图片的输入和文本输出，且联网，适合完成时效性更高，质量要求更高的任务。',
-  //     cost: [
-  //         '输入 500 tokens',
-  //         '输出 500 tokens'
-  //     ]
-  // }
-]
+  const titles = ['模型', '输入', '输出', '备注', '1积分额度']
+
+  const modelData: any[] = [
+    {
+      title: '大模型-基础',
+      input: '文本',
+      output: '文本',
+      network: 'hugeicons:cancel-circle-half-dot',
+      stroke: 'blue',
+      fill: 'none',
+      note: '当前性价比最高的AI模型（对标ChaGPT3.5），适合一般的日常任务。',
+      cost: ['输入20000 tokens', '输出 6667 tokens'],
+    },
+    {
+      title: '大模型-高级',
+      input: '文本+图片',
+      output: '文本',
+      network: 'hugeicons:cancel-circle-half-dot',
+      stroke: 'blue',
+      fill: 'none',
+      note: '当前地表最强的AI模型（对标GPT4-o），支持文本/图片的输入和文本输出，适合完成较复杂，对结果质量要求较高的任务。',
+      cost: ['输入2000 tokens', '输入 4张图片 ', '输出 666 tokens'],
+    },
+    // {
+    //     title: '大模型-联网',
+    //     input: '文本',
+    //     output: '文本',
+    //     network: 'M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z',
+    //     stroke: 'green',
+    //     fill: 'white',
+    //     note: '当前地表最强的AI模型（对标GPT4-o），支持文本/图片的输入和文本输出，且联网，适合完成时效性更高，质量要求更高的任务。',
+    //     cost: [
+    //         '输入 500 tokens',
+    //         '输出 500 tokens'
+    //     ]
+    // }
+  ]
+
+  return {
+    title,
+    titles,
+    modelData,
+  }
+}
+
+const { title, titles, modelData } = useFuncDesc()
+
 </script>
 
 <template>
