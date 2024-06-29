@@ -9,7 +9,6 @@ import { useImageUpload } from './hooks/useImageUpload'
 import { useChatView } from './hooks/useChatView'
 import { Message } from './components'
 import { useScroll } from './hooks/useScroll'
-import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { SvgIcon } from '@/components/common'
 import { useChatStoreWithOut } from '@/store/modules'
 import { type ContentType, type MessageType, chatRole, type modelType } from '@/store/modules/chat/helper'
@@ -17,6 +16,7 @@ import { getToken } from '@/store/modules/auth/helper'
 import { prettyObject } from '@/utils/format'
 import api from '@/api'
 import { getBase64 } from '@/utils/image'
+import { useBasicLayout } from '@/hooks/useBasicLayout'
 
 const chatStore = useChatStoreWithOut()
 

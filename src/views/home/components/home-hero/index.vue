@@ -39,6 +39,17 @@ function clickStart() {
 <template>
   <div class="relative overflow-hidden bg-white isolate dark:bg-gray-900">
     <div v-show="isDark" class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-gray-900"></div>
+
+    <div
+      class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl backdrop-blur-3xl bg-white/20 sm:top-[-15rem]"
+    >
+      <img
+        :src="HeroBg"
+        alt=""
+        class="w-full h-full scale-105 opacity-30 sm:object-cover sm:scale-150 sm:translate-y-72 -hue-rotate-[120deg] blur-xl"
+      />
+    </div>
+    <div class="absolute top-0 left-0 right-0 h-screen bg-white -z-10 opacity-20 blur-3xl"></div>
     <svg
       class="absolute inset-0 -z-10 h-full w-full stroke-gray-200 dark:stroke-white/10 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
       aria-hidden="true"
@@ -65,19 +76,9 @@ function clickStart() {
     </svg>
 
     <div
-      class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl backdrop-blur-3xl bg-white/20 sm:top-[-15rem]"
-    >
-      <img
-        :src="HeroBg"
-        alt=""
-        class="w-full h-full scale-105 opacity-30 sm:object-cover sm:scale-150 sm:translate-y-72 -hue-rotate-[120deg] blur-xl"
-      />
-    </div>
-    <div class="absolute top-0 left-0 right-0 h-screen bg-white -z-10 opacity-20 blur-3xl"></div>
-    <div
       class="px-6 py-24 mx-auto max-w-7xl sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-28 lg:h-[calc(100vh)]"
     >
-      <div class="flex flex-col items-center max-w-2xl mx-auto sm:-mt-32 lg:items-start lg:mx-0 lg:flex-auto">
+      <div class="flex flex-col items-center max-w-2xl mx-auto lg:mt-32 lg:items-start lg:mx-0 lg:flex-auto">
         <!-- 渐变色标题 -->
         <h1
           class="max-w-lg mt-8 text-4xl font-bold tracking-tight text-transparent font-jinbu bg-clip-text bg-gradient-to-r from-primary-2 to-primary sm:text-5xl xl:text-6xl"
@@ -102,7 +103,7 @@ function clickStart() {
         </div>
       </div>
 
-      <div class="mx-auto mt-16 sm:mt-24 lg:mt-0 lg:flex-shrink-0 lg:flex-grow">
+      <div class="mx-auto mt-16 sm:mt-24 lg:mt-8 lg:flex-shrink-0 lg:flex-grow">
         <img :src="HeroSvg" alt="" class="mx-auto w-[40rem] max-w-full drop-shadow-xl" />
       </div>
     </div>
