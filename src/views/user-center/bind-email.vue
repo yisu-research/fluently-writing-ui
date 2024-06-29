@@ -69,13 +69,13 @@ const handleEmailBindClick = (e: any) => {
       } catch (err: any) {
         console.error(err)
         message.success(`邮箱${action}失败，${err.error.message}`)
-        close()
       } finally {
         modelEmailBind.value = {
           email: null,
           code: null,
         }
         loadEmailBind.value = false
+        close()
       }
     } else {
       console.error(err)
@@ -147,8 +147,8 @@ const handleSendEmailCode = async (email: string) => {
               class="relative px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:w-full sm:max-w-sm sm:p-6"
             >
               <NAlert v-if="!isEmailBind" title="安全提示" type="warning" class="mb-6">
-                <p>为了保障您的账号安全，请您及时绑定邮箱！</p>
-                <p>现在绑定还能获赠&thinsp;10&thinsp;次体验机会！</p>
+                <p>为了您的账号安全，请绑定邮箱。</p>
+                <p>成功绑定邮箱将额外获得&thinsp;1&thinsp;积分！</p>
               </NAlert>
               <NForm ref="refEmailBind" :model="modelEmailBind" :rules="ruleEmailBind">
                 <NFormItemRow label="邮箱地址" path="email">
