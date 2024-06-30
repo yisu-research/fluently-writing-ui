@@ -13,12 +13,11 @@ import { SvgIcon } from '@/components/common'
 import { useChatStoreWithOut, useUserStoreWithOut } from '@/store/modules'
 import { type ContentType, type MessageType, chatRole, type modelType } from '@/store/modules/chat/helper'
 import { getToken } from '@/store/modules/auth/helper'
-import { prettyObject } from '@/utils/format'
+import { isValidEmail , prettyObject } from '@/utils/format'
 import api from '@/api'
 import { getBase64 } from '@/utils/image'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import BindEmail from '@/views/user-center/bind-email.vue'
-import {isValidEmail} from '@/utils/format'
 
 const chatStore = useChatStoreWithOut()
 
@@ -147,7 +146,7 @@ const onClean = useDebounceFn(async () => {
 }, 300)
 
 function checkBindEmail() {
-  if(userStore.getEmail && isValidEmail(userStore.getEmail)){
+  if (userStore.getEmail && isValidEmail(userStore.getEmail)) {
     return true
   }
   openEmailBind.value = true
@@ -160,8 +159,8 @@ function closeEmailBind() {
 
 const onSend = useDebounceFn(() => {
   // 检查用户是否已经绑定了邮箱
-  if(!checkBindEmail()){
-    return 
+  if (!checkBindEmail()) {
+    return
   }
 
   if (loading.value) {
@@ -561,7 +560,7 @@ const placeholder = `问点什么吧... \nEnter 发送,Shift + Enter 换行`
                   <span>发送</span>
                 </button>
                 <!-- End Send Button -->
-                 <BindEmail :open="openEmailBind" :is-email-bind="isEmailBind" @close="closeEmailBind" />
+                <BindEmail :open="openEmailBind" :is-email-bind="isEmailBind" @close="closeEmailBind" />
               </div>
               <!-- End Button Group -->
             </div>
