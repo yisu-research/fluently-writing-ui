@@ -41,16 +41,16 @@ export const baseRoutes: RouteRecordRaw[] = [
         },
       },
       {
-        name: 'History',
-        path: '/history',
+        name: 'chat-history',
+        path: '/chat-history',
         component: () => import('@/views/chat-history/index.vue'),
         meta: {
           title: '历史记录',
         },
       },
       {
-        name: 'FuncDesc',
-        path: '/funcdesc',
+        name: 'chat-funcdesc',
+        path: '/chat-funcdesc',
         component: () => import('@/views/chat-funcdesc/index.vue'),
         meta: {
           title: '功能说明',
@@ -62,6 +62,14 @@ export const baseRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/chat/index.vue'),
         meta: {
           title: '聊天详情',
+        },
+      },
+      {
+        name: 'questionnaire',
+        path: '/questionnaire',
+        component: () => import('@/views/questionnaire/index.vue'),
+        meta: {
+          title: '历史记录',
         },
       },
       {
