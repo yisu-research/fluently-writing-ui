@@ -36,16 +36,17 @@ export interface OptionType {
 
 // 代理类型
 export interface AgentType {
-    name: string | undefined
-    number: number | undefined
-    requirement: RequirementType[] | undefined
+value: any
+    name: string 
+    number: number 
+    requirement: RequirementType[]
 }
 
 // 代理类型-组别条件类型
 export interface RequirementType {
-    title: string | undefined
-    description: string | undefined
-    selectedRequirement: string | undefined
+    title: string 
+    description: string 
+    selectedRequirement: string 
 }
 
 // 问卷类型-模型

@@ -73,6 +73,14 @@ export const baseRoutes: RouteRecordRaw[] = [
         },
       },
       {
+        name: 'questionnaire-create',
+        path: '/questionnaire-create',
+        component: () => import('@/views/questionnaire-create/index.vue'),
+        meta: {
+          title: '历史记录',
+        },
+      },
+      {
         name: 'user-center',
         path: 'user-center',
         component: () => import('@/views/user-center/index.vue'),
